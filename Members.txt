@@ -1,0 +1,10 @@
+Jing Fei Peng 20720513
+Guan Qiao Huang  
+James Dorfman 
+Bowen Robert Zhuang
+
+
+Jing Fei: Discuss Idea, Build Angular Frontend
+Guan Qiao: Discuss Idea, Setup GCP & Postgres
+James: Discuss Idea, Write Report
+Bowen: Discuss Idea, Build Flask
