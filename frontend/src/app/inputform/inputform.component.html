@@ -1,0 +1,97 @@
+<form class="container" [formGroup]="inputForm">
+    <h2>My Page</h2>
+    <div>
+        <mat-form-field class="example-full-width">
+            <input type="number" matInput placeholder="Input1" formControlName="input1">
+        </mat-form-field>
+    
+        <mat-form-field class="example-full-width">
+            <input type="number" matInput placeholder="Input2" formControlName="input2">
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <input type="number" matInput placeholder="Input5" formControlName="input5">
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field class="example-full-width">
+            <input type="number" matInput placeholder="Input3" formControlName="input3">
+        </mat-form-field>
+    
+        <mat-form-field class="example-full-width">
+            <input type="number" matInput placeholder="Input4" formControlName="input4">
+        </mat-form-field>
+    </div>
+
+    <div class="radioArea">
+        <div class="radioButton">
+            <div class="radioLabel">
+                <label>Radio1</label>
+            </div>
+            <div>
+                <mat-radio-group aria-label="Select an option" formControlName="radio1">
+                    <mat-radio-button value="1">Option 1</mat-radio-button><br>
+                    <mat-radio-button value="2">Option 2</mat-radio-button><br>
+                    <mat-radio-button value="3">Option 3</mat-radio-button><br>
+                </mat-radio-group>  
+            </div>
+        </div> 
+        <div class="radioButton">
+            <div class="radioLabel">
+                <label>Radio2</label>
+            </div>
+            <div>
+                <mat-radio-group aria-label="Select an option" formControlName="radio2">
+                    <mat-radio-button value="1">Option 1</mat-radio-button><br>
+                    <mat-radio-button value="2">Option 2</mat-radio-button><br>
+                    <mat-radio-button value="3">Option 3</mat-radio-button><br>
+                </mat-radio-group>  
+            </div>
+        </div> 
+        <div class="radioButton">
+            <div class="radioLabel">
+                <label>Radio3</label>
+            </div>
+            <div>
+                <mat-radio-group aria-label="Select an option" formControlName="radio3">
+                    <mat-radio-button value="1">Option 1</mat-radio-button><br>
+                    <mat-radio-button value="2">Option 2</mat-radio-button><br>
+                    <mat-radio-button value="3">Option 3</mat-radio-button><br>
+                </mat-radio-group>  
+            </div>
+        </div>  
+    </div> 
+    
+    <div class="radioArea">
+        <div class="radioButton">
+            <div class="radioLabel">
+                <label>Radio4</label>
+            </div>
+            <div>
+                <mat-radio-group aria-label="Select an option" formControlName="radio4">
+                    <mat-radio-button value="1">Option 1</mat-radio-button><br>
+                    <mat-radio-button value="2">Option 2</mat-radio-button><br>
+                    <mat-radio-button value="3">Option 3</mat-radio-button><br>
+                </mat-radio-group>  
+            </div>
+        </div>  
+        <div class="radioButton">
+            <div class="radioLabel">
+                <label>Radio5</label>
+            </div>
+            <div>
+                <mat-radio-group aria-label="Select an option" formControlName="radio5">
+                    <mat-radio-button value="1">Option 1</mat-radio-button><br>
+                    <mat-radio-button value="2">Option 2</mat-radio-button><br>
+                    <mat-radio-button value="3">Option 3</mat-radio-button><br>
+                </mat-radio-group>  
+            </div>
+        </div>
+    </div>
+    <div *ngIf="validationMsg != ''" class="alert alert-danger" role="alert">
+        {{this.validationMsg}}
+    </div>
+    <div class="submit">
+        <button mat-raised-button color="primary" (click)="submit()">Submit</button>
+    </div>
+</form>
