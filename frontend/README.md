@@ -1,3 +1,6 @@
+## To Run locally
+
+Run "npm start". If it's being run for the first time, run "npm install" first to install dependencies
 
 ## Development server
 
