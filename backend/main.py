@@ -4,11 +4,30 @@ import psycopg2
 
 app = Flask(__name__)
 
+connection_gcp = {
+	"DB": "postgres",
+	"USER": "postgres",
+	"PASSWORD": "password",
+	"HOST": "/cloudsql/uwaterloo-cs348:us-central1:cs348-db",
+	"PORT": ""
+}
+
+connection_local = {
+	"DB": "postgres",
+	"USER": "",
+	"PASSWORD": "",
+	"HOST": "localhost",
+	"PORT": "5433"
+}
+
+connection_params = connection_gcp
+
 connection = psycopg2.connect(
-	database = "postgres",
-	user = "postgres",
-	password = "password",
-	host = "/cloudsql/uwaterloo-cs348:us-central1:cs348-db"
+	database = connection_params["DB"],
+	user = connection_params["USER"],
+	password = connection_params["PASSWORD"],
+	host = connection_params["HOST"],
+	port = connection_params["PORT"],
 )
 
 @app.route("/")
