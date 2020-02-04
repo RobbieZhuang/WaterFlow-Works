@@ -39,7 +39,7 @@ export class InputformComponent implements OnInit {
     
     console.log(this.inputForm.value)
 
-    this.api.postData(this.inputForm.value)
+    this.api.postData(this.inputForm.value, "replacethisurl")
     .subscribe(res => console.log(res))
   }
 

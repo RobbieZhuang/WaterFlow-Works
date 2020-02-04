@@ -10,8 +10,7 @@ export class ApicallsService {
 
   constructor(private http: HttpClient) { }
 
-  postData(data: any):Observable<any>{
-    let url = "https://jsonplaceholder.typicode.com/todos/1"
+  postData(data: any, url: string):Observable<any>{
     return this.http.post(url,data);
   }
 }

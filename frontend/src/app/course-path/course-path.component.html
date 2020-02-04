@@ -1,0 +1,18 @@
+<div class="background">
+    <form class="inputBox" [formGroup]="form">
+        <span id="wantCourse"><b>The Course I Want </b></span>
+        <input id="wantedCouseInput" class="form-control" placeholder="Course+ID" formControlName="wantedCourse">
+        <h3>Courses I have taken...</h3>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-default">Course+ID</span>
+            </div>
+            <input type="text" formControlName="courseTaken" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            <button type="button" class="btn btn-primary" (click)="addCourse()">Add</button>
+        </div>
+        <div class="coursesTaken">
+            <button *ngFor="let course of coursesTaken" type="button" class="btn btn-info takenCourseRect">{{course}}</button>
+        </div>
+        <button type="button" class="btn btn-success" (click)="submit()">Go</button>
+    </form>
+</div>

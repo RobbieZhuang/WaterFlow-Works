@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatRadioModule} from '@angular/material/radio';
 import { HttpClientModule } from '@angular/common/http';
+import { CoursePathComponent } from './course-path/course-path.component';
 
 
 
@@ -18,7 +19,8 @@ import { HttpClientModule } from '@angular/common/http';
   declarations: [
     AppComponent,
     InputformComponent,
-    HomepageComponent
+    HomepageComponent,
+    CoursePathComponent
   ],
   imports: [
     BrowserModule,
