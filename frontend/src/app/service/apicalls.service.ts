@@ -13,4 +13,8 @@ export class ApicallsService {
   postData(data: any, url: string):Observable<any>{
     return this.http.post(url,data);
   }
+
+  getData(url:string): Observable<any>{
+    return this.http.get(url)
+  }
 }

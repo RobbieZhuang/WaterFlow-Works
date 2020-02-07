@@ -1,8 +1,12 @@
 from flask import Flask
 from flask import request
+from flask_cors import CORS
 import psycopg2
+import json
 
 app = Flask(__name__)
+CORS(app)
+
 
 connection_gcp = {
 	"DB": "postgres",
@@ -14,13 +18,13 @@ connection_gcp = {
 
 connection_local = {
 	"DB": "postgres",
-	"USER": "",
-	"PASSWORD": "",
+	"USER": "postgres",
+	"PASSWORD": "qwaszx",
 	"HOST": "localhost",
-	"PORT": "5433"
+	"PORT": "5432"
 }
 
-connection_params = connection_gcp
+connection_params = connection_local
 
 connection = psycopg2.connect(
 	database = connection_params["DB"],
@@ -36,7 +40,7 @@ def hello():
 
 @app.route("/courses")
 def courses():
-	return "Current courses are CS 101, CS 102, CS 348"
+	return json.dumps(['CS 101','CS 102', 'CS 348'])
 
 @app.route("/degrees")
 def degrees():
