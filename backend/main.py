@@ -57,19 +57,13 @@ def validateCourseName():
 	subjectPart = course[0:i]
 	codePart = course[i:]
 
-	# get subject id
+	# Join subject and course table and select result -  not sure why natural join didn't work so used left join
 	cur = connection.cursor()
-	cur.execute("SELECT subject_id FROM subject WHERE UPPER(name) = UPPER('%s')" % subjectPart)
-	rows = cur.fetchall()
-	# if subject input is invalide like 'as' instead of 'cs'
-	if len(rows) == 0: 
-		return json.dumps([])
-	subjectId = list(map(lambda d: d[0], rows))[0]
+	cur.execute(sql.SQL("SELECT s.name, c.code, c.name FROM course c LEFT OUTER JOIN subject s on c.subject_id = s.subject_id WHERE UPPER(s.name) = UPPER(%s) AND c.code = %s"), [subjectPart, codePart])
 
-	# get course data
-	cur.execute(sql.SQL("SELECT name, subject_id, code FROM course WHERE subject_id = %s AND code = %s"), [subjectId, codePart])
 	rows = cur.fetchall()
-	res = list(map(lambda d: [d[0], subjectPart, d[2]], rows))
+	print(rows)
+	res = list(map(lambda d: [d[0], d[1], d[2]], rows))
 	return json.dumps(res)
 
 
