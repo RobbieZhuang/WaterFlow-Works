@@ -17,7 +17,7 @@ connection_gcp = {
 }
 
 connection_local = {
-	"DB": "postgres",
+	"DB": "cs348",
 	"USER": "postgres",
 	"PASSWORD": "qwaszx",
 	"HOST": "localhost",
@@ -42,10 +42,17 @@ def hello():
 def courses():
 	return json.dumps(['CS 101','CS 102', 'CS 348'])
 
+@app.route("/course-path", methods=['POST'])
+def coursePath():
+	data = request.json
+	wantedCourse = data.get('wantedCourse')
+	coursesTaken = data.get('coursesTaken') # an array of taken couses
+	return json.dumps(data)
+
 @app.route("/degrees")
 def degrees():
 	cur = connection.cursor()
-	cur.execute("""SELECT degree FROM degree""")
+	cur.execute("""SELECT name FROM degree""")
 	rows = cur.fetchall()
 
 	degrees = "\n".join(map(lambda d: d[0], rows))

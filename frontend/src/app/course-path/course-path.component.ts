@@ -20,8 +20,8 @@ export class CoursePathComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.api.getData("http://127.0.0.1:5000/courses")
-    .subscribe(res => console.log(res))
+    // this.api.getData("http://127.0.0.1:5000/courses")
+    // .subscribe(res => console.log(res))
   }
 
   addCourse(){
@@ -39,11 +39,8 @@ export class CoursePathComponent implements OnInit {
     this.api.postData({
       wantedCourse: this.form.controls.wantedCourse.value,
       coursesTaken:this.coursesTaken
-    }, "replacethisURL")
-    .subscribe(res => console.log({
-      wantedCourse: this.form.controls.wantedCourse.value,
-      coursesTaken:this.coursesTaken
-    }))
+    }, "http://127.0.0.1:5000/course-path")
+    .subscribe(res => console.log(res))
   }
 
 }
