@@ -51,7 +51,7 @@ CREATE TABLE DegreeRequirements (
 	courseGroupID INT NOT NULL,
 	quantity INT NOT NULL,
 
-	PRIMARY KEY (degree_name, course_group_id)
+	PRIMARY KEY (degreeTitle, courseGroupID)
 );
 
 CREATE TABLE Professors (
