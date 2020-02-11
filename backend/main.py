@@ -18,7 +18,7 @@ connection_gcp = {
 }
 
 connection_local = {
-	"DB": "cs348",
+	"DB": "cs348v2",
 	"USER": "postgres",
 	"PASSWORD": "qwaszx",
 	"HOST": "localhost",
@@ -44,27 +44,17 @@ def courses():
 	return json.dumps(['CS 101','CS 102', 'CS 348'])
 
 # This api validates if an input course is valid in our table.
-@app.route("/validateCourse") # param name course: http://127.0.0.1:5000/validateCourse?course=cs348
+@app.route("/getCourseInfo") # param name course: http://127.0.0.1:5000/validateCourse?course=cs348
 def validateCourseName():
 	course = request.args.get('course')
-
-	# get subject and code from course
-	between = 0
-	for i in range(len(course)):
-		if course[i].isdigit():
-			between = i
-			break
-	subjectPart = course[0:i]
-	codePart = course[i:]
-
+	print(course)
+	course = course.strip()
 	# Join subject and course table and select result -  not sure why natural join didn't work so used left join
 	cur = connection.cursor()
-	cur.execute(sql.SQL("SELECT s.name, c.code, c.name FROM course c LEFT OUTER JOIN subject s on c.subject_id = s.subject_id WHERE UPPER(s.name) = UPPER(%s) AND c.code = %s"), [subjectPart, codePart])
+	cur.execute(sql.SQL("SELECT courseCode FROM Courses WHERE UPPER(courseCode) = UPPER(%s)"), [course])
 
 	rows = cur.fetchall()
-	print(rows)
-	res = list(map(lambda d: [d[0], d[1], d[2]], rows))
-	return json.dumps(res)
+	return json.dumps(rows)
 
 
 @app.route("/course-path", methods=['POST'])
