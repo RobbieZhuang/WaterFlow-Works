@@ -1,52 +1,84 @@
-CREATE TABLE faculty (
-	name varchar(100) NOT NULL PRIMARY KEY
+CREATE TABLE Faculties (
+	title VARCHAR(128) NOT NULL,
+
+	PRIMARY KEY (title)
 );
 
-CREATE TABLE degree (
-	name varchar(100) NOT NULL PRIMARY KEY
+CREATE TABLE Degrees (
+	title VARCHAR(256) NOT NULL,
+
+	PRIMARY KEY (title)
 );
 
+CREATE TABLE Subjects (
+	title VARCHAR(128) NOT NULL,
+	facultyTitle VARCHAR(128) NOT NULL,
 
-CREATE TABLE subject (
-	name varchar(100) NOT NULL PRIMARY KEY,
-	faculty_name varchar(100) NOT NULL REFERENCES faculty(name)
+	PRIMARY KEY (title),
+	FOREIGN KEY (facultyTitle) REFERENCES Faculties(title)
 );
 
-CREATE TABLE course (
-	course_id SERIAL PRIMARY KEY,
-	name varchar(200) NOT NULL,
-	code varchar(50) NOT NULL,
-	subject_name varchar(100) NOT NULL REFERENCES subject(name)
+CREATE TABLE Courses (
+	courseCode VARCHAR(16) NOT NULL,
+	title VARCHAR(512) NOT NULL,
+	credit DECIMAL(3, 2) NOT NULL,
+	courseTypes VARCHAR(32) NOT NULL,
+	description text,
+	subject VARCHAR(128) NOT NULL,
+
+	PRIMARY KEY (courseCode),
+	FOREIGN KEY (subject) REFERENCES Subjects(title)
 );
 
-CREATE TABLE course_group (
-	course_group_id int NOT NULL,
-	course_id int NOT NULL REFERENCES course(course_id),
-	CONSTRAINT course_group_pkey PRIMARY KEY (course_group_id, course_id)
+CREATE TABLE CourseGroups (
+	groupID INT NOT NULL,
+	courseCode VARCHAR(16) NOT NULL,
+
+	PRIMARY KEY (groupID, courseCode),
+	FOREIGN KEY (courseCode) REFERENCES Courses(courseCode)
 );
 
-CREATE TABLE prerequisite (
-	prereq_group_id int NOT NULL,
-	course_id int NOT NULL REFERENCES course(course_id),
-	CONSTRAINT prerequisite_pkey PRIMARY KEY (prereq_group_id, course_id)
+CREATE TABLE Prerequisites (
+	prereqCourseGroupID INT NOT NULL,
+	courseCode VARCHAR(16) NOT NULL,
+
+	PRIMARY KEY (prereqCourseGroupID, courseCode),
+	FOREIGN KEY (courseCode) REFERENCES Courses(courseCode)
 );
 
-CREATE TABLE requirement (
-	degree_name varchar(100) NOT NULL REFERENCES degree(name),
-	course_group_id int NOT NULL,
-	quantity int NOT NULL,
-	CONSTRAINT requirement_pkey PRIMARY KEY (degree_name, course_group_id)
+CREATE TABLE DegreeRequirements (
+	degreeTitle VARCHAR(256) NOT NULL,
+	courseGroupID INT NOT NULL,
+	quantity INT NOT NULL,
+
+	PRIMARY KEY (degree_name, course_group_id)
 );
 
-CREATE TABLE professor (
-	professor_id SERIAL PRIMARY KEY,
-	name varchar(100) NOT NULL,
-	faculty_name varchar(100) NOT NULL REFERENCES faculty(name)
+CREATE TABLE Professors (
+	firstName VARCHAR(128) NOT NULL,
+	lastName VARCHAR(128) NOT NULL,
+	
+	PRIMARY KEY (firstName, lastName)
 );
 
-CREATE TABLE course_offering (
-	course_id int NOT NULL REFERENCES course(course_id),
-	term_id varchar(50) NOT NULL, -- WINTER, SPRING, FALL, NONE
-	year int NOT NULL,
-	CONSTRAINT course_offering_pkey PRIMARY KEY(course_id, term_id, year)
+CREATE TABLE Terms (
+	code INT NOT NULL,
+
+	PRIMARY KEY (code)
+);
+
+CREATE TABLE CourseOfferings (
+	courseCode VARCHAR(16) NOT NULL,
+	termCode INT NOT NULL,
+	section VARCHAR(16) NOT NULL,
+	profFirstName VARCHAR(128),
+	profLastName VARCHAR(128),
+	enrlCap INT,
+	enrlTot INT,
+	meetingDays VARCHAR(128),
+	meetingRoom VARCHAR(128),
+
+	PRIMARY KEY (courseCode, termCode, section),
+	FOREIGN KEY (termCode) REFERENCES Terms(code),
+	FOREIGN KEY (profFirstName, profLastName) REFERENCES Professors(firstName, lastName)
 );
