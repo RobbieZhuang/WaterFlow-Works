@@ -40,9 +40,9 @@ CREATE TABLE CourseGroupMembers (
 	courseCode VARCHAR(16) NOT NULL,
 	courseGroupID INT NOT NULL,
 
-	PRIMARY KEY (groupID, courseCode),
+	PRIMARY KEY (courseGroupID, courseCode),
 	FOREIGN KEY (courseCode) REFERENCES Courses(courseCode),
-	FOREIGN KEY (courseGroupID) REFERENCES CourseGroups(courseCode)
+	FOREIGN KEY (courseGroupID) REFERENCES CourseGroups(groupID)
 );
 
 CREATE TABLE Prerequisites (
@@ -51,7 +51,7 @@ CREATE TABLE Prerequisites (
 
 	PRIMARY KEY (prereqCourseGroupID, courseCode),
 	FOREIGN KEY (courseCode) REFERENCES Courses(courseCode),
-	FOREIGN KEY (prereqCourseGroupID) REFERENCES CourseGroups(courseCode)
+	FOREIGN KEY (prereqCourseGroupID) REFERENCES CourseGroups(groupID)
 );
 
 CREATE TABLE DegreeRequirements (
@@ -60,8 +60,8 @@ CREATE TABLE DegreeRequirements (
 	quantity INT NOT NULL,
 
 	PRIMARY KEY (degreeTitle, courseGroupID),
-	FOREIGN KEY (degreeTitle) REFERENCES Degrees(courseGroupID),
-	FOREIGN KEY (courseGroupID) REFERENCES CourseGroups(courseCode)
+	FOREIGN KEY (degreeTitle) REFERENCES Degrees(title),
+	FOREIGN KEY (courseGroupID) REFERENCES CourseGroups(groupID)
 );
 
 CREATE TABLE Professors (
