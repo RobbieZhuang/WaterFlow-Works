@@ -64,13 +64,6 @@ CREATE TABLE degreeRequirement (
 	FOREIGN KEY (courseGroupID) REFERENCES courseGroup(groupID)
 );
 
-CREATE TABLE professor (
-	firstName VARCHAR(128) NOT NULL,
-	lastName VARCHAR(128) NOT NULL,
-	
-	PRIMARY KEY (firstName, lastName)
-);
-
 CREATE TABLE term (
 	code INT NOT NULL,
 
@@ -89,6 +82,5 @@ CREATE TABLE courseOffering (
 	meetingRoom VARCHAR(128),
 
 	PRIMARY KEY (courseCode, termCode, section),
-	FOREIGN KEY (termCode) REFERENCES term(code),
-	FOREIGN KEY (profFirstName, profLastName) REFERENCES professor(firstName, lastName)
+	FOREIGN KEY (termCode) REFERENCES term(code)
 );
