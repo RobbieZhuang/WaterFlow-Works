@@ -18,7 +18,7 @@ connection_gcp = {
 }
 
 connection_local = {
-	"DB": "cs348v2",
+	"DB": "cs348v6",
 	"USER": "postgres",
 	"PASSWORD": "qwaszx",
 	"HOST": "localhost",
@@ -45,16 +45,47 @@ def courses():
 
 # This api validates if an input course is valid in our table.
 @app.route("/getCourseInfo") # param name course: http://127.0.0.1:5000/validateCourse?course=cs348
-def validateCourseName():
+def getCourseInfo():
 	course = request.args.get('course')
-	print(course)
 	course = course.strip()
 	# Join subject and course table and select result -  not sure why natural join didn't work so used left join
 	cur = connection.cursor()
-	cur.execute(sql.SQL("SELECT courseCode FROM Courses WHERE UPPER(courseCode) = UPPER(%s)"), [course])
+	cur.execute(sql.SQL("SELECT courseCode,title, courseTypes, description, subjectTitle FROM course WHERE UPPER(courseCode) = UPPER(%s)"), [course])
 
 	rows = cur.fetchall()
-	return json.dumps(rows)
+	if len(rows) == 0: 
+		return json.dumps({})
+
+	row = rows[0]
+
+	cur.execute(sql.SQL("""
+		SELECT coursecode, coursegroupid
+		FROM courseGroupMember
+		WHERE courseGroupID IN (
+			SELECT groupid
+			FROM courseGroup
+			WHERE groupID IN (
+				SELECT prereqcoursegroupid
+				FROM prerequisite
+				WHERE courseCode = UPPER(%s)
+			)
+		)"""), [course])
+	prereq = cur.fetchall() # gets: [('CS 246', 26), ('CS 251', 27), ('CS 241', 25), ('CS 240', 24)]
+	
+	res = {
+		"courseCode":row[0],
+		"title": row[1],
+		"courseType":row[2],
+		"description": row[3],
+		"prereq":{}
+	}
+	for group in prereq:
+		if group[1] in res["prereq"]:
+			res["prereq"][group[1]].append(group[0])
+		else:
+			res["prereq"][group[1]] = [group[0]]
+	
+	return json.dumps(res)
 
 
 @app.route("/course-path", methods=['POST'])
@@ -67,7 +98,7 @@ def coursePath():
 @app.route("/degrees")
 def degrees():
 	cur = connection.cursor()
-	cur.execute("""SELECT name FROM degree""")
+	cur.execute("""SELECT title FROM degree""")
 	rows = cur.fetchall()
 
 	degrees = "\n".join(map(lambda d: d[0], rows))

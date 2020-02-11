@@ -1,6 +1,7 @@
 import { ApicallsService } from './../service/apicalls.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { urlConfig } from '../urlConfig'
 
 @Component({
   selector: 'app-course-path',
@@ -11,6 +12,7 @@ export class CoursePathComponent implements OnInit {
 
   coursesTaken:string[] = [];
   form : FormGroup;
+  errorCourseAdd: string = '';
 
   constructor(private api: ApicallsService, private fb: FormBuilder) { 
     this.form = fb.group({
@@ -20,16 +22,24 @@ export class CoursePathComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.api.getData("http://127.0.0.1:5000/courses")
-    // .subscribe(res => console.log(res))
+
   }
 
   addCourse(){
     if (!this.form.controls.courseTaken.valid){
       return
     }
-    this.coursesTaken.push(this.form.controls.courseTaken.value)
-    this.form.controls.courseTaken.setValue("")
+    let course = this.form.controls.courseTaken.value;
+    this.api.getData(`${urlConfig.baseUrl}/getCourseInfo?course=${course}`)
+    .subscribe(res => {
+      if (Object.keys(res).length === 0 && res.constructor === Object){
+        this.errorCourseAdd = `Seems like the course ${course} does not exist`
+        return;
+      }
+      this.errorCourseAdd = ''
+      this.coursesTaken.push(course)
+      this.form.controls.courseTaken.setValue("")
+    })
   }
 
   submit(){
@@ -39,7 +49,7 @@ export class CoursePathComponent implements OnInit {
     this.api.postData({
       wantedCourse: this.form.controls.wantedCourse.value,
       coursesTaken:this.coursesTaken
-    }, "http://127.0.0.1:5000/course-path")
+    }, `${urlConfig.baseUrl}/course-path`)
     .subscribe(res => console.log(res))
   }
 

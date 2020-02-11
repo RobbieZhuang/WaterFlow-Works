@@ -12,6 +12,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatRadioModule} from '@angular/material/radio';
 import { HttpClientModule } from '@angular/common/http';
 import { CoursePathComponent } from './course-path/course-path.component';
+import { FindCourseComponent } from './find-course/find-course.component';
+import { FormartCourseCodeDirective } from './directives/formart-course-code.directive';
 
 
 
@@ -20,7 +22,9 @@ import { CoursePathComponent } from './course-path/course-path.component';
     AppComponent,
     InputformComponent,
     HomepageComponent,
-    CoursePathComponent
+    CoursePathComponent,
+    FindCourseComponent,
+    FormartCourseCodeDirective
   ],
   imports: [
     BrowserModule,

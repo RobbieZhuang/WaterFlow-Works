@@ -1,0 +1,28 @@
+<div class="background">
+    <form class="inputBox" [formGroup]="form">
+        <span id="wantCourse"><b>Course</b></span>
+        <div> 
+            <input id="wantedCouseInput" appFormartCourseCode class="form-control" placeholder="math135, cs135..." formControlName="course">
+        </div>
+
+        <div *ngIf="error != ''" class="alert alert-danger" role="alert">
+            {{error}}
+        </div>
+        <button type="button" class="btn btn-success" (click)="submit()">Search</button>
+        <div>&nbsp;</div>
+        <div *ngIf="result">
+            <p>{{result.courseCode}}</p>
+            <p>{{result.title}}</p>
+            <p>{{result.courseType}}</p>
+            <p>{{result.description}}</p>
+            <p *ngIf="!isObjectEmpty(result.prereq)" >Required Courses:</p>
+            <div *ngFor="let item  of result.prereq | keyvalue">
+                <div *ngIf="item.value.length > 1; else allOf">One of the Following Courses:
+                    <span *ngFor="let course of item.value; let index=index">{{course}}
+                        <ng-container *ngIf="index != item.value.length-1">,&nbsp; </ng-container></span>
+                </div>
+                <ng-template #allOf><div *ngFor="let course of item.value">{{course}}</div></ng-template>
+            </div>
+        </div>
+    </form>
+</div>

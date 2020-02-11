@@ -1,0 +1,34 @@
+.background{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.coursesTaken{
+    margin: 1rem;
+}
+
+.inputBox{
+    margin-top: 1rem;
+    width: 60%;
+    height: 70%;
+}
+
+.takenCourseRect{
+    margin-right: 0.5rem;   
+}
+
+#wantedCouseInput{
+    width: 80%;
+}
+
+#wantCourse{
+    font-size: 1.5rem;
+}
+
+h3{
+    margin-top: 1rem;
+}

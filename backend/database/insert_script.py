@@ -5,11 +5,11 @@ import json
 
 
 connection_local = {
-	"DB": "project",
+	"DB": "cs348v6",
 	"USER": "postgres",
-	"PASSWORD": "",
+	"PASSWORD": "qwaszx",
 	"HOST": "localhost",
-	"PORT": "5433"
+	"PORT": "5432"
 }
 
 connection_params = connection_local

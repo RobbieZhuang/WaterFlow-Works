@@ -61,3 +61,8 @@ pip install -r requirements.txt
 ```bash
 python main.py
 ```
+
+- populate data
+1) After creating a database in postgres, run create_database.sql to create tables
+2) run insert_data.sql to insert a few degree and department and subject information
+3) run 'python insert_script.py' to generate all the data
