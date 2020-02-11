@@ -32,7 +32,8 @@ CREATE TABLE course (
 
 CREATE TABLE courseGroup (
 	groupID SERIAL,
-
+	quantity INT NOT NULL,
+	
 	PRIMARY KEY (groupID)
 );
 
@@ -57,7 +58,6 @@ CREATE TABLE prerequisite (
 CREATE TABLE degreeRequirement (
 	degreeTitle VARCHAR(256) NOT NULL,
 	courseGroupID INT NOT NULL,
-	quantity INT NOT NULL,
 
 	PRIMARY KEY (degreeTitle, courseGroupID),
 	FOREIGN KEY (degreeTitle) REFERENCES degree(title),
