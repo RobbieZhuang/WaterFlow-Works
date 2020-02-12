@@ -48,6 +48,7 @@ Start the frontend server.
 
 ```bash
 cd frontend
+npm install
 npm start
 ```
 
