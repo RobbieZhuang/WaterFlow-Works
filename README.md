@@ -57,4 +57,3 @@ npm start
 ```
 localhost:4200/getCourseInfo?course=cs%20488
 ```
->>>>>>> Stashed changes
