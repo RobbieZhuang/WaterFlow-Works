@@ -49,7 +49,7 @@ Start the frontend server.
 ```bash
 cd frontend
 npm install
-npm start
+npm run startApp
 ```
 
 ## Links in App
