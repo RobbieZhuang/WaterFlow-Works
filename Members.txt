@@ -1,10 +1,10 @@
 Jing Fei Peng 20720513
 Guan Qiao Huang 20715503
-James Dorfman 20719825
+James Dorfman 20719824
 Bowen Robert Zhuang 20710951
 
 
-Jing Fei: Discuss Idea, Build Angular Frontend
-Guan Qiao: Discuss Idea, Setup GCP & Postgres, Build Hello World App
-James: Discuss Idea, Write Report
-Bowen: Discuss Idea, Build Flask
+Jing Fei: Discuss Idea, Plan Schema, Build Angular Frontend, Work on data insertion script
+Guan Qiao: Discuss Idea, Plan Schema, Setup GCP & Postgres, Build Hello World App, Wrote Documentation
+James: Discuss Idea, Plan Schema, Write Report, Web Scrape Dataset
+Bowen: Discuss Idea, Plan Schema, Write Report, Build Flask Backend
