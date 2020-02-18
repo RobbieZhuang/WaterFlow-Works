@@ -49,7 +49,7 @@ Start the frontend server.
 ```bash
 cd frontend
 npm install
-npm start
+npm run startApp
 ```
 
 ## Links in App
@@ -57,4 +57,3 @@ npm start
 ```
 localhost:4200/getCourseInfo?course=cs%20488
 ```
->>>>>>> Stashed changes
