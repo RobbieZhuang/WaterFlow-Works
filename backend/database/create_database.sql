@@ -1,5 +1,7 @@
 CREATE TABLE faculty (
-	title VARCHAR(128) NOT NULL,
+	title VARCHAR(16) NOT NULL,
+	shortName VARCHAR(32),
+	fullName VARCHAR(138),
 
 	PRIMARY KEY (title)
 );
@@ -11,8 +13,9 @@ CREATE TABLE degree (
 );
 
 CREATE TABLE subject (
-	title VARCHAR(128) NOT NULL,
-	facultyTitle VARCHAR(128) NOT NULL,
+	title VARCHAR(16) NOT NULL,
+	facultyTitle VARCHAR(16) NOT NULL,
+	description text,
 
 	PRIMARY KEY (title),
 	FOREIGN KEY (facultyTitle) REFERENCES faculty(title)
@@ -21,10 +24,10 @@ CREATE TABLE subject (
 CREATE TABLE course (
 	courseCode VARCHAR(16) NOT NULL,
 	title VARCHAR(512) NOT NULL,
-	credit DECIMAL(3, 2) NOT NULL,
-	courseTypes VARCHAR(32) NOT NULL,
+	credit DECIMAL(3, 2),
+	courseTypes VARCHAR(32),
 	description text,
-	subjectTitle VARCHAR(128) NOT NULL,
+	subjectTitle VARCHAR(16) NOT NULL,
 
 	PRIMARY KEY (courseCode),
 	FOREIGN KEY (subjectTitle) REFERENCES subject(title)
@@ -73,14 +76,20 @@ CREATE TABLE term (
 CREATE TABLE courseOffering (
 	courseCode VARCHAR(16) NOT NULL,
 	termCode INT NOT NULL,
-	section VARCHAR(16) NOT NULL,
-	profFirstName VARCHAR(128),
-	profLastName VARCHAR(128),
+	component INT NOT NULL,
+	courseType VARCHAR(16) NOT NULL,
+	relatedComponent1 INT,
+	relatedComponent2 INT,
 	enrlCap INT,
 	enrlTot INT,
-	meetingDays VARCHAR(128),
-	meetingRoom VARCHAR(128),
+	profFirstName VARCHAR(128),
+	profLastName VARCHAR(128),
+	classStartTime VARCHAR(16),
+	classEndTime VARCHAR(16),
+	classWeekdays VARCHAR(16),
+	classBuilding VARCHAR(32),
+	classRoom VARCHAR(32),
 
-	PRIMARY KEY (courseCode, termCode, section),
+	PRIMARY KEY (courseCode, termCode, component),
 	FOREIGN KEY (termCode) REFERENCES term(code)
 );
