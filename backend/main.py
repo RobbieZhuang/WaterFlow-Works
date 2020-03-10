@@ -8,24 +8,19 @@ import json
 app = Flask(__name__)
 CORS(app)
 
-
-connection_gcp = {
-	"DB": "postgres",
-	"USER": "postgres",
-	"PASSWORD": "password",
-	"HOST": "/cloudsql/uwaterloo-cs348:us-central1:cs348-db",
-	"PORT": ""
-}
-
-connection_local = {
-	"DB": "cs348v6",
-	"USER": "postgres",
-	"PASSWORD": "qwaszx",
-	"HOST": "localhost",
-	"PORT": "5432"
-}
-
-connection_params = connection_local
+with open('./configs') as f:
+	_db = f.readline().rstrip()
+	_user = f.readline().rstrip()
+	_pw = f.readline().rstrip()
+	_host = f.readline().rstrip()
+	_port = f.readline().rstrip()
+	connection_params = {
+		"DB": _db,
+		"USER": _user,
+		"PASSWORD": _pw,
+		"HOST": _host,
+		"PORT": _port
+	}
 
 connection = psycopg2.connect(
 	database = connection_params["DB"],
