@@ -15,7 +15,10 @@ export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin
 
 ### Create a Database
 
-- On `psql`, create a database with a username and (optionally) a password.
+- On `psql`, create a database with a username and (optionally) a password:
+```bash
+CREATE DATABASE [database];
+```
 
 - You can also do it graphically on Postico.
 
@@ -38,3 +41,21 @@ source init_database.sh [port] [user] [database]
 ```
 
 - If you set a password for your `psql` user, you may need to change the script a bit to fit a `-p` argument for your password.
+
+### Using `psql`
+- To connect with database, run:
+```bash
+psql -p [port] -U [user] -d [database] [-p password]
+```
+  
+- After connection, in `psql`, use
+  - `\l` to list databases
+  - `\d` to list databases
+  - `\c` to connect to database
+  - `\q` to exit postgres
+
+- Alternatively, run
+```bash
+psql -p [port] -U [user] -d [database] [-p password] -f [filename.sql]
+```
+to run a SQL file.
