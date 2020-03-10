@@ -93,3 +93,8 @@ CREATE TABLE courseOffering (
 	PRIMARY KEY (courseCode, termCode, component),
 	FOREIGN KEY (termCode) REFERENCES term(code)
 );
+
+CREATE INDEX coursecode on courseOffering(courseCode);
+CREATE INDEX profFirstName on courseOffering(profFirstName);
+CREATE INDEX profLastName on courseOffering(profLastName);
+CREATE INDEX courseCodePre on prerequisite(courseCode);
