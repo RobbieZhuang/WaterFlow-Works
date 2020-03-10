@@ -42,9 +42,9 @@
                         <div class="profDataSide">
                             <div *ngIf="profData?.profHist?.length > 0">
                                 {{profData.profHist[0][2]}} {{profData.profHist[0][3]}} taught:<br>
-                                Fall: {{profData.fall}} times<br>
-                                Winter: {{profData.winter}} times<br>
-                                Summer: {{profData.summer}} times<br>
+                                Fall: {{profData.fall ? profData.fall: 0}} times<br>
+                                Winter: {{profData.winter ? profData.winter: 0}} times<br>
+                                Summer: {{profData.summer ? profData.summer: 0}} times<br>
                             </div>
                             <div *ngIf="profData?.profHist?.length > 0">
                                 {{profData.profHist[0][2]}} {{profData.profHist[0][3]}} was teaching during the following terms:
