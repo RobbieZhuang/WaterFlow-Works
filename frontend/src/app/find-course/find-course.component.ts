@@ -20,7 +20,7 @@ export class FindCourseComponent implements OnInit {
     histInfo:{},
     profList:[]
   }
-  profData: string[] = [];
+  profData: any;
 
   constructor(private api: ApicallsService, private fb: FormBuilder) {
     this.form = fb.group({
