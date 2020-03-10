@@ -93,9 +93,9 @@ def getCourseInfo():
 		"description": row[3],
 		"prereq":{},
 		"histInfo":{
-			"fall":{},
-			"summer":{},
-			"winter":{}
+			"Fall":{},
+			"Spring":{},
+			"Winter":{}
 		}
 	}
 	for group in prereq:
@@ -121,30 +121,47 @@ def getCourseInfo():
 
 	for term in termOfferings:
 		if term[0] == 9:
-			res["histInfo"]["fall"]["Count"] = term[1]
+			res["histInfo"]["Fall"]["Count"] = term[1]
 			stmt = getFilterQuery(course, 'F').replace('"', '')
 			cur.execute(stmt)
-			res["histInfo"]["fall"]["termsOffered"] = cur.fetchall() 
+			res["histInfo"]["Fall"]["termsOffered"] = cur.fetchall() 
 		elif term[0] == 5:
-			res["histInfo"]["summer"]["Count"] = term[1]
+			res["histInfo"]["Spring"]["Count"] = term[1]
 			stmt = getFilterQuery(course, 'S').replace('"', '')
 			cur.execute(stmt)
-			res["histInfo"]["summer"]["termsOffered"] = cur.fetchall() 
+			res["histInfo"]["Spring"]["termsOffered"] = cur.fetchall() 
 		elif term[0] == 1:
-			res["histInfo"]["winter"]["Count"] = term[1]
+			res["histInfo"]["Winter"]["Count"] = term[1]
 			stmt = getFilterQuery(course, 'W').replace('"', '')
 			cur.execute(stmt)
-			res["histInfo"]["winter"]["termsOffered"] = cur.fetchall() 
+			res["histInfo"]["Winter"]["termsOffered"] = cur.fetchall() 
 
 	stmt = """
-		SELECT profFirstName, profLastName, COUNT(*) as numsTaught
+		WITH sectionsProf AS (
+		SELECT profFirstName, profLastName, COUNT(*) as sectionsTaught
 		FROM courseOffering 
 		WHERE courseCode = UPPER('"""+ course + """')
 		AND courseType = 'LEC'
 		AND profFirstName IS NOT NULL
 		AND profLastName IS NOT NULL
 		GROUP BY profFirstName, profLastName
-		ORDER BY COUNT(*) DESC;
+		),
+		termsProf AS (
+			SELECT profFirstName, profLastName, COUNT(*) as termsTaught
+			FROM (
+				SELECT DISTINCT termCode, courseCode, profFirstName,profLastName
+				FROM courseOffering
+				WHERE courseCode = UPPER('"""+ course + """')
+				AND courseType = 'LEC'
+				AND profFirstName IS NOT NULL
+				AND profLastName IS NOT NULL
+			) as distinctprofterms
+			GROUP BY profFirstName, profLastName
+		)
+		SELECT s.profFirstName, s.profLastName, s.sectionsTaught, t.termsTaught
+		FROM sectionsProf s LEFT OUTER JOIN termsProf t
+		ON s.profFirstName = t.profFirstName AND s.profLastName = t.profLastName
+		ORDER BY s.sectionsTaught DESC
 	"""
 	cur.execute(stmt)
 	listOfProfs = cur.fetchall() 
@@ -191,7 +208,7 @@ def getProfHist():
 		FROM courseOffering 
 		WHERE courseCode = UPPER('"""+ course +"""')
 		AND (profFirstName LIKE '%"""+ profFirstName +"""%'
-		OR profLastName LIKE '%"""+profLastName+"""%')
+		AND profLastName LIKE '%"""+profLastName+"""%')
 		AND courseType = 'LEC'
 		ORDER BY termCode DESC;
 	"""
@@ -220,7 +237,7 @@ def getProfHist():
 				FROM courseOffering
 				WHERE courseCode = UPPER('"""+ course +"""') AND courseType = 'LEC'
 				AND (profFirstName LIKE '%"""+ profFirstName +"""%'
-				OR profLastName LIKE '%"""+profLastName+"""%')
+				AND profLastName LIKE '%"""+profLastName+"""%')
 			) as getDistinctTimesTeach
 		) as tablewithProfCourseTerm
 		GROUP BY termCode, profFirstName, profLastName
@@ -236,7 +253,7 @@ def getProfHist():
 		if term[0] == 9:
 			result["fall"] = term[len(term) -1]
 		elif term[0] == 5:
-			result["summer"] = term[len(term) -1]
+			result["spring"] = term[len(term) -1]
 		elif term[0] == 1:
 			result["winter"] = term[len(term) -1]
 	return json.dumps(result)

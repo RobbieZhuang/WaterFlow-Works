@@ -59,16 +59,16 @@
 
 
 -> Results for query #7
- proffirstname | proflastname | numstaught
----------------+--------------+------------
- Lesley Ann    | Istead       |         20
- Bernard       | Wong         |         10
- Kevin         | Lanctot      |          8
- Timothy       | Brecht       |          6
- Gregor        | Richards     |          6
- Kenneth       | Salem        |          5
- Ali           | Mashtizadeh  |          4
- Eugene        | Zima         |          3
- Kamal         | Zille Huma   |          2
- Igor          | Ivkovic      |          2
+ proffirstname | proflastname | sectionstaught | termstaught
+---------------+--------------+----------------+-------------
+ Lesley Ann    | Istead       |             20 |          10
+ Bernard       | Wong         |             10 |           6
+ Kevin         | Lanctot      |              8 |           4
+ Timothy       | Brecht       |              6 |           3
+ Gregor        | Richards     |              6 |           3
+ Kenneth       | Salem        |              5 |           4
+ Ali           | Mashtizadeh  |              4 |           2
+ Eugene        | Zima         |              3 |           3
+ Kamal         | Zille Huma   |              2 |           2
+ Igor          | Ivkovic      |              2 |           1
 (10 rows)

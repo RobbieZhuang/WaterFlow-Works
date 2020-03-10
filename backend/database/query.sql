@@ -106,7 +106,7 @@ FROM (
         FROM courseOffering
         WHERE courseCode = 'CS 350' AND courseType = 'LEC'
         AND (profFirstName LIKE '%Lesley%'
-        OR profLastName LIKE '%Istead%')
+        AND profLastName LIKE '%Istead%')
     ) as getDistinctTimesTeach
 ) as tablewithProfCourseTerm
 GROUP BY termCode, profFirstName, profLastName
@@ -117,12 +117,13 @@ SELECT  DISTINCT termCode,courseCode, profFirstName, profLastName
 FROM courseOffering 
 WHERE courseCode = 'CS 350'
 AND (profFirstName LIKE '%Lesley%'
-OR profLastName LIKE '%Lesley%')
+AND profLastName LIKE '%Lesley%')
 AND courseType = 'LEC'
 ORDER BY termCode DESC;
 
+
 -- Shows a List of all the profs that teach a certain course
--- and order them by the number of times they teach
+-- and order them by the number of times/sections they teach
 SELECT profFirstName, profLastName, COUNT(*) as numsTaught
 FROM courseOffering 
 WHERE courseCode = 'CS 350'
@@ -132,6 +133,43 @@ AND profLastName IS NOT NULL
 GROUP BY profFirstName, profLastName
 ORDER BY COUNT(*) DESC;
 
+-- Shows a List of all the profs that teach a certain course
+-- and order them by the number of terms they teach
+SELECT profFirstName, profLastName, COUNT(*) as numsTaught
+FROM (
+    SELECT DISTINCT termCode, courseCode, profFirstName,profLastName
+    FROM courseOffering
+    WHERE courseCode = 'CS 350'
+    AND courseType = 'LEC'
+    AND profFirstName IS NOT NULL
+    AND profLastName IS NOT NULL
+) as distinctprofterms
+GROUP BY profFirstName, profLastName
+ORDER BY COUNT(*) DESC;
 
 
-
+WITH sectionsProf AS (
+    SELECT profFirstName, profLastName, COUNT(*) as sectionsTaught
+    FROM courseOffering 
+    WHERE courseCode = 'CS 350'
+    AND courseType = 'LEC'
+    AND profFirstName IS NOT NULL
+    AND profLastName IS NOT NULL
+    GROUP BY profFirstName, profLastName
+),
+termsProf AS (
+    SELECT profFirstName, profLastName, COUNT(*) as termsTaught
+    FROM (
+        SELECT DISTINCT termCode, courseCode, profFirstName,profLastName
+        FROM courseOffering
+        WHERE courseCode = 'CS 350'
+        AND courseType = 'LEC'
+        AND profFirstName IS NOT NULL
+        AND profLastName IS NOT NULL
+    ) as distinctprofterms
+    GROUP BY profFirstName, profLastName
+)
+SELECT s.profFirstName, s.profLastName, s.sectionsTaught, t.termsTaught
+FROM sectionsProf s LEFT OUTER JOIN termsProf t
+ON s.profFirstName = t.profFirstName AND s.profLastName = t.profLastName
+ORDER BY s.sectionsTaught DESC;

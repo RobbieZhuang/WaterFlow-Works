@@ -13,45 +13,49 @@
         <div *ngIf="result?.courseCode">
             <mat-tab-group>
                 <mat-tab label="General Info">
-                    <p>{{result.courseCode}}</p>
-                    <p>{{result.title}}</p>
-                    <p>{{result.courseType}}</p>
-                    <p>{{result.description}}</p>
-                    <p *ngIf="!isObjectEmpty(result.prereq)" >Required Courses:</p>
-                    <div *ngFor="let item  of result.prereq | keyvalue">
-                        <div *ngIf="item.value.length > 1; else allOf">One of the Following Courses:
-                            <span *ngFor="let course of item.value; let index=index">{{course}}
-                                <ng-container *ngIf="index != item.value.length-1">,&nbsp;</ng-container></span>
+                    <div class="tabPadding">
+                        <p>{{result.courseCode}}</p>
+                        <p>{{result.title}}</p>
+                        <p>{{result.courseType}}</p>
+                        <p>{{result.description}}</p>
+                        <p *ngIf="!isObjectEmpty(result.prereq)" >Required Courses:</p>
+                        <div *ngFor="let item  of result.prereq | keyvalue">
+                            <div *ngIf="item.value.length > 1; else allOf">One of the Following Courses:
+                                <span *ngFor="let course of item.value; let index=index">{{course}}
+                                    <ng-container *ngIf="index != item.value.length-1">,&nbsp;</ng-container></span>
+                            </div>
+                            <ng-template #allOf><div *ngFor="let course of item.value">{{course}}</div></ng-template>
                         </div>
-                        <ng-template #allOf><div *ngFor="let course of item.value">{{course}}</div></ng-template>
                     </div>
                 </mat-tab>
                 <mat-tab label="Historical Info">
-                    <div *ngFor="let term of result.histInfo | keyvalue">
-                        <p>{{term.key}} : Offered {{term.value.Count}} times in Total<br>
-                            <span *ngFor="let year of term.value.termsOffered; let last = last" >{{year[1]}}<span *ngIf="!last">, </span></span>
-                        </p>
-                    </div>
-                    <h3>List of Profs</h3>
-                    <div class="profData">
-                        <div class="profDataSide">
-                            <div *ngFor="let prof of result.profList" (click)="seeProfHist(prof)">
-                                <button mat-button>{{prof[0]}} {{prof[1]}} : Taught {{prof[2]}} times </button> 
-                            </div>
+                    <div class="tabPadding">
+                        <div *ngFor="let term of result.histInfo | keyvalue">
+                            <p>{{term.key}} : Offered {{term.value.Count}} times in Total<br>
+                                <span *ngFor="let year of term.value.termsOffered; let last = last" >{{year[1]}}<span *ngIf="!last">, </span></span>
+                            </p>
                         </div>
-                        <div class="profDataSide">
-                            <div *ngIf="profData?.profHist?.length > 0">
-                                {{profData.profHist[0][2]}} {{profData.profHist[0][3]}} taught:<br>
-                                Fall: {{profData.fall ? profData.fall: 0}} times<br>
-                                Winter: {{profData.winter ? profData.winter: 0}} times<br>
-                                Summer: {{profData.summer ? profData.summer: 0}} times<br>
+                        <h3>List of Profs</h3>
+                        <div class="profData">
+                            <div class="profDataSide">
+                                <div *ngFor="let prof of result.profList" (click)="seeProfHist(prof)">
+                                    <button mat-button>{{prof[0]}} {{prof[1]}}: {{prof[2]}} sections & {{prof[3]}} terms</button> 
+                                </div>
                             </div>
-                            <div *ngIf="profData?.profHist?.length > 0">
-                                {{profData.profHist[0][2]}} {{profData.profHist[0][3]}} was teaching during the following terms:
+                            <div class="profDataSide">
+                                <div *ngIf="profData?.profHist?.length > 0">
+                                    {{profData.profHist[0][2]}} {{profData.profHist[0][3]}} taught:<br>
+                                    Fall: {{profData.fall ? profData.fall: 0}} times<br>
+                                    Winter: {{profData.winter ? profData.winter: 0}} times<br>
+                                    Spring: {{profData.spring ? profData.spring: 0}} times<br>
+                                </div>
+                                <div *ngIf="profData?.profHist?.length > 0">
+                                    {{profData.profHist[0][2]}} {{profData.profHist[0][3]}} was teaching during the following terms:
+                                </div>
+                                <span *ngFor="let termProf of profData?.profHist; let last = last" >
+                                    {{termProf[0]}}<span *ngIf="!last">,</span> 
+                                </span>
                             </div>
-                            <span *ngFor="let termProf of profData?.profHist; let last = last" >
-                                {{termProf[0]}}<span *ngIf="!last">,</span> 
-                            </span>
                         </div>
                     </div>
                 </mat-tab>

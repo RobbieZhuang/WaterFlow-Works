@@ -74,6 +74,7 @@ export class FindCourseComponent implements OnInit {
       this.result.prereq = res["prereq"]
       this.result.histInfo = res['histInfo']
       this.result.profList = res['profList']
+      this.profData = null;
     })
   }
 
