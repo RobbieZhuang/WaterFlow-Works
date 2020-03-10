@@ -66,3 +66,10 @@ python main.py
 1) After creating a database in postgres, run create_database.sql to create tables
 2) run insert_data.sql to insert a few degree and department and subject information
 3) run 'python insert_script.py' to generate all the data
+
+- How to use Postgres
+1) In backend folder, run 'psql -U postgres'
+2) '\l' list databases
+3) '\c' connect to database
+4) '\q' exit postgres
+5) 'psql -U your_username -d dbname -f single_table_data.sql' insert data into database

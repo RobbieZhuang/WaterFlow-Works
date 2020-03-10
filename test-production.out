@@ -1,0 +1,74 @@
+-> Results for query #1
+ coursecode | coursegroupid
+------------+---------------
+ CS 370     |          3778
+ CS 371     |          3778
+ CS 350     |          3777
+ SE 350     |          3777
+(4 rows)
+
+-> Results for query #2
+ coursecode |               title               | coursetypes |  description                                                                                                                                                                                                                                                               | subjecttitle                    
+------------+-----------------------------------+-------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------
+ CS 488     | Introduction to Computer Graphics | LAB,LEC,TST | Software and hardware for interactive computer graphics. Implementation of device drivers, 3-D transformations, clipping, perspective, and input routines. Data structures, hidden surface removal, colour shading techniques, and some additional topics will be covered. | CS
+ (1 row)
+
+-> Results for query #3
+-> Here 9 = Fall, 5 = Summer and 1 = Winter
+ termcode | timesoffered
+----------+--------------
+        9 |            7
+        5 |            7
+        1 |            8
+(3 rows)
+
+-> Results for query #4
+ term | year
+------+-------
+ F    | 2013F
+ F    | 2014F
+ F    | 2015F
+ F    | 2016F
+ F    | 2017F
+ F    | 2018F
+ F    | 2019F
+(7 rows)
+
+-> Results for query #5
+ termcode | proffirstname | proflastname | numoftimestaught
+----------+---------------+--------------+------------------
+        9 | Lesley Ann    | Istead       |                3
+        5 | Lesley Ann    | Istead       |                3
+        1 | Lesley Ann    | Istead       |                4
+(3 rows)
+
+-> Results for query #6
+ termcode | coursecode | proffirstname | proflastname
+----------+------------+---------------+--------------
+     1201 | CS 350     | Lesley Ann    | Istead
+     1199 | CS 350     | Lesley Ann    | Istead
+     1195 | CS 350     | Lesley Ann    | Istead
+     1191 | CS 350     | Lesley Ann    | Istead
+     1185 | CS 350     | Lesley Ann    | Istead
+     1181 | CS 350     | Lesley Ann    | Istead
+     1179 | CS 350     | Lesley Ann    | Istead
+     1175 | CS 350     | Lesley Ann    | Istead
+     1171 | CS 350     | Lesley Ann    | Istead
+     1169 | CS 350     | Lesley Ann    | Istead
+(10 rows)
+
+
+-> Results for query #7
+ proffirstname | proflastname | numstaught
+---------------+--------------+------------
+ Lesley Ann    | Istead       |         20
+ Bernard       | Wong         |         10
+ Kevin         | Lanctot      |          8
+ Timothy       | Brecht       |          6
+ Gregor        | Richards     |          6
+ Kenneth       | Salem        |          5
+ Ali           | Mashtizadeh  |          4
+ Eugene        | Zima         |          3
+ Kamal         | Zille Huma   |          2
+ Igor          | Ivkovic      |          2
+(10 rows)

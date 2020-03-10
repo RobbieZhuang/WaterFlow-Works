@@ -16,8 +16,11 @@ export class FindCourseComponent implements OnInit {
     title:"",
     courseType:"",
     description:"",
-    prereq:{}
+    prereq:{},
+    histInfo:{},
+    profList:[]
   }
+  profData: string[] = [];
 
   constructor(private api: ApicallsService, private fb: FormBuilder) {
     this.form = fb.group({
@@ -33,6 +36,17 @@ export class FindCourseComponent implements OnInit {
     return Object.keys(obj).length === 0 && obj.constructor === Object
   }
 
+  seeProfHist(prof: string[]){
+    let profFirstName = prof[0] ? prof[0]: ""
+    const profLastName = prof[1] ? prof[1]: ""
+    this.api.getData(`${urlConfig.baseUrl}/getProfHist?course=${this.form.controls.course.value}
+      &profFirstName=${profFirstName}&profLastName=${profLastName}`)
+    .subscribe(res => {
+      console.log(res)
+      this.profData = res
+    })
+  }
+
   submit(){
     if (!this.form.controls.course.valid){
       return 
@@ -46,7 +60,9 @@ export class FindCourseComponent implements OnInit {
           title:"",
           courseType:"",
           description:"",
-          prereq:{}
+          prereq:{},
+          histInfo:{},
+          profList:[]
         }
         return;
       }
@@ -56,7 +72,8 @@ export class FindCourseComponent implements OnInit {
       this.result.courseType = res["courseType"]
       this.result.description = res["description"]
       this.result.prereq = res["prereq"]
-
+      this.result.histInfo = res['histInfo']
+      this.result.profList = res['profList']
     })
   }
 

@@ -14,6 +14,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { CoursePathComponent } from './course-path/course-path.component';
 import { FindCourseComponent } from './find-course/find-course.component';
 import { FormartCourseCodeDirective } from './directives/formart-course-code.directive';
+import { NavbarComponent } from './navbar/navbar.component';
+import {MatTabsModule} from '@angular/material/tabs';
+
 
 
 
@@ -24,7 +27,8 @@ import { FormartCourseCodeDirective } from './directives/formart-course-code.dir
     HomepageComponent,
     CoursePathComponent,
     FindCourseComponent,
-    FormartCourseCodeDirective
+    FormartCourseCodeDirective,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -35,6 +39,7 @@ import { FormartCourseCodeDirective } from './directives/formart-course-code.dir
     MatButtonModule,
     MatRadioModule,
     ReactiveFormsModule,
+    MatTabsModule,
     HttpClientModule
   ],
   providers: [],

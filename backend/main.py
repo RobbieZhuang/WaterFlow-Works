@@ -43,8 +43,27 @@ def hello():
 def courses():
 	return json.dumps(['CS 101','CS 102', 'CS 348'])
 
+
+def getFilterQuery(course, term):
+	return """"
+		WITH courseTermData AS
+		(SELECT DISTINCT CASE
+			WHEN termCode % 10 = 9 THEN 'F'
+			WHEN termCode % 10 = 5 THEN 'S'
+			WHEN termCode % 10 = 1 THEN 'W'
+		END AS Term, 
+		CASE
+			WHEN termCode % 10 = 9 THEN CONCAT(termCode % 1000 / 10 + 2000,'F')
+			WHEN termCode % 10 = 5 THEN CONCAT(termCode % 1000 / 10 + 2000,'S')
+			WHEN termCode % 10 = 1 THEN CONCAT(termCode % 1000 / 10 + 2000,'W')
+		END AS Year
+		FROM courseOffering 
+		WHERE courseCode = UPPER('""" + course+ """') AND courseType = 'LEC')
+		SELECT Term, Year
+		FROM courseTermData WHERE Term = '"""+term+"""';"""
+
 # This api validates if an input course is valid in our table.
-@app.route("/getCourseInfo") # param name course: http://127.0.0.1:5000/validateCourse?course=cs348
+@app.route("/getCourseInfo") # param name course: http://127.0.0.1:5000/getCourseInfo?course=cs348
 def getCourseInfo():
 	course = request.args.get('course')
 	course = course.strip()
@@ -77,7 +96,12 @@ def getCourseInfo():
 		"title": row[1],
 		"courseType":row[2],
 		"description": row[3],
-		"prereq":{}
+		"prereq":{},
+		"histInfo":{
+			"fall":{},
+			"summer":{},
+			"winter":{}
+		}
 	}
 	for group in prereq:
 		if group[1] in res["prereq"]:
@@ -85,6 +109,52 @@ def getCourseInfo():
 		else:
 			res["prereq"][group[1]] = [group[0]]
 	
+	# previous way of running this statement didn't work
+	stmt = """
+		SELECT  termCode, COUNT(*) as TimesOffered
+		FROM (
+			SELECT  termCode % 10 as termCode 
+			FROM (
+				SELECT DISTINCT termCode FROM courseOffering 
+				WHERE courseType = 'LEC' AND courseCode = UPPER('"""+ course + """')) As distinctCourses
+		) as filterTermCode
+		GROUP BY termCode
+		ORDER BY termCode DESC
+	"""
+	cur.execute(stmt)
+	termOfferings = cur.fetchall() 
+
+	for term in termOfferings:
+		if term[0] == 9:
+			res["histInfo"]["fall"]["Count"] = term[1]
+			stmt = getFilterQuery(course, 'F').replace('"', '')
+			cur.execute(stmt)
+			res["histInfo"]["fall"]["termsOffered"] = cur.fetchall() 
+		elif term[0] == 5:
+			res["histInfo"]["summer"]["Count"] = term[1]
+			stmt = getFilterQuery(course, 'S').replace('"', '')
+			cur.execute(stmt)
+			res["histInfo"]["summer"]["termsOffered"] = cur.fetchall() 
+		elif term[0] == 1:
+			res["histInfo"]["winter"]["Count"] = term[1]
+			stmt = getFilterQuery(course, 'W').replace('"', '')
+			cur.execute(stmt)
+			res["histInfo"]["winter"]["termsOffered"] = cur.fetchall() 
+
+	stmt = """
+		SELECT profFirstName, profLastName, COUNT(*) as numsTaught
+		FROM courseOffering 
+		WHERE courseCode = UPPER('"""+ course + """')
+		AND courseType = 'LEC'
+		AND profFirstName IS NOT NULL
+		AND profLastName IS NOT NULL
+		GROUP BY profFirstName, profLastName
+		ORDER BY COUNT(*) DESC;
+	"""
+	cur.execute(stmt)
+	listOfProfs = cur.fetchall() 
+	res['profList'] = listOfProfs
+
 	return json.dumps(res)
 
 
@@ -115,5 +185,68 @@ def courseQuery():
 	else:
 		return "Try degree=CS or degree=SE"
 
+@app.route("/getProfHist")
+def getProfHist():
+	course = request.args.get("course", default = "", type = str).strip()
+	profFirstName = request.args.get("profFirstName", default = "", type = str)
+	profLastName = request.args.get("profLastName", default = "", type = str)
+	cur = connection.cursor()
+	stmt = """
+		SELECT  DISTINCT termCode,courseCode, profFirstName, profLastName
+		FROM courseOffering 
+		WHERE courseCode = UPPER('"""+ course +"""')
+		AND (profFirstName LIKE '%"""+ profFirstName +"""%'
+		OR profLastName LIKE '%"""+profLastName+"""%')
+		AND courseType = 'LEC'
+		ORDER BY termCode DESC;
+	"""
+	cur.execute(stmt)
+	profHist = cur.fetchall()
+	
+	profHistFormatted = []
+	for profTerm in profHist:
+		code = profTerm[0]
+		code %= 1000
+		year = code // 10
+		fws = code % 10
+		if fws == 9:
+			fws = 'F'
+		elif fws == 5:
+			fws = 'S'
+		elif fws == 1:
+			fws = 'W'
+		profHistFormatted.append([fws+str(year), profTerm[1],profTerm[2], profTerm[3]])
+	stmt = """
+		SELECT  termCode,profFirstName, profLastName, COUNT(*) as NumOfTimesTaught
+		FROM (
+			SELECT termCode % 10 as termCode, profFirstName, profLastName
+			FROM (
+				SELECT DISTINCT termCode as termCode, profFirstName, profLastName
+				FROM courseOffering
+				WHERE courseCode = UPPER('"""+ course +"""') AND courseType = 'LEC'
+				AND (profFirstName LIKE '%"""+ profFirstName +"""%'
+				OR profLastName LIKE '%"""+profLastName+"""%')
+			) as getDistinctTimesTeach
+		) as tablewithProfCourseTerm
+		GROUP BY termCode, profFirstName, profLastName
+		ORDER BY termCode DESC;
+	"""
+	cur.execute(stmt)
+	profTermsHist = cur.fetchall()
+	
+	result = {
+		"profHist":profHistFormatted
+	}
+	for term in profTermsHist:
+		if term[0] == 9:
+			result["fall"] = term[len(term) -1]
+		elif term[0] == 5:
+			result["summer"] = term[len(term) -1]
+		elif term[0] == 1:
+			result["winter"] = term[len(term) -1]
+	return json.dumps(result)
+	
+
 if __name__ == "__main__":
 	app.run()
+

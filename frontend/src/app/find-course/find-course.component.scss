@@ -21,6 +21,15 @@
     margin-right: 0.5rem;   
 }
 
+.profData{
+    display:flex;
+    flex-direction: row;
+    width: 100%;
+    .profDataSide{
+        width: 50%;
+    }
+}
+
 #wantedCouseInput{
     width: 80%;
 }
