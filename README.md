@@ -25,7 +25,7 @@ source init_database.sh [port] [user] [database]
 cd backend
 ```
 
-- In the `backend` folder, add file called `config` with your database connection parameters. Copy from `configs-example` and fill in your credentials. The file looks like:
+- In the `backend` folder, add file called `configs` with your database connection parameters. Copy from `configs-example` and fill in your credentials. The file looks like:
 ```
 [dbname]
 [username]
