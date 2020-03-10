@@ -47,9 +47,9 @@ export class CoursePathComponent implements OnInit {
       return 
     }
     this.api.postData({
-      wantedCourse: this.form.controls.wantedCourse.value,
+      requestedDegree: this.form.controls.wantedCourse.value,
       coursesTaken:this.coursesTaken
-    }, `${urlConfig.baseUrl}/course-path`)
+    }, `${urlConfig.baseUrl}/degree-path`)
     .subscribe(res => console.log(res))
   }
 
