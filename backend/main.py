@@ -257,7 +257,52 @@ def getProfHist():
 		elif term[0] == 1:
 			result["winter"] = term[len(term) -1]
 	return json.dumps(result)
-	
+
+@app.route("/getRequiredDegreeReqs")
+def getRequiredDegreeRequirements():
+    data = request.json
+
+    requested_degree_name = data.get('requestedDegree')
+
+    cur = connection.cursor()
+    cur.execute(sql.SQL("SELECT COUNT(*) FROM degree WHERE title = %s;"), [requested_degree_name])
+    if int(cur.fetchone()[0]) != 1:
+        return json.dumps({})
+    
+    taken_courses = data.get('coursesTaken')
+   
+    cur.execute(sql.SQL("SELECT * FROM (SELECT coursecode, coursegroupid AS groupid FROM coursegroupmember WHERE coursegroupid = ANY (SELECT coursegroupid FROM degreerequirement WHERE degreetitle = %s)) AS coursecodetogroupid NATURAL JOIN coursegroup;"), [requested_degree_name])
+
+    degree_courses = cur.fetchall()
+
+    group_id_to_courses = {}
+    group_id_to_quantity = {}
+
+    # populate group_id_to_courses and group_id_to_quantity maps
+    for course_tuple in degree_courses:
+        if course_tuple[0] in group_id_to_courses:
+            group_id_to_courses[course_tuple[0]].append(course_tuple[1])
+        else:
+            group_id_to_courses[course_tuple[0]] = [course_tuple[1]]
+            group_id_to_quantity[course_tuple[0]] = course_tuple[2]
+
+    # filter all courses that have been taken
+    for course in taken_courses:
+        for group_id, courses in group_id_to_courses.items():
+            if course in courses:
+                courses.remove(course)
+                group_id_to_quantity[group_id] = group_id_to_quantity[group_id] - 1
+
+    result = []
+
+    for group_id, quantity in group_id_to_quantity.items():
+        if quantity > 0:
+            result.append({
+                "quantity" : quantity, 
+                "course" : group_id_to_courses[group_id]
+            })
+
+    return json.dumps(result)
 
 if __name__ == "__main__":
 	app.run()
