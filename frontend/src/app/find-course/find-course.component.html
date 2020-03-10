@@ -36,7 +36,7 @@
                     <div class="profData">
                         <div class="profDataSide">
                             <div *ngFor="let prof of result.profList" (click)="seeProfHist(prof)">
-                                {{prof[0]}} {{prof[1]}} : Taught {{prof[2]}} times 
+                                <button mat-button>{{prof[0]}} {{prof[1]}} : Taught {{prof[2]}} times </button> 
                             </div>
                         </div>
                         <div class="profDataSide">
