@@ -112,5 +112,17 @@ FROM sectionsProf s LEFT OUTER JOIN termsProf t
 ON s.profFirstName = t.profFirstName AND s.profLastName = t.profLastName
 ORDER BY s.sectionsTaught DESC;
 
-
+-- 8
+-- Shows what the courses groups (& quantities) are required to satisfy
+-- a degree requirement (eg. 'Computer Science').
+-- Combines the quantites from coursegroup table to the matching rows
+-- in the coursegrouptable which correspond to the degree requirement.
+SELECT * FROM 
+(SELECT coursecode, coursegroupid AS groupid 
+	FROM coursegroupmember 
+	WHERE coursegroupid = ANY 
+		(SELECT coursegroupid 
+			FROM degreerequirement 
+			WHERE degreetitle = 'Computer Science')) AS coursecodetogroupid
+NATURAL JOIN coursegroup;
 

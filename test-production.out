@@ -72,3 +72,18 @@
  Kamal         | Zille Huma   |              2 |           2
  Igor          | Ivkovic      |              2 |           1
 (10 rows)
+
+
+-> Results for query #8
+    groupid	  coursecode	   quantity
+---------------+--------------+----------------
+      118      |    CS 115    |        1
+      118      |    CS 135    |        1
+      118      |    CS 145    |        1
+      119      |    CS 136    |        1
+      119      |    CS 146    |        1
+      120      |   MATH 127   |        1
+      120      |   MATH 137   |        1
+      120      |   MATH 147   |        1
+...
+(144 rows)
