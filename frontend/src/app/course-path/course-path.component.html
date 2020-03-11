@@ -17,5 +17,16 @@
             <button *ngFor="let course of coursesTaken" type="button" class="btn btn-info takenCourseRect">{{course}}</button>
         </div>
         <button type="button" class="btn btn-success" (click)="submit()">Go</button>
+        <div *ngIf="searched" class="box">
+            <h3>To complete the degree, you would need to take the followings: </h3>
+            <div *ngFor="let req of degreeReq">
+                <p>
+                    {{req.quantity}} of the following:
+                    <span *ngFor="let course of req.course;let index=index;let last = last">
+                        <span *ngIf="index < 10">{{course}}<span *ngIf="!last">, </span> <span *ngIf="!last && index == 9"> and etc </span></span>
+                    </span>
+                </p>
+            </div>
+        </div>
     </form>
 </div>
