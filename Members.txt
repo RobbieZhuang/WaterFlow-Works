@@ -14,4 +14,4 @@ James: Discuss idea, Plan schema, Write report, Web scrape dataset, Build produc
     data set creation scripts for the prerequisites table.
 
 Bowen: Discuss idea, Plan schema, Write report, Build flask backend, build production dataset creation scripts
-    for the courserequirements table.
+    for the degree requirements table. Wrote query & backend for feature 1.
