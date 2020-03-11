@@ -1,18 +1,20 @@
-import { ApicallsService } from './../service/apicalls.service';
+import { ApicallsService } from '../service/apicalls.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { urlConfig } from '../urlConfig'
 
 @Component({
   selector: 'app-course-path',
-  templateUrl: './course-path.component.html',
-  styleUrls: ['./course-path.component.scss']
+  templateUrl: './degreeReq.component.html',
+  styleUrls: ['./degreeReq.component.scss']
 })
 export class CoursePathComponent implements OnInit {
 
   coursesTaken:string[] = [];
   form : FormGroup;
   errorCourseAdd: string = '';
+  degreeReq : any[] = []
+  searched: boolean = false
 
   constructor(private api: ApicallsService, private fb: FormBuilder) { 
     this.form = fb.group({
@@ -43,14 +45,18 @@ export class CoursePathComponent implements OnInit {
   }
 
   submit(){
-    if (!this.form.controls.wantedCourse.valid || this.coursesTaken.length == 0){
+    if (!this.form.controls.wantedCourse.valid){
       return 
     }
+
     this.api.postData({
-      wantedCourse: this.form.controls.wantedCourse.value,
+      requestedDegree: this.form.controls.wantedCourse.value,
       coursesTaken:this.coursesTaken
-    }, `${urlConfig.baseUrl}/course-path`)
-    .subscribe(res => console.log(res))
+    }, `${urlConfig.baseUrl}/getRequiredDegreeReqs`)
+    .subscribe(res => {
+      this.searched = true
+      this.degreeReq = res
+    })
   }
 
 }
