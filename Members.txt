@@ -4,9 +4,14 @@ James Dorfman 20719824
 Bowen Robert Zhuang 20710951
 
 
-Jing Fei: Discuss Idea, Plan Schema, Build Angular Frontend, Work on data insertion script,
-    Worked on frontend of feature 1. Worked frontend and backend of feature 3,4, and 5, wrote documentation
-Guan Qiao: Discuss Idea, Plan Schema, Setup GCP & Postgres, Build Hello World App, Wrote Documentation, built
-    production data set creation scripts for courseofferings table. 
-James: Discuss Idea, Plan Schema, Write Report, Web Scrape Dataset
-Bowen: Discuss Idea, Plan Schema, Write Report, Build Flask Backend
+Jing Fei: Discuss idea, Plan schema, Build angular frontend, Work on data insertion script,
+    Worked on frontend of feature 1, Worked frontend and backend of feature 3,4, and 5, wrote documentation.
+
+Guan Qiao: Discuss idea, Plan schema, Setup GCP & Postgres, Build Hello World app, Wrote documentation, built
+    production data set creation scripts for the courseofferings table. 
+
+James: Discuss idea, Plan schema, Write report, Web scrape dataset, Build production data set, build production
+    data set creation scripts for the prerequisites table.
+
+Bowen: Discuss idea, Plan schema, Write report, Build flask backend, build production dataset creation scripts
+    for the courserequirements table.
