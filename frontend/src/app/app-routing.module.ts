@@ -1,5 +1,5 @@
 import { FindCourseComponent } from './find-course/find-course.component';
-import { CoursePathComponent } from './course-path/course-path.component';
+import { CoursePathComponent } from './degreeReq/degreeReq.component';
 import { InputformComponent } from './inputform/inputform.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { NgModule } from '@angular/core';

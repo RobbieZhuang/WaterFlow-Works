@@ -11,7 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatRadioModule} from '@angular/material/radio';
 import { HttpClientModule } from '@angular/common/http';
-import { CoursePathComponent } from './course-path/course-path.component';
+import { CoursePathComponent } from './degreeReq/degreeReq.component';
 import { FindCourseComponent } from './find-course/find-course.component';
 import { FormartCourseCodeDirective } from './directives/formart-course-code.directive';
 import { NavbarComponent } from './navbar/navbar.component';

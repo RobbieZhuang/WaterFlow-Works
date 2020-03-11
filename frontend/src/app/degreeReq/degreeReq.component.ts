@@ -1,12 +1,12 @@
-import { ApicallsService } from './../service/apicalls.service';
+import { ApicallsService } from '../service/apicalls.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { urlConfig } from '../urlConfig'
 
 @Component({
   selector: 'app-course-path',
-  templateUrl: './course-path.component.html',
-  styleUrls: ['./course-path.component.scss']
+  templateUrl: './degreeReq.component.html',
+  styleUrls: ['./degreeReq.component.scss']
 })
 export class CoursePathComponent implements OnInit {
 
