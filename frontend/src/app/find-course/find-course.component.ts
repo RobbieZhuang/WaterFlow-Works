@@ -32,7 +32,6 @@ export class FindCourseComponent implements OnInit {
   }
   
   isObjectEmpty(obj){
-
     return Object.keys(obj).length === 0 && obj.constructor === Object
   }
 
@@ -45,6 +44,12 @@ export class FindCourseComponent implements OnInit {
       console.log(res)
       this.profData = res
     })
+  }
+
+  keydownSearchBar(event) {
+    if (event.keyCode == 13) {
+      this.submit();
+    }
   }
 
   submit(){

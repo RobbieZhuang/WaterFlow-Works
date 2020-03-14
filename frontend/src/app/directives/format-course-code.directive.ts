@@ -2,9 +2,9 @@ import { Directive, HostListener } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
 @Directive({
-  selector: '[appFormartCourseCode]'
+  selector: '[appFormatCourseCode]'
 })
-export class FormartCourseCodeDirective {
+export class FormatCourseCodeDirective {
 
   constructor(public ngControl: NgControl) { }
 
@@ -12,14 +12,12 @@ export class FormartCourseCodeDirective {
   onModelChange(event) {
     this.onInputChange(event, false);
   }
-
   
   @HostListener('keydown.backspace', ['$event'])
   keydownBackspace(event) {
     this.onInputChange(event.target.value, true);
   }
 
-  
   onInputChange(event, backspace) {
     let newVal = event
     var patt1 = /[0-9]+/g;

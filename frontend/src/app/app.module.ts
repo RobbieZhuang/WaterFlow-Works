@@ -13,12 +13,9 @@ import {MatRadioModule} from '@angular/material/radio';
 import { HttpClientModule } from '@angular/common/http';
 import { CoursePathComponent } from './degreeReq/degreeReq.component';
 import { FindCourseComponent } from './find-course/find-course.component';
-import { FormartCourseCodeDirective } from './directives/formart-course-code.directive';
+import { FormatCourseCodeDirective } from './directives/format-course-code.directive';
 import { NavbarComponent } from './navbar/navbar.component';
 import {MatTabsModule} from '@angular/material/tabs';
-
-
-
 
 @NgModule({
   declarations: [
@@ -27,7 +24,7 @@ import {MatTabsModule} from '@angular/material/tabs';
     HomepageComponent,
     CoursePathComponent,
     FindCourseComponent,
-    FormartCourseCodeDirective,
+    FormatCourseCodeDirective,
     NavbarComponent
   ],
   imports: [
