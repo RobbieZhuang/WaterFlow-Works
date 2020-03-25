@@ -264,7 +264,19 @@ def getRequiredDegreeRequirements():
     
     taken_courses = data.get('coursesTaken')
    
-    cur.execute(sql.SQL("SELECT * FROM (SELECT coursecode, coursegroupid AS groupid FROM coursegroupmember WHERE coursegroupid = ANY (SELECT coursegroupid FROM degreerequirement WHERE degreetitle = %s)) AS coursecodetogroupid NATURAL JOIN coursegroup;"), [requested_degree_name])
+    cur.execute(sql.SQL("""
+        SELECT * 
+        FROM (
+            SELECT coursecode, coursegroupid AS groupid 
+            FROM coursegroupmember 
+            WHERE coursegroupid = ANY (
+                SELECT coursegroupid 
+                FROM degreerequirement 
+                WHERE degreetitle = %s
+            )
+        ) AS coursecodetogroupid 
+        NATURAL JOIN coursegroup;
+    """), [requested_degree_name])
 
     degree_courses = cur.fetchall()
 
@@ -300,4 +312,3 @@ def getRequiredDegreeRequirements():
 
 if __name__ == "__main__":
     app.run()
-
