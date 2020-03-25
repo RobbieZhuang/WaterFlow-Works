@@ -84,7 +84,10 @@ def getCourseInfo():
             "Fall": {},
             "Spring": {},
             "Winter": {}
-        }
+        },
+        "profList": [],
+        "terminfo": [],
+        "profinfo": []
     }
     for group in prereq:
         if group[1] in res["prereq"]:
@@ -151,10 +154,42 @@ def getCourseInfo():
         SELECT s.profFirstName, s.profLastName, s.sectionsTaught, t.termsTaught
         FROM sectionsProf s LEFT OUTER JOIN termsProf t
         ON s.profFirstName = t.profFirstName AND s.profLastName = t.profLastName
-        ORDER BY s.sectionsTaught DESC
+        ORDER BY s.sectionsTaught DESC;
     """, [course, course])
     listOfProfs = cur.fetchall() 
-    res['profList'] = listOfProfs
+    res["profList"] = listOfProfs
+
+    cur.execute("""
+        SELECT termcode,
+            COUNT(*) AS sections_offered,
+            array_agg(DISTINCT array[proffirstname, proflastname]) AS profs,
+            SUM(enrlcap) AS enrl_term_cap,
+            SUM(enrltot) AS enrl_term_tot
+        FROM courseOffering
+        WHERE coursecode = %s AND component < 100
+        GROUP BY termcode
+        ORDER BY termcode;
+    """, [course])
+    terminfo = cur.fetchall()
+
+    res["terminfo"] = terminfo
+
+    cur.execute("""
+        SELECT proflastname,
+            proffirstname,
+            COUNT(*) AS total_sections_taught,
+            COUNT(DISTINCT termcode) AS total_terms_taught,
+            array_agg(DISTINCT termcode) FILTER (WHERE termcode %% 10 = 5) AS spring_terms_taught,
+            array_agg(DISTINCT termcode) FILTER (WHERE termcode %% 10 = 1) AS winter_terms_taught,
+            array_agg(DISTINCT termcode) FILTER (WHERE termcode %% 10 = 9) AS fall_terms_taught
+        FROM courseOffering
+        WHERE coursecode = %s AND component < 100
+        GROUP BY proffirstname, proflastname
+        ORDER BY total_terms_taught DESC, total_sections_taught DESC, proflastname, proffirstname;
+    """, [course])
+    profinfo = cur.fetchall()
+
+    res["profinfo"] = profinfo
 
     print(res)
     return json.dumps(res)
@@ -250,6 +285,21 @@ def getProfHist():
     
     return json.dumps(result)
 
+@app.route("/getTermOfferings")
+def getTermOfferings():
+    course = request.args.get("course", default = "", type = str).strip().upper()
+    term = request.args.get("term", default = "", type = str)
+
+    cur = connection.cursor()
+    cur.execute("""
+        SELECT coursetype, component, enrlcap, enrltot, proffirstname, proflastname, classstarttime, classendtime, classweekdays, classbuilding, classroom
+        FROM courseOffering
+        WHERE coursecode = %s AND component < 100 AND termcode = %s
+        ORDER BY component;
+    """, [course, term])
+    offerings = cur.fetchall()
+
+    return json.dumps(offerings)
 
 @app.route("/getRequiredDegreeReqs", methods = ['POST'])
 def getRequiredDegreeRequirements():
