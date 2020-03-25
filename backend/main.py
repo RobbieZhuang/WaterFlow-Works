@@ -30,6 +30,8 @@ connection = psycopg2.connect(
     port = connection_params["PORT"],
 )
 
+term_to_word = {1: "Winter", 5: "Spring", 9: "Fall"}
+
 @app.route("/")
 def hello():
     return "Hello World!"
@@ -38,33 +40,18 @@ def hello():
 def courses():
     return json.dumps(['CS 101','CS 102', 'CS 348'])
 
-
-def getFilterQuery(course, term):
-    return """"
-        WITH courseTermData AS
-        (SELECT DISTINCT CASE
-            WHEN termCode % 10 = 9 THEN 'F'
-            WHEN termCode % 10 = 5 THEN 'S'
-            WHEN termCode % 10 = 1 THEN 'W'
-        END AS Term, 
-        CASE
-            WHEN termCode % 10 = 9 THEN CONCAT(termCode % 1000 / 10 + 2000,'F')
-            WHEN termCode % 10 = 5 THEN CONCAT(termCode % 1000 / 10 + 2000,'S')
-            WHEN termCode % 10 = 1 THEN CONCAT(termCode % 1000 / 10 + 2000,'W')
-        END AS Year
-        FROM courseOffering 
-        WHERE courseCode = UPPER('""" + course+ """') AND courseType = 'LEC')
-        SELECT Term, Year
-        FROM courseTermData WHERE Term = '"""+term+"""';"""
-
 # This api validates if an input course is valid in our table.
 @app.route("/getCourseInfo") # param name course: http://127.0.0.1:5000/getCourseInfo?course=cs348
 def getCourseInfo():
-    course = request.args.get('course')
-    course = course.strip()
+    course = request.args.get('course').strip().upper()
+
     # Join subject and course table and select result -  not sure why natural join didn't work so used left join
     cur = connection.cursor()
-    cur.execute(sql.SQL("SELECT courseCode,title, courseTypes, description, subjectTitle FROM course WHERE UPPER(courseCode) = UPPER(%s)"), [course])
+    cur.execute(sql.SQL("""
+        SELECT courseCode, title, courseTypes, description, subjectTitle
+        FROM course
+        WHERE courseCode = %s
+    """), [course])
 
     rows = cur.fetchall()
     if len(rows) == 0: 
@@ -81,21 +68,22 @@ def getCourseInfo():
             WHERE groupID IN (
                 SELECT prereqcoursegroupid
                 FROM prerequisite
-                WHERE courseCode = UPPER(%s)
+                WHERE courseCode = %s
             )
-        )"""), [course])
+        )
+    """), [course])
     prereq = cur.fetchall() # gets: [('CS 246', 26), ('CS 251', 27), ('CS 241', 25), ('CS 240', 24)]
     
     res = {
-        "courseCode":row[0],
+        "courseCode": row[0],
         "title": row[1],
-        "courseType":row[2],
+        "courseType": row[2],
         "description": row[3],
-        "prereq":{},
+        "prereq": {},
         "histInfo":{
-            "Fall":{},
-            "Spring":{},
-            "Winter":{}
+            "Fall": {},
+            "Spring": {},
+            "Winter": {}
         }
     }
     for group in prereq:
@@ -105,54 +93,56 @@ def getCourseInfo():
             res["prereq"][group[1]] = [group[0]]
     
     # previous way of running this statement didn't work
-    stmt = """
-        SELECT  termCode, COUNT(*) as TimesOffered
+    cur.execute(sql.SQL("""
+        SELECT termCode, COUNT(*) as TimesOffered
         FROM (
-            SELECT  termCode % 10 as termCode 
+            SELECT termCode %% 10 as termCode 
             FROM (
                 SELECT DISTINCT termCode FROM courseOffering 
-                WHERE courseType = 'LEC' AND courseCode = UPPER('"""+ course + """')) As distinctCourses
+                WHERE component < 100 AND courseCode = %s) AS distinctCourses
         ) as filterTermCode
         GROUP BY termCode
-        ORDER BY termCode DESC
-    """
-    cur.execute(stmt)
+        ORDER BY termCode DESC;
+    """), [course])
     termOfferings = cur.fetchall() 
 
     for term in termOfferings:
-        if term[0] == 9:
-            res["histInfo"]["Fall"]["Count"] = term[1]
-            stmt = getFilterQuery(course, 'F').replace('"', '')
-            cur.execute(stmt)
-            res["histInfo"]["Fall"]["termsOffered"] = cur.fetchall() 
-        elif term[0] == 5:
-            res["histInfo"]["Spring"]["Count"] = term[1]
-            stmt = getFilterQuery(course, 'S').replace('"', '')
-            cur.execute(stmt)
-            res["histInfo"]["Spring"]["termsOffered"] = cur.fetchall() 
-        elif term[0] == 1:
-            res["histInfo"]["Winter"]["Count"] = term[1]
-            stmt = getFilterQuery(course, 'W').replace('"', '')
-            cur.execute(stmt)
-            res["histInfo"]["Winter"]["termsOffered"] = cur.fetchall() 
+        termword = term_to_word[term[0]]
+        res["histInfo"][termword]["Count"] = term[1]
+        
+        cur.execute("""
+            WITH courseTermData AS (
+                SELECT DISTINCT termCode %% 10 AS Term, 
+                CASE
+                    WHEN termCode %% 10 = 9 THEN CONCAT(termCode %% 1000 / 10 + 2000, 'F')
+                    WHEN termCode %% 10 = 5 THEN CONCAT(termCode %% 1000 / 10 + 2000, 'S')
+                    WHEN termCode %% 10 = 1 THEN CONCAT(termCode %% 1000 / 10 + 2000, 'W')
+                END AS Year
+                FROM courseOffering 
+                WHERE courseCode = %s AND component < 100
+            )
+            SELECT Term, Year
+            FROM courseTermData WHERE Term = %s;
+        """, [course, term[0]])
+        res["histInfo"][termword]["termsOffered"] = cur.fetchall() 
 
-    stmt = """
+    cur.execute("""
         WITH sectionsProf AS (
-        SELECT profFirstName, profLastName, COUNT(*) as sectionsTaught
-        FROM courseOffering 
-        WHERE courseCode = UPPER('"""+ course + """')
-        AND courseType = 'LEC'
-        AND profFirstName IS NOT NULL
-        AND profLastName IS NOT NULL
-        GROUP BY profFirstName, profLastName
+            SELECT profFirstName, profLastName, COUNT(*) as sectionsTaught
+            FROM courseOffering 
+            WHERE courseCode = %s
+                AND component < 100
+                AND profFirstName IS NOT NULL
+                AND profLastName IS NOT NULL
+            GROUP BY profFirstName, profLastName
         ),
         termsProf AS (
             SELECT profFirstName, profLastName, COUNT(*) as termsTaught
             FROM (
                 SELECT DISTINCT termCode, courseCode, profFirstName,profLastName
                 FROM courseOffering
-                WHERE courseCode = UPPER('"""+ course + """')
-                AND courseType = 'LEC'
+                WHERE courseCode = %s
+                AND component < 100
                 AND profFirstName IS NOT NULL
                 AND profLastName IS NOT NULL
             ) as distinctprofterms
@@ -162,11 +152,11 @@ def getCourseInfo():
         FROM sectionsProf s LEFT OUTER JOIN termsProf t
         ON s.profFirstName = t.profFirstName AND s.profLastName = t.profLastName
         ORDER BY s.sectionsTaught DESC
-    """
-    cur.execute(stmt)
+    """, [course, course])
     listOfProfs = cur.fetchall() 
     res['profList'] = listOfProfs
 
+    print(res)
     return json.dumps(res)
 
 
@@ -199,20 +189,20 @@ def courseQuery():
 
 @app.route("/getProfHist")
 def getProfHist():
-    course = request.args.get("course", default = "", type = str).strip()
+    course = request.args.get("course", default = "", type = str).strip().upper()
     profFirstName = request.args.get("profFirstName", default = "", type = str)
     profLastName = request.args.get("profLastName", default = "", type = str)
+
     cur = connection.cursor()
-    stmt = """
-        SELECT  DISTINCT termCode,courseCode, profFirstName, profLastName
+    cur.execute("""
+        SELECT DISTINCT termCode,courseCode, profFirstName, profLastName
         FROM courseOffering 
-        WHERE courseCode = UPPER('"""+ course +"""')
-        AND (profFirstName LIKE '%"""+ profFirstName +"""%'
-        AND profLastName LIKE '%"""+profLastName+"""%')
-        AND courseType = 'LEC'
+        WHERE courseCode = %s
+            AND profFirstName = %s
+            AND profLastName = %s
+            AND component < 100
         ORDER BY termCode DESC;
-    """
-    cur.execute(stmt)
+    """, [course, profFirstName, profLastName])
     profHist = cur.fetchall()
     
     profHistFormatted = []
@@ -228,26 +218,27 @@ def getProfHist():
         elif fws == 1:
             fws = 'W'
         profHistFormatted.append([fws+str(year), profTerm[1],profTerm[2], profTerm[3]])
-    stmt = """
-        SELECT  termCode,profFirstName, profLastName, COUNT(*) as NumOfTimesTaught
+
+    cur.execute("""
+        SELECT termCode, profFirstName, profLastName, COUNT(*) as NumOfTimesTaught
         FROM (
-            SELECT termCode % 10 as termCode, profFirstName, profLastName
+            SELECT termCode %% 10 as termCode, profFirstName, profLastName
             FROM (
                 SELECT DISTINCT termCode as termCode, profFirstName, profLastName
                 FROM courseOffering
-                WHERE courseCode = UPPER('"""+ course +"""') AND courseType = 'LEC'
-                AND (profFirstName LIKE '%"""+ profFirstName +"""%'
-                AND profLastName LIKE '%"""+profLastName+"""%')
+                WHERE courseCode = %s
+                    AND profFirstName = %s
+                    AND profLastName = %s
+                    AND component < 100
             ) as getDistinctTimesTeach
         ) as tablewithProfCourseTerm
         GROUP BY termCode, profFirstName, profLastName
         ORDER BY termCode DESC;
-    """
-    cur.execute(stmt)
+    """, [course, profFirstName, profLastName])
     profTermsHist = cur.fetchall()
     
     result = {
-        "profHist":profHistFormatted
+        "profHist": profHistFormatted
     }
     for term in profTermsHist:
         if term[0] == 9:
@@ -256,6 +247,7 @@ def getProfHist():
             result["spring"] = term[len(term) -1]
         elif term[0] == 1:
             result["winter"] = term[len(term) -1]
+    
     return json.dumps(result)
 
 
