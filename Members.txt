@@ -10,8 +10,8 @@ Jing Fei: Discuss idea, Plan schema, Build angular frontend, Work on data insert
 Guan Qiao: Discuss idea, Plan schema, Setup GCP & Postgres, Build Hello World app, Wrote documentation, built
     production data set creation scripts for the courseofferings table. 
 
-James: Discuss idea, Plan schema, Write report, Web scrape dataset, Build production data set, build production
-    data set creation scripts for the prerequisites table.
+James: Discuss idea, Plan schema, Write report, Web scrape dataset for Hello World app, Build production data set, 
+    Build production data set creation scripts for the prerequisites table.
 
 Bowen: Discuss idea, Plan schema, Write report, Build flask backend, build production dataset creation scripts
     for the degree requirements table. Wrote query & backend for feature 1.
