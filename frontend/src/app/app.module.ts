@@ -16,6 +16,7 @@ import { FindCourseComponent } from './find-course/find-course.component';
 import { FormatCourseCodeDirective } from './directives/format-course-code.directive';
 import { NavbarComponent } from './navbar/navbar.component';
 import {MatTabsModule} from '@angular/material/tabs';
+import { TerminfotableComponent } from './terminfotable/terminfotable.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     CoursePathComponent,
     FindCourseComponent,
     FormatCourseCodeDirective,
-    NavbarComponent
+    NavbarComponent,
+    TerminfotableComponent
   ],
   imports: [
     BrowserModule,

@@ -59,20 +59,86 @@
                 </mat-tab>
                 <mat-tab label="Term Info">
                     <div class="tabPadding">
-                        <p style="color:red">Current Term</p>
-                        <pre>{{str_currenttermdata}}</pre>
+                        <p><b>Term Information</b></p>
+                        <mat-tab-group>
+                            <mat-tab [label]="'Current Term ('+termCodeToStr(curTerm) + ')'">
+                                <div class="tabPadding">
+                                    <p>{{termCodeToStr(curTerm)}}</p>
+                                    <app-terminfotable [table]="currentTermData"></app-terminfotable>
+                                </div>
+                            </mat-tab>
+                            <mat-tab [label]="'Next Term ('+termCodeToStr(nextTerm) + ')'">
+                                <p>{{termCodeToStr(nextTerm)}}</p>
+                                <app-terminfotable [table]="nextTermData"></app-terminfotable>
+                            </mat-tab>
+                        </mat-tab-group>
 
-                        <p style="color:red">Next Term</p>
-                        <pre>{{str_nexttermdata}}</pre>
 
                         <p style="color:red">Term Info</p>
+                        <div class="flex-container">
+                            <ng-container *ngFor="let term of result?.terminfo">
+                                <ng-container *ngFor="let season of seasons">
+                                    <ng-template [ngIf]="term[season]" [ngIfElse]="empty">
+                                        <div>
+                                            <p>{{ termCodeToStr(term[season][0])}}</p>
+                                            <p>Sections: {{ term[season][1]}}</p>
+                                            <p>Profs: <span *ngFor="let prof of term[season][2]; let last = last">{{prof.join(" ")}}<span *ngIf="!last">, </span> </span></p>
+                                            <p>Enrollment: <span [ngClass]="findcolour(term[season][4],term[season][3])">{{term[season][4]}} / {{term[season][3]}}</span></p>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template #empty>
+                                        <div class="lightgreyBackground">
+                                           <p>Not offered in this term</p>
+                                        </div>
+                                    </ng-template>
+                                </ng-container>
+                            </ng-container>
+                          </div>
+                          
                         <pre>{{str_terminfo}}</pre>
                     </div>
                 </mat-tab>
                 <mat-tab label="Prof Info">
                     <div class="tabPadding">
-                        <p style="color:red">Prof Info</p>
-                        <pre>{{str_profinfo}}</pre>
+                        <p>Prof Info</p>
+                        <table class="table">
+                            <thead class="thead-light">
+                                <tr>
+                                <th scope="col">Professor</th>
+                                <th scope="col">Total Sections/terms</th>
+                                <th scope="col">Winter</th>
+                                <th scope="col">Spring</th>
+                                <th scope="col">Fall</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let prof of result?.profinfo">
+                                    <td>{{prof[1]}} {{prof[0]}}</td>
+                                    <td>{{prof[2]}}/{{prof[3]}}</td> <!-- total -->
+                                    <td>
+                                        <span *ngIf="prof[4]">
+                                            <ng-container *ngFor="let year of prof[4]; let last = last">
+                                                {{termCodeToYear(year)}}<span *ngIf="!last">, </span>
+                                            </ng-container>
+                                        </span>
+                                    </td> <!-- cap -->
+                                    <td>
+                                        <span *ngIf="prof[5]">
+                                            <ng-container *ngFor="let year of prof[5]; let last = last">
+                                                {{termCodeToYear(year)}}<span *ngIf="!last">, </span>
+                                            </ng-container>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="prof[6]">
+                                            <ng-container *ngFor="let year of prof[6]; let last = last">
+                                                {{termCodeToYear(year)}}<span *ngIf="!last">, </span>
+                                            </ng-container>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </mat-tab>
             </mat-tab-group>

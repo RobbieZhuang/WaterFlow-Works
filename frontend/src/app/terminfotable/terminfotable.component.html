@@ -1,0 +1,22 @@
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+        <th scope="col">Component</th>
+        <th scope="col">Enrollment Total</th>
+        <th scope="col">Enrollment Cap</th>
+        <th scope="col">Prof</th>
+        <th scope="col">Time</th>
+        <th scope="col">Place</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let section of table">
+            <td>{{section[0]}} {{section[1]}}</td>
+            <td [ngClass]="findcolour(section[3],section[2])">{{section[3]}}</td> <!-- total -->
+            <td>{{section[2]}}</td> <!-- cap -->
+            <td>{{section[4]}} {{section[5]}}</td>
+            <td>{{section[6]}}-{{section[7]}}{{section[8]}}</td>
+            <td>{{section[9]}}{{section[10]}}</td>
+        </tr>
+    </tbody>
+</table>

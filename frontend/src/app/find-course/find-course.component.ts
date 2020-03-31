@@ -26,13 +26,12 @@ export class FindCourseComponent implements OnInit {
     profinfo:[]
   }
   profData: any;
-  currentTermData: [];
-  nextTermData: [];
-
-  str_terminfo: string;
-  str_profinfo: string;
-  str_currenttermdata: string;
-  str_nexttermdata: string;
+  currentTermData: string[];
+  nextTermData: string[];
+  
+  curTerm : number  = 1201;
+  nextTerm : number = 1205;
+  seasons = ["W","S","F"]
 
   constructor(private api: ApicallsService, private fb: FormBuilder) {
     this.form = fb.group({
@@ -53,16 +52,15 @@ export class FindCourseComponent implements OnInit {
     this.api.getData(`${urlConfig.baseUrl}/getProfHist?course=${this.form.controls.course.value}
       &profFirstName=${profFirstName}&profLastName=${profLastName}`)
     .subscribe(res => {
-      console.log(res)
       this.profData = res
     })
   }
 
-  static termCodeToYear(termCode: number) {
-    return termCode / 10 + 1900;
+  termCodeToYear(termCode: number) {
+    return Math.floor(termCode / 10 + 1900);
   }
 
-  static termCodeToSeason(termCode: number) {
+  termCodeToSeason(termCode: number) {
     switch (termCode % 10) {
       case 1:
         return 'W';
@@ -75,7 +73,7 @@ export class FindCourseComponent implements OnInit {
     }
   }
 
-  static termCodeToStr(termCode: number) {
+  termCodeToStr(termCode: number) {
     return this.termCodeToYear(termCode) + this.termCodeToSeason(termCode);
   }
 
@@ -83,6 +81,32 @@ export class FindCourseComponent implements OnInit {
     if (event.keyCode == 13) {
       this.submit();
     }
+  }
+
+  findcolour(total: number, cap: number){
+    let percent = total/cap;
+    if (percent > 0.9) return "red";
+    else if (percent > 0.6) return "orange"
+    else return "green"
+  }
+
+  formatTermInformation(terms:string[][]){
+    let formartedTerms = [];
+    terms.forEach(term =>{
+      let year = this.termCodeToYear(parseInt(term[0]))
+      let termSeason = this.termCodeToSeason(parseInt(term[0]))
+      for (let i = 0; i < formartedTerms.length;i++){
+        if (formartedTerms[i]["year"] == year){
+          formartedTerms[i][termSeason] = term;
+          return;
+        }
+      }
+      formartedTerms.push({
+        year: year,
+        [termSeason]:term
+      })
+    })
+    return formartedTerms
   }
 
   submit(){
@@ -117,11 +141,8 @@ export class FindCourseComponent implements OnInit {
         this.result.prereq = res["prereq"]
         this.result.histInfo = res['histInfo']
         this.result.profList = res['profList']
-        this.result.terminfo = res['terminfo']
+        this.result.terminfo = this.formatTermInformation(res['terminfo'])
         this.result.profinfo = res['profinfo']
-
-        this.str_terminfo = JSON.stringify(this.result.terminfo, null, 2);
-        this.str_profinfo = JSON.stringify(this.result.profinfo, null, 2);
 
         this.profData = null;
       });
@@ -130,14 +151,12 @@ export class FindCourseComponent implements OnInit {
       .getData(`${urlConfig.baseUrl}/getTermOfferings?course=${this.form.controls.course.value}&term=${currentTerm}`)
       .subscribe(res => {
         this.currentTermData = res;
-        this.str_currenttermdata = JSON.stringify(this.currentTermData, null, 2);
       })
 
     this.api
       .getData(`${urlConfig.baseUrl}/getTermOfferings?course=${this.form.controls.course.value}&term=${nextTerm}`)
       .subscribe(res => {
         this.nextTermData = res;
-        this.str_nexttermdata = JSON.stringify(this.nextTermData, null, 2);
       })
   }
 

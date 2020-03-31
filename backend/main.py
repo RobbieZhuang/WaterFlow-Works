@@ -168,7 +168,7 @@ def getCourseInfo():
         FROM courseOffering
         WHERE coursecode = %s AND component < 100
         GROUP BY termcode
-        ORDER BY termcode;
+        ORDER BY termcode DESC;
     """, [course])
     terminfo = cur.fetchall()
 
