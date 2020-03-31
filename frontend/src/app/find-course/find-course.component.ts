@@ -73,6 +73,19 @@ export class FindCourseComponent implements OnInit {
     }
   }
 
+  seasonToTerm(season: string){
+    switch (season) {
+      case 'W':
+        return 1;
+      case 'S':
+        return 5;
+      case 'F':
+        return 9;
+      default:
+        return 'O';
+    }
+  }
+
   termCodeToStr(termCode: number) {
     return this.termCodeToYear(termCode) + this.termCodeToSeason(termCode);
   }
@@ -106,6 +119,7 @@ export class FindCourseComponent implements OnInit {
         [termSeason]:term
       })
     })
+
     return formartedTerms
   }
 

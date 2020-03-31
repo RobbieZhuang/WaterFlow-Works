@@ -49,6 +49,7 @@ h3{
 .flex-container {
     display: flex;
     flex-wrap: wrap;
+    width: 610px;
 }
   
 .flex-container > div {
@@ -65,7 +66,10 @@ h3{
 }
 
 .lightgreyBackground{
-    background-color: lightgray
+    display: flex;
+    background-color: lightgray;
+    justify-content: center;
+    align-items: center;
 }
 
 .orange{

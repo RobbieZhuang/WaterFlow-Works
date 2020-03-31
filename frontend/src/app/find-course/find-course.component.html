@@ -88,10 +88,16 @@
                                     </ng-template>
                                     <ng-template #empty>
                                         <div class="lightgreyBackground">
-                                           <p>Not offered in this term</p>
+                                           <p>
+                                               <span *ngIf="term.year === termCodeToYear(curTerm) && (curTerm%10 < seasonToTerm(season))">
+                                                   No avaliable data for </span>
+                                                <span *ngIf="term.year < termCodeToYear(curTerm) || (curTerm%10 >= seasonToTerm(season))">
+                                                    Not offered in </span>
+                                                {{ term.year+season}}</p>
                                         </div>
                                     </ng-template>
                                 </ng-container>
+                                <br>
                             </ng-container>
                           </div>
                           
@@ -116,15 +122,15 @@
                                     <td>{{prof[1]}} {{prof[0]}}</td>
                                     <td>{{prof[2]}}/{{prof[3]}}</td> <!-- total -->
                                     <td>
-                                        <span *ngIf="prof[4]">
-                                            <ng-container *ngFor="let year of prof[4]; let last = last">
+                                        <span *ngIf="prof[5]">
+                                            <ng-container *ngFor="let year of prof[5]; let last = last">
                                                 {{termCodeToYear(year)}}<span *ngIf="!last">, </span>
                                             </ng-container>
                                         </span>
                                     </td> <!-- cap -->
                                     <td>
-                                        <span *ngIf="prof[5]">
-                                            <ng-container *ngFor="let year of prof[5]; let last = last">
+                                        <span *ngIf="prof[4]">
+                                            <ng-container *ngFor="let year of prof[4]; let last = last">
                                                 {{termCodeToYear(year)}}<span *ngIf="!last">, </span>
                                             </ng-container>
                                         </span>
