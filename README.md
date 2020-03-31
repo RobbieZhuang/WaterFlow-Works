@@ -78,6 +78,8 @@ psql -p [port] -U [user] -d [database] [-p password]
   - `\d` to list databases
   - `\c` to connect to database
   - `\q` to exit postgres
+  - `Drop DATABASE [Database_name]` to drop a database
+  - `CREATE DATABASE [Database_name]` to create a database
 
 - Alternatively, run
 ```bash
