@@ -9,96 +9,97 @@ import { FormArray, FormBuilder, FormGroup, FormControl, Validators } from '@ang
   styleUrls: ['./add-course.component.scss']
 })
 export class AddCourseComponent implements OnInit {
-  inputForm : FormGroup
-  validationMsg: string = ''
-  successMsg: string = ''
-  errorMsg: string = ''
-  prereqsList : any[] = []
+  // tslint:disable-next-line: semicolon
+  inputForm: FormGroup
+  validationMsg = '';
+  successMsg = '';
+  errorMsg = '';
+  prereqsList: any[] = [];
   result = {
-    courseCode:'',
-    sections:'',
-    sectionSize:'',
-    profFirstName:'',
-    profLastName:'',
-    prereqs:[]
-  }
+    courseCode: '',
+    sections: '',
+    sectionSize: '',
+    profFirstName: '',
+    profLastName: '',
+    prereqs: []
+  };
 
   constructor(private api: ApicallsService, private fb: FormBuilder) {
     // create the form fields
     this.inputForm = fb.group({
-      courseCode:["CS 6969", Validators.required],
-      sections:["1", Validators.required],
-      sectionSize:["1", Validators.required],
-      profLastName:["Robbie", Validators.required],
-      profFirstName:["Z", Validators.required],
-      prereqList: fb.array([
-        this.initLink()
-      ]),
-    })
+      courseCode: ['CS 6969', Validators.required],
+      sections: ['1', Validators.required],
+      sectionSize: ['1', Validators.required],
+      profLastName: ['Robbie', Validators.required],
+      profFirstName: ['Z', Validators.required],
+      prereqList: fb.array([]),
+    });
    }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   initLink() {
     return this.fb.group({
-      prereq: "Memez"
-    })
+      prereq: 'Memez'
+    });
   }
 
   addLink() {
-    const control = < FormArray > this.inputForm.controls['prereqList'];
+    const control = this.inputForm.controls.prereqList as FormArray;
     control.push(this.initLink());
   }
 
   removeLink(i: number) {
-      const control = < FormArray > this.inputForm.controls['prereqList'];
+      const control = this.inputForm.controls.prereqList as FormArray;
       control.removeAt(i);
   }
 
-  submit(){
-    this.validationMsg = "";
+  submit() {
+    this.validationMsg = '';
 
-    if (!this.inputForm.valid){
-      this.validationMsg = "Please fill in the required fields"
+    if (!this.inputForm.valid) {
+      this.validationMsg = 'Please fill in the required fields';
       return;
     }
 
-    for (const val of (< FormArray > this.inputForm.controls['prereqList']).controls) {
-      this.prereqsList.push((< FormGroup> val).controls.prereq.value);
+    for (const val of (this.inputForm.controls.prereqList as FormArray).controls) {
+      this.prereqsList.push((val as FormGroup).controls.prereq.value);
     }
 
-    this.api.getData(`${urlConfig.baseUrl}/addNewCourse?courseCode=${this.inputForm.controls.courseCode.value}
-      &sections=${this.inputForm.controls.sections.value}&sectionSize=${this.inputForm.controls.sectionSize.value}
-      &profFirstName=${this.inputForm.controls.profFirstName.value}&profLastName=${this.inputForm.controls.profLastName.value}
-      &prereqs=${this.prereqsList}`)
+    this.api
+      .getData(`${urlConfig.baseUrl}/addNewCourse?courseCode=${this.inputForm.controls.courseCode.value}
+        &sections=${this.inputForm.controls.sections.value}
+        &sectionSize=${this.inputForm.controls.sectionSize.value}
+        &profFirstName=${this.inputForm.controls.profFirstName.value}
+        &profLastName=${this.inputForm.controls.profLastName.value}
+        &prereqs=${this.prereqsList}`)
       .subscribe(res => {
-        if (this.isObjectEmpty(res)){
-          this.errorMsg = "Unable to add course."
+        if (this.isObjectEmpty(res)) {
+          this.errorMsg = 'Unable to add course.';
           this.result = {
             courseCode: '',
-            sections:'',
-            sectionSize:'',
-            profFirstName:'',
-            profLastName:'',
-            prereqs:[]
-          }
+            sections: '',
+            sectionSize: '',
+            profFirstName: '',
+            profLastName: '',
+            prereqs: []
+          };
           return;
         }
 
-        this.errorMsg = ''
-        this.result.courseCode = res["courseCode"]
-        this.result.sections = res["sections"]
-        this.result.sectionSize = res["sectionSize"]
-        this.result.profFirstName = res["profFirstName"]
-        this.result.profLastName = res["profLastName"]
-        this.result.prereqs = res["prereqs"]
+        this.errorMsg = '';
+        this.result.courseCode = res.courseCode;
+        this.result.sections = res.sections;
+        this.result.sectionSize = res.sectionSize;
+        this.result.profFirstName = res.profFirstName;
+        this.result.profLastName = res.profLastName;
+        this.result.prereqs = res.prereqs;
 
-        this.successMsg = this.result.courseCode + " has been added successfully for Prof. " + this.result.profFirstName + " " + this.result.profLastName + "."
-      });   
+        this.successMsg = this.result.courseCode + ' has been added successfully for Prof. ' + this.result.profFirstName + ' ' + this.result.profLastName + '.';
+      });
   }
 
-  isObjectEmpty(obj){
-    return Object.keys(obj).length === 0 && obj.constructor === Object
+  isObjectEmpty(obj) {
+    return Object.keys(obj).length === 0 && obj.constructor === Object;
   }
 }
