@@ -96,4 +96,4 @@ CREATE TABLE courseOffering (
 
 CREATE INDEX coursecode on courseOffering(courseCode);
 CREATE INDEX profName on courseOffering(profFirstName, profLastName);
-\CREATE INDEX courseCodePre on prerequisite(courseCode);
+CREATE INDEX courseCodePre on prerequisite(courseCode);

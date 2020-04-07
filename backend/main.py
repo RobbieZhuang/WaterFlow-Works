@@ -8,27 +8,36 @@ import json
 app = Flask(__name__)
 CORS(app)
 
-with open('./configs') as f:
-    _db = f.readline().rstrip()
-    _user = f.readline().rstrip()
-    _pw = f.readline().rstrip()
-    _host = f.readline().rstrip()
-    _port = f.readline().rstrip()
-    connection_params = {
-        "DB": _db,
-        "USER": _user,
-        "PASSWORD": _pw,
-        "HOST": _host,
-        "PORT": _port
-    }
+# with open('./configs') as f:
+#     _db = f.readline().rstrip()
+#     _user = f.readline().rstrip()
+#     _pw = f.readline().rstrip()
+#     _host = f.readline().rstrip()
+#     _port = f.readline().rstrip()
+#     connection_params = {
+#         "DB": _db,
+#         "USER": _user,
+#         "PASSWORD": _pw,
+#         "HOST": _host,
+#         "PORT": _port
+#     }
+
+connection_local = {
+	"DB": "CS348",
+	"PORT": "5432"
+}
 
 connection = psycopg2.connect(
-    database = connection_params["DB"],
-    user = connection_params["USER"],
-    password = connection_params["PASSWORD"],
-    host = connection_params["HOST"],
-    port = connection_params["PORT"],
+    database = connection_local["DB"],
+    port = connection_local["PORT"]
 )
+# connection = psycopg2.connect(
+#     database = connection_params["DB"],
+#     user = connection_params["USER"],
+#     password = connection_params["PASSWORD"],
+#     host = connection_params["HOST"],
+#     port = connection_params["PORT"],
+# )
 
 term_to_word = {1: "Winter", 5: "Spring", 9: "Fall"}
 
