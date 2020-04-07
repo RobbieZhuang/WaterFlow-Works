@@ -34,6 +34,7 @@ export class CoursePathComponent implements OnInit {
     let course = this.form.controls.courseTaken.value;
     this.api.getData(`${urlConfig.baseUrl}/getCourseInfo?course=${course}`)
     .subscribe(res => {
+      console.log(res)
       if (Object.keys(res).length === 0 && res.constructor === Object){
         this.errorCourseAdd = `Seems like the course ${course} does not exist`
         return;

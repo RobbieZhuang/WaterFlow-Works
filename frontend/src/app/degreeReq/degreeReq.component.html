@@ -7,7 +7,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="inputGroup-sizing-default">Course+ID</span>
             </div>
-            <input type="text" appFormartCourseCode formControlName="courseTaken" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            <input appFormatCourseCode type="text" appFormartCourseCode formControlName="courseTaken" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
             <button type="button" class="btn btn-primary" (click)="addCourse()">Add</button>
         </div>
         <div *ngIf="errorCourseAdd != ''" class="alert alert-danger" role="alert">
