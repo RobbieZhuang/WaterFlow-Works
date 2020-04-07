@@ -369,5 +369,34 @@ def getRequiredDegreeRequirements():
 
     return json.dumps(result)
 
+
+@app.route("/addNewCourse")
+def addNewCourse():
+    course_code = request.json.get('courseCode', default = '', type = str).strip().upper()
+    sections = request.json.get('sections', default = '', type = int)
+    section_size = request.json.get('sectionSize', default = '', type = int)
+    prof_first_name = request.json.get('profFirstName', default = '', type = str).strip().upper()
+    prof_last_name = request.json.get('profLastName', default = '', type = str).strip().upper()
+    prereqs = request.json.get('prereqs')
+
+    # cur = connection.cursor()
+    print("!!!!!!!!! AYY WE DID IT !!!!!!")
+    # TODO: Execute some code to check & add to db!
+    # cur.execute("""
+    #     SELECT coursetype, component, enrlcap, enrltot, proffirstname, proflastname, classstarttime, classendtime, classweekdays, classbuilding, classroom
+    #     FROM courseOffering
+    #     WHERE coursecode = %s AND component < 100 AND termcode = %s
+    #     ORDER BY component;
+    # """, [course, term])
+    result = {
+        "courseCode": course_code,
+        "sections": sections,
+        "sectionSize": section_size,
+        "profFirstName": prof_first_name,
+        "profLastName": prof_last_name,
+        "prereqs": prereqs
+    }
+    return json.dumps(result)
+
 if __name__ == "__main__":
     app.run()

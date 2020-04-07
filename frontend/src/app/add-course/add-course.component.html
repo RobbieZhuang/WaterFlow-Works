@@ -1,0 +1,50 @@
+<form class="container" [formGroup]="inputForm">
+    <h2>Add A New Course</h2>
+    <div>
+        <mat-form-field class="example-full-width">
+            <input type="text" matInput placeholder="Course Code" formControlName="courseCode">
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <input type="number" matInput placeholder="Sections" formControlName="sections">
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <input type="number" matInput placeholder="Section Size" formControlName="sectionSize">
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field class="example-full-width">
+            <input type="text" matInput placeholder="Prof First Name" formControlName="profLastName">
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <input type="text" matInput placeholder="Prof Last Name" formControlName="profFirstName">
+        </mat-form-field>
+    </div>
+
+    <div formArrayName="prereqList">
+        <div *ngFor="let address of inputForm.controls.prereqList.controls; let i=index">
+            <mat-form-field class="example-full-width" [formGroupName]="i">
+                <input type="text" matInput placeholder="Prerequisite {{i + 1}}" formControlName="prereq">
+            </mat-form-field>
+            <button mat-raised-button color="secondary" *ngIf="inputForm.controls.prereqList.controls.length > 1" (click)="removeLink(i)">Remove</button>
+        </div>
+    </div>
+    <div>
+        <button mat-raised-button type="button" color="primary" (click)="addLink()">Add Prereq</button>
+    </div>
+
+    <div class="submit">
+        <button mat-raised-button color="primary" (click)="submit()">Submit</button>
+    </div>
+    <div *ngIf="validationMsg != ''" class="alert alert-danger" role="alert">
+        {{this.validationMsg}}
+    </div>
+    <div *ngIf="errorMsg != ''" class="alert alert-danger" role="alert">
+        {{this.errorMsg}}
+    </div>
+    <div *ngIf="successMsg != ''" class="alert alert-success" role="alert">
+        {{this.successMsg}}
+    </div>
+</form>

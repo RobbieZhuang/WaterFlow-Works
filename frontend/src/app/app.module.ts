@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { InputformComponent } from './inputform/inputform.component';
+import { AddCourseComponent } from './add-course/add-course.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomepageComponent } from './homepage/homepage.component';
 import {MatInputModule} from '@angular/material/input';
@@ -22,6 +23,7 @@ import { TerminfotableComponent } from './terminfotable/terminfotable.component'
   declarations: [
     AppComponent,
     InputformComponent,
+    AddCourseComponent,
     HomepageComponent,
     CoursePathComponent,
     FindCourseComponent,
