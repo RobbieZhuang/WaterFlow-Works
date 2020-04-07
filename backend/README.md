@@ -52,7 +52,7 @@ export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin
 python3 -m venv env; source env/bin/activate
 ```
 
-- Install the required python packages:
+- Install the required python packages (make sure to be in the `backend/` dir):
 ```bash
 pip install -r requirements.txt
 ```
