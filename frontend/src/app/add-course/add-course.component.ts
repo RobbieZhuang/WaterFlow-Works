@@ -65,7 +65,7 @@ export class AddCourseComponent implements OnInit {
     }
 
     for (const val of (< FormArray > this.inputForm.controls['prereqList']).controls) {
-      this.prereqsList.push(<string>val.value);
+      this.prereqsList.push((< FormGroup> val).controls.prereq.value);
     }
 
     this.api.getData(`${urlConfig.baseUrl}/addNewCourse?courseCode=${this.inputForm.controls.courseCode.value}

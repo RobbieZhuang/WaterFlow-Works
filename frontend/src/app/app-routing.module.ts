@@ -12,7 +12,7 @@ const routes: Routes = [
     component: InputformComponent
   },
   {
-    path:"addCourse",
+    path:"addNewCourse",
     component: AddCourseComponent
   },
   {

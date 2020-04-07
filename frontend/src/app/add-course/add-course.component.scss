@@ -28,3 +28,25 @@
         ;
     }
 }
+
+.mat-button.mat-success,
+.mat-stroked-button.mat-success {
+    color: #28853d;
+}
+
+.mat-button.mat-success:hover,
+.mat-stroked-button.mat-success:hover {
+    background-color: #f0fff3;
+}
+
+.mat-raised-button.mat-success,
+.mat-flat-button.mat-success,
+.mat-fab.mat-success,
+.mat-mini-fab.mat-success {
+    color: #f0fff3;
+    background-color: #28853d;
+}
+
+.mat-icon-button.mat-success {
+    color: #28853d;
+}
