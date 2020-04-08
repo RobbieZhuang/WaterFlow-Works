@@ -301,6 +301,99 @@ def getTermOfferings():
 
     return json.dumps(offerings)
 
+@app.route("/addNewCourse")
+def addNewCourse():
+    data = request.args
+    course_code = data.get('courseCode', default = '', type = str).strip().upper()
+    title = data.get('title', default = '', type = str).strip().upper()
+    description = data.get('description', default = '', type = str).strip().upper()
+    course_types = data.get('courseTypes', default = '', type = str).strip().upper()
+    term_code = data.get('termCode', default = '', type = int)
+    credit = data.get('credit', default = 0.5, type = float)
+
+    sections = data.get('sections', default = '', type = int)
+    section_size = data.get('sectionSize', default = '', type = int)
+    prof_first_name = data.get('profFirstName', default = '', type = str).strip().upper()
+    prof_last_name = data.get('profLastName', default = '', type = str).strip().upper()
+    prereqs = data.get('prereqs').split(',')
+    
+    cur = connection.cursor()
+
+    # Check term code is valid
+    if term_code % 10 != 9 and term_code % 10 != 5 and term_code % 10 != 1:
+        return json.dumps({})
+
+    # Check if all prereqs are valid
+    for prereq in prereqs:
+        cur.execute(sql.SQL("SELECT count(*) FROM course WHERE courseCode = %s;"), [prereq])
+        list = cur.fetchall()
+        if list and list[0][0] < 1:
+            return json.dumps({})
+
+    # Check if course code already exists in course table
+    cur.execute(sql.SQL("SELECT count(*) FROM course WHERE coursecode = %s;"), [course_code]);
+    list = cur.fetchall()
+    if list and list[0][0] > 0:
+        return json.dumps({})
+
+    # Check if course already exists in course offering table
+    cur.execute(sql.SQL("SELECT count(*) FROM courseoffering WHERE coursecode = %s AND termcode = %s"), [course_code, term_code]);
+    list = cur.fetchall()
+    if list and list[0][0] > 0:
+        return json.dumps({})
+    
+    # Check if termcode already exists in term table
+    cur.execute(sql.SQL("SELECT count(*) FROM term WHERE code = %s"), [term_code]);
+    list = cur.fetchall()
+    if list and list[0][0] > 0:
+        return json.dumps({})
+
+
+
+    # Insert into course table
+    cur.execute(sql.SQL("INSERT INTO course (coursecode, title, credit, coursetypes, description, subjecttitle) VALUES (%s, %s, %s, %s, %s, %s);"), [course_code, title, credit, course_types, description, course_code.split()[0]])
+    
+    # Insert into term and courseoffering tables
+    cur.execute(sql.SQL("INSERT INTO term (code) VALUES (%s);"), [term_code]);
+    for i in range(1, sections + 1):
+        cur.execute(sql.SQL("INSERT INTO courseoffering (coursecode, termcode, component, coursetype, enrlcap, proffirstname, proflastname) VALUES (%s, %s, %s, %s, %s, %s, %s);"), [course_code, term_code, i, course_types.split()[0], section_size, prof_first_name, prof_last_name])
+    
+    # Insert into coursegroups table and associate prerequisites
+    for prereq in prereqs:
+        cur.execute(sql.SQL("INSERT INTO courseGroup (quantity) VALUES (1);"))
+        cur.execute(
+            sql.SQL(
+                """
+                    WITH groupID as(
+                        SELECT currval(pg_get_serial_sequence('coursegroup', 'groupid')) as v
+                    )
+                    INSERT INTO courseGroupMember (coursecode, coursegroupid) VALUES (%s, (SELECT v from groupid));
+                """
+            ), [prereq])
+        cur.execute(
+            sql.SQL(
+                """
+                    WITH groupID as(
+                        SELECT currval(pg_get_serial_sequence('coursegroup', 'groupid')) as v
+                    )
+                    INSERT INTO prerequisite (coursecode, prereqcoursegroupid) VALUES (%s, (SELECT v from groupID));
+                """
+            ), [course_code])
+
+
+    connection.commit()
+    cur.close()
+
+    result = {
+        "courseCode": course_code,
+        "sections": sections,
+        "sectionSize": section_size,
+        "profFirstName": prof_first_name,
+        "profLastName": prof_last_name,
+        "prereqs": prereqs
+    }
+    return json.dumps(result)
+
 @app.route("/getRequiredDegreeReqs", methods = ['POST'])
 def getRequiredDegreeRequirements():
     data = request.json

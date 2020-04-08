@@ -1,0 +1,52 @@
+.container {
+    margin: 20px;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    mat-form-field {
+        margin-right: 3rem;
+    }
+    mat-radio-button {
+        margin-top: 0.5rem;
+    }
+}
+
+.submit {
+    margin-top: 1rem;
+}
+
+.radioArea {
+    display: flex;
+    margin-top: 1rem;
+    .radioButton {
+        margin-right: 2rem;
+        display: flex;
+    }
+    .radioLabel {
+        padding-top: 0.5rem;
+        padding-right: 1rem;
+        ;
+    }
+}
+
+.mat-button.mat-success,
+.mat-stroked-button.mat-success {
+    color: #28853d;
+}
+
+.mat-button.mat-success:hover,
+.mat-stroked-button.mat-success:hover {
+    background-color: #f0fff3;
+}
+
+.mat-raised-button.mat-success,
+.mat-flat-button.mat-success,
+.mat-fab.mat-success,
+.mat-mini-fab.mat-success {
+    color: #f0fff3;
+    background-color: #28853d;
+}
+
+.mat-icon-button.mat-success {
+    color: #28853d;
+}
