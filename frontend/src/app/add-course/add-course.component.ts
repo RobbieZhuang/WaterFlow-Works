@@ -31,7 +31,8 @@ export class AddCourseComponent implements OnInit {
   constructor(private api: ApicallsService, private fb: FormBuilder) {
     // create the form fields
     this.inputForm = fb.group({
-      courseCode: ['', Validators.required],
+      courseCode: ['', Validators.required],  // TODO: Add server validations for courseCode (like on degree requirement page)
+                                              //  adding a course that user took before validates if it exists in the db.
       title: ['', Validators.required],
       description: '',
       courseTypes: ['LEC', Validators.required],
