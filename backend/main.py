@@ -317,6 +317,7 @@ def addNewCourse():
     title = data.get('title', default = '', type = str).strip().upper()
     description = data.get('description', default = '', type = str).strip().upper()
     course_types = data.get('courseTypes', default = '', type = str).strip().upper()
+    term_code = data.get('termCode', default = '', type = int)
     credit = data.get('credit', default = 0.5, type = float)
 
     sections = data.get('sections', default = '', type = int)
@@ -331,15 +332,37 @@ def addNewCourse():
     for prereq in prereqs:
         cur.execute(sql.SQL("SELECT count(*) FROM course WHERE courseCode = %s;"), [prereq])
         print(cur.fetchall()[0])
-        if cur.fetchall() and cur.fetchall()[0].first < 1:
+        list = cur.fetchall()
+        if list and list[0][0] < 1:
             return json.dumps({})
 
-    # print("INSERT INTO course (coursecode, title, credit, coursetypes, description, subjecttitle) VALUES (%s, %s, %f, %s, %s, %s);", [course_code, title, credit, course_types, description, course_code.split()[0]])
+    # Check if course code already exists in course table
+    cur.execute(sql.SQL("SELECT count(*) FROM course WHERE coursecode = %s;"), [course_code]);
+    list = cur.fetchall()
+    if list and list[0][0] > 0:
+        return json.dumps({})
+
+    # Check if course already exists in course offering table
+    cur.execute(sql.SQL("SELECT count(*) FROM courseoffering WHERE coursecode = %s AND termcode = %s"), [course_code, term_code]);
+    list = cur.fetchall()
+    if list and list[0][0] > 0:
+        return json.dumps({})
     
+    # Check if termcode already exists in term table
+    cur.execute(sql.SQL("SELECT count(*) FROM term WHERE code = %s"), [term_code]);
+    list = cur.fetchall()
+    if list and list[0][0] > 0:
+        return json.dumps({})
+
     cur.execute(sql.SQL("INSERT INTO course (coursecode, title, credit, coursetypes, description, subjecttitle) VALUES (%s, %s, %s, %s, %s, %s);"), [course_code, title, credit, course_types, description, course_code.split()[0]])
+    
+    cur.execute(sql.SQL("INSERT INTO term (code) VALUES (%s);"), [term_code]);
+    for i in range(1, sections + 1):
+        cur.execute(sql.SQL("INSERT INTO courseoffering (coursecode, termcode, component, coursetype, enrlcap, proffirstname, proflastname) VALUES (%s, %s, %s, %s, %s, %s, %s);"), [course_code, term_code, i, course_types.split()[0], section_size, prof_first_name, prof_last_name])
+    
     connection.commit()
-    cur.execute(sql.SQL("SELECT courseCode FROM course WHERE courseCode LIKE 'CS%%' order by courseCode;"))
-    print(cur.fetchall())
+    #cur.execute(sql.SQL("SELECT courseCode FROM course WHERE courseCode LIKE 'CS%%' order by courseCode;"))
+    #print(cur.fetchall())
     cur.close()
 
     result = {

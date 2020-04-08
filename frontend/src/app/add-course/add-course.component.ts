@@ -20,6 +20,7 @@ export class AddCourseComponent implements OnInit {
     title: '',
     description: '',
     courseTypes: '',
+    termCode: 0,
     credit: 0,
     sections: '',
     sectionSize: '',
@@ -31,15 +32,16 @@ export class AddCourseComponent implements OnInit {
   constructor(private api: ApicallsService, private fb: FormBuilder) {
     // create the form fields
     this.inputForm = fb.group({
-      courseCode: ['CS 6969', Validators.required],
+      courseCode: ['CS 401', Validators.required],
       title: ['', Validators.required],
       description: '',
       courseTypes: ['LEC', Validators.required],
+      termCode: ['2020', Validators.required],
       credit: [0.5, Validators.required],
       sections: ['1', Validators.required],
       sectionSize: ['1', Validators.required],
-      profLastName: ['Robbie', Validators.required],
-      profFirstName: ['Z', Validators.required],
+      profFirstName: ['Robbie', Validators.required],
+      profLastName: ['Z', Validators.required],
       prereqList: fb.array([]),
     });
    }
@@ -48,7 +50,7 @@ export class AddCourseComponent implements OnInit {
 
   initLink() {
     return this.fb.group({
-      prereq: 'Memez'
+      prereq: 'CS 135'
     });
   }
 
@@ -80,6 +82,7 @@ export class AddCourseComponent implements OnInit {
         &title=${this.inputForm.controls.title.value}
         &description=${this.inputForm.controls.description.value}
         &courseTypes=${this.inputForm.controls.courseTypes.value}
+        &termCode=${this.inputForm.controls.termCode.value}
         &credit=${this.inputForm.controls.credit.value}
         &sections=${this.inputForm.controls.sections.value}
         &sectionSize=${this.inputForm.controls.sectionSize.value}
@@ -94,6 +97,7 @@ export class AddCourseComponent implements OnInit {
             title: '',
             description: '',
             courseTypes: '',
+            termCode: 0,
             credit: 0,
             sections: '',
             sectionSize: '',
