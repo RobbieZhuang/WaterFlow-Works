@@ -9,8 +9,7 @@ import { FormArray, FormBuilder, FormGroup, FormControl, Validators } from '@ang
   styleUrls: ['./add-course.component.scss']
 })
 export class AddCourseComponent implements OnInit {
-  // tslint:disable-next-line: semicolon
-  inputForm: FormGroup
+  inputForm: FormGroup;
   validationMsg = '';
   successMsg = '';
   errorMsg = '';
@@ -72,7 +71,7 @@ export class AddCourseComponent implements OnInit {
       return;
     }
 
-    this.prereqsList.length = 0
+    this.prereqsList.length = 0;
     for (const val of (this.inputForm.controls.prereqList as FormArray).controls) {
       this.prereqsList.push((val as FormGroup).controls.prereq.value);
     }
@@ -116,7 +115,7 @@ export class AddCourseComponent implements OnInit {
         this.result.profLastName = res.profLastName;
         this.result.prereqs = res.prereqs;
 
-        this.successMsg = this.result.courseCode + ' has been added successfully for Prof. ' + this.result.profFirstName + ' ' + this.result.profLastName + '.';
+        this.successMsg = this.result.courseCode + ' has been added successfully for Prof. ' + this.result.profLastName + '.';
       });
   }
 
