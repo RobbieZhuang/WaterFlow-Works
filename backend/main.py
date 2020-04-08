@@ -8,19 +8,19 @@ import json
 app = Flask(__name__)
 CORS(app)
 
-# with open('./configs') as f:
-#     _db = f.readline().rstrip()
-#     _user = f.readline().rstrip()
-#     _pw = f.readline().rstrip()
-#     _host = f.readline().rstrip()
-#     _port = f.readline().rstrip()
-#     connection_params = {
-#         "DB": _db,
-#         "USER": _user,
-#         "PASSWORD": _pw,
-#         "HOST": _host,
-#         "PORT": _port
-#     }
+with open('./configs') as f:
+    _db = f.readline().rstrip()
+    _user = f.readline().rstrip()
+    _pw = f.readline().rstrip()
+    _host = f.readline().rstrip()
+    _port = f.readline().rstrip()
+    connection_params = {
+        "DB": _db,
+        "USER": _user,
+        "PASSWORD": _pw,
+        "HOST": _host,
+        "PORT": _port
+    }
 
 connection_local = {
 	"DB": "CS348",
@@ -28,16 +28,12 @@ connection_local = {
 }
 
 connection = psycopg2.connect(
-    database = connection_local["DB"],
-    port = connection_local["PORT"]
+    database = connection_params["DB"],
+    user = connection_params["USER"],
+    password = connection_params["PASSWORD"],
+    host = connection_params["HOST"],
+    port = connection_params["PORT"],
 )
-# connection = psycopg2.connect(
-#     database = connection_params["DB"],
-#     user = connection_params["USER"],
-#     password = connection_params["PASSWORD"],
-#     host = connection_params["HOST"],
-#     port = connection_params["PORT"],
-# )
 
 term_to_word = {1: "Winter", 5: "Spring", 9: "Fall"}
 
@@ -332,9 +328,7 @@ def addNewCourse():
     cur = connection.cursor()
 
     # Check if all prereqs are valid
-    print(prereqs)
     for prereq in prereqs:
-        print(prereq)
         cur.execute(sql.SQL("SELECT count(*) FROM course WHERE courseCode = %s;"), [prereq])
         list = cur.fetchall()
         if list and list[0][0] < 1:
@@ -357,6 +351,8 @@ def addNewCourse():
     list = cur.fetchall()
     if list and list[0][0] > 0:
         return json.dumps({})
+
+
 
     # Insert into course table
     cur.execute(sql.SQL("INSERT INTO course (coursecode, title, credit, coursetypes, description, subjecttitle) VALUES (%s, %s, %s, %s, %s, %s);"), [course_code, title, credit, course_types, description, course_code.split()[0]])
@@ -390,8 +386,6 @@ def addNewCourse():
 
 
     connection.commit()
-    #cur.execute(sql.SQL("SELECT courseCode FROM course WHERE courseCode LIKE 'CS%%' order by courseCode;"))
-    #print(cur.fetchall())
     cur.close()
 
     result = {
