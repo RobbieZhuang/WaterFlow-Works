@@ -14,7 +14,7 @@ export class AddCourseComponent implements OnInit {
   validationMsg = '';
   successMsg = '';
   errorMsg = '';
-  prereqsList: any[] = [];
+  prereqsList: string[] = [];
   result = {
     courseCode: '',
     title: '',
@@ -72,7 +72,7 @@ export class AddCourseComponent implements OnInit {
       return;
     }
 
-    this.prereqsList = []
+    this.prereqsList.length = 0
     for (const val of (this.inputForm.controls.prereqList as FormArray).controls) {
       this.prereqsList.push((val as FormGroup).controls.prereq.value);
     }

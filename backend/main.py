@@ -324,14 +324,18 @@ def addNewCourse():
     section_size = data.get('sectionSize', default = '', type = int)
     prof_first_name = data.get('profFirstName', default = '', type = str).strip().upper()
     prof_last_name = data.get('profLastName', default = '', type = str).strip().upper()
-    prereqs = data.get('prereqs')
+    prereqs = data.get('prereqs').split(',')
 
+    if term_code % 10 != 9 and term_code % 10 != 5 and term_code % 10 != 1:
+        return json.dumps({})
+    
     cur = connection.cursor()
+
     # Check if all prereqs are valid
     print(prereqs)
     for prereq in prereqs:
+        print(prereq)
         cur.execute(sql.SQL("SELECT count(*) FROM course WHERE courseCode = %s;"), [prereq])
-        print(cur.fetchall()[0])
         list = cur.fetchall()
         if list and list[0][0] < 1:
             return json.dumps({})
@@ -354,12 +358,37 @@ def addNewCourse():
     if list and list[0][0] > 0:
         return json.dumps({})
 
+    # Insert into course table
     cur.execute(sql.SQL("INSERT INTO course (coursecode, title, credit, coursetypes, description, subjecttitle) VALUES (%s, %s, %s, %s, %s, %s);"), [course_code, title, credit, course_types, description, course_code.split()[0]])
     
+    # Insert into term and courseoffering tables
     cur.execute(sql.SQL("INSERT INTO term (code) VALUES (%s);"), [term_code]);
     for i in range(1, sections + 1):
         cur.execute(sql.SQL("INSERT INTO courseoffering (coursecode, termcode, component, coursetype, enrlcap, proffirstname, proflastname) VALUES (%s, %s, %s, %s, %s, %s, %s);"), [course_code, term_code, i, course_types.split()[0], section_size, prof_first_name, prof_last_name])
     
+    # Insert into coursegroups table and associate prerequisites
+    for prereq in prereqs:
+        cur.execute(sql.SQL("INSERT INTO courseGroup (quantity) VALUES (1);"))
+        cur.execute(
+            sql.SQL(
+                """
+                    WITH groupID as(
+                        SELECT currval(pg_get_serial_sequence('coursegroup', 'groupid')) as v
+                    )
+                    INSERT INTO courseGroupMember (coursecode, coursegroupid) VALUES (%s, (SELECT v from groupid));
+                """
+            ), [prereq])
+        cur.execute(
+            sql.SQL(
+                """
+                    WITH groupID as(
+                        SELECT currval(pg_get_serial_sequence('coursegroup', 'groupid')) as v
+                    )
+                    INSERT INTO prerequisite (coursecode, prereqcoursegroupid) VALUES (%s, (SELECT v from groupID));
+                """
+            ), [course_code])
+
+
     connection.commit()
     #cur.execute(sql.SQL("SELECT courseCode FROM course WHERE courseCode LIKE 'CS%%' order by courseCode;"))
     #print(cur.fetchall())
