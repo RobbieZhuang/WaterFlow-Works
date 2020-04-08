@@ -32,16 +32,16 @@ export class AddCourseComponent implements OnInit {
   constructor(private api: ApicallsService, private fb: FormBuilder) {
     // create the form fields
     this.inputForm = fb.group({
-      courseCode: ['CS 401', Validators.required],
+      courseCode: ['', Validators.required],
       title: ['', Validators.required],
       description: '',
       courseTypes: ['LEC', Validators.required],
-      termCode: ['2020', Validators.required],
+      termCode: ['', Validators.required],
       credit: [0.5, Validators.required],
-      sections: ['1', Validators.required],
-      sectionSize: ['1', Validators.required],
-      profFirstName: ['Robbie', Validators.required],
-      profLastName: ['Z', Validators.required],
+      sections: [1, Validators.required],
+      sectionSize: [50, Validators.required],
+      profFirstName: ['', Validators.required],
+      profLastName: ['', Validators.required],
       prereqList: fb.array([]),
     });
    }
@@ -50,7 +50,7 @@ export class AddCourseComponent implements OnInit {
 
   initLink() {
     return this.fb.group({
-      prereq: 'CS 135'
+      prereq: ''
     });
   }
 

@@ -22,11 +22,6 @@ with open('./configs') as f:
         "PORT": _port
     }
 
-connection_local = {
-	"DB": "CS348",
-	"PORT": "5432"
-}
-
 connection = psycopg2.connect(
     database = connection_params["DB"],
     user = connection_params["USER"],
@@ -321,11 +316,12 @@ def addNewCourse():
     prof_first_name = data.get('profFirstName', default = '', type = str).strip().upper()
     prof_last_name = data.get('profLastName', default = '', type = str).strip().upper()
     prereqs = data.get('prereqs').split(',')
-
-    if term_code % 10 != 9 and term_code % 10 != 5 and term_code % 10 != 1:
-        return json.dumps({})
     
     cur = connection.cursor()
+
+    # Check term code is valid
+    if term_code % 10 != 9 and term_code % 10 != 5 and term_code % 10 != 1:
+        return json.dumps({})
 
     # Check if all prereqs are valid
     for prereq in prereqs:
