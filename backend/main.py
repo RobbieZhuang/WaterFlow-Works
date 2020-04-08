@@ -314,21 +314,34 @@ def getTermOfferings():
 def addNewCourse():
     data = request.args
     course_code = data.get('courseCode', default = '', type = str).strip().upper()
+    title = data.get('title', default = '', type = str).strip().upper()
+    description = data.get('description', default = '', type = str).strip().upper()
+    course_types = data.get('courseTypes', default = '', type = str).strip().upper()
+    credit = data.get('credit', default = 0.5, type = float)
+
     sections = data.get('sections', default = '', type = int)
     section_size = data.get('sectionSize', default = '', type = int)
     prof_first_name = data.get('profFirstName', default = '', type = str).strip().upper()
     prof_last_name = data.get('profLastName', default = '', type = str).strip().upper()
     prereqs = data.get('prereqs')
 
-    # cur = connection.cursor()
-    print("!!!!!!!!! AYY WE DID IT !!!!!!")
-    # TODO: Execute some code to check & add to db!
-    # cur.execute("""
-    #     SELECT coursetype, component, enrlcap, enrltot, proffirstname, proflastname, classstarttime, classendtime, classweekdays, classbuilding, classroom
-    #     FROM courseOffering
-    #     WHERE coursecode = %s AND component < 100 AND termcode = %s
-    #     ORDER BY component;
-    # """, [course, term])
+    cur = connection.cursor()
+    # Check if all prereqs are valid
+    print(prereqs)
+    for prereq in prereqs:
+        cur.execute(sql.SQL("SELECT count(*) FROM course WHERE courseCode = %s;"), [prereq])
+        print(cur.fetchall()[0])
+        if cur.fetchall() and cur.fetchall()[0].first < 1:
+            return json.dumps({})
+
+    # print("INSERT INTO course (coursecode, title, credit, coursetypes, description, subjecttitle) VALUES (%s, %s, %f, %s, %s, %s);", [course_code, title, credit, course_types, description, course_code.split()[0]])
+    
+    cur.execute(sql.SQL("INSERT INTO course (coursecode, title, credit, coursetypes, description, subjecttitle) VALUES (%s, %s, %s, %s, %s, %s);"), [course_code, title, credit, course_types, description, course_code.split()[0]])
+    connection.commit()
+    cur.execute(sql.SQL("SELECT courseCode FROM course WHERE courseCode LIKE 'CS%%' order by courseCode;"))
+    print(cur.fetchall())
+    cur.close()
+
     result = {
         "courseCode": course_code,
         "sections": sections,

@@ -17,6 +17,10 @@ export class AddCourseComponent implements OnInit {
   prereqsList: any[] = [];
   result = {
     courseCode: '',
+    title: '',
+    description: '',
+    courseTypes: '',
+    credit: 0,
     sections: '',
     sectionSize: '',
     profFirstName: '',
@@ -28,6 +32,10 @@ export class AddCourseComponent implements OnInit {
     // create the form fields
     this.inputForm = fb.group({
       courseCode: ['CS 6969', Validators.required],
+      title: ['', Validators.required],
+      description: '',
+      courseTypes: ['LEC', Validators.required],
+      credit: [0.5, Validators.required],
       sections: ['1', Validators.required],
       sectionSize: ['1', Validators.required],
       profLastName: ['Robbie', Validators.required],
@@ -62,12 +70,17 @@ export class AddCourseComponent implements OnInit {
       return;
     }
 
+    this.prereqsList = []
     for (const val of (this.inputForm.controls.prereqList as FormArray).controls) {
       this.prereqsList.push((val as FormGroup).controls.prereq.value);
     }
 
     this.api
       .getData(`${urlConfig.baseUrl}/addNewCourse?courseCode=${this.inputForm.controls.courseCode.value}
+        &title=${this.inputForm.controls.title.value}
+        &description=${this.inputForm.controls.description.value}
+        &courseTypes=${this.inputForm.controls.courseTypes.value}
+        &credit=${this.inputForm.controls.credit.value}
         &sections=${this.inputForm.controls.sections.value}
         &sectionSize=${this.inputForm.controls.sectionSize.value}
         &profFirstName=${this.inputForm.controls.profFirstName.value}
@@ -78,6 +91,10 @@ export class AddCourseComponent implements OnInit {
           this.errorMsg = 'Unable to add course.';
           this.result = {
             courseCode: '',
+            title: '',
+            description: '',
+            courseTypes: '',
+            credit: 0,
             sections: '',
             sectionSize: '',
             profFirstName: '',
