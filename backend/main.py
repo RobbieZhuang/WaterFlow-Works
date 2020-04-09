@@ -348,8 +348,6 @@ def addNewCourse():
     if list and list[0][0] > 0:
         return json.dumps({})
 
-
-
     # Insert into course table
     cur.execute(sql.SQL("INSERT INTO course (coursecode, title, credit, coursetypes, description, subjecttitle) VALUES (%s, %s, %s, %s, %s, %s);"), [course_code, title, credit, course_types, description, course_code.split()[0]])
     
@@ -393,6 +391,7 @@ def addNewCourse():
         "prereqs": prereqs
     }
     return json.dumps(result)
+
 
 @app.route("/getRequiredDegreeReqs", methods = ['POST'])
 def getRequiredDegreeRequirements():
