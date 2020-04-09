@@ -47,7 +47,7 @@
     <div formArrayName="prereqList">
         <div *ngFor="let address of inputForm.controls.prereqList.controls; let i=index">
             <mat-form-field class="example-full-width" [formGroupName]="i">
-                <input type="text" matInput placeholder="Prerequisite {{i + 1}}" formControlName="prereq">
+                <input appFormatCourseCode type="text" matInput placeholder="Prerequisite {{i + 1}}" formControlName="prereq">
             </mat-form-field>
             <button mat-raised-button color="secondary" (click)="removeLink(i)">Remove</button>
             <!-- If statments are cool: *ngIf="inputForm.controls.prereqList.controls.length > 1" -->
