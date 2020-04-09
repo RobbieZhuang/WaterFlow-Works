@@ -205,22 +205,43 @@ def coursePath():
 @app.route("/degrees")
 def degrees():
     cur = connection.cursor()
-    cur.execute("""SELECT title FROM degree""")
+    cur.execute("""SELECT title FROM degree;""")
     rows = cur.fetchall()
 
     degrees = "\n".join(map(lambda d: d[0], rows))
 
     return f"Current degrees are:\n{degrees}"
 
-@app.route("/course-query")
-def courseQuery():
-    degree = request.args.get("degree", default = "", type = str)
-    if degree == "CS":
-        return "CS 101, CS 102, CS 348"
-    elif degree == "SE":
-        return "SE 101, SE 102, CS 348"
-    else:
-        return "Try degree=CS or degree=SE"
+@app.route("/searchProf")
+def searchProf():
+    profFirstName = request.args.get("profFirstName", default = "", type = str).strip()
+    profLastName = request.args.get("profLastName", default = "", type = str).strip()
+
+    cur = connection.cursor()
+    cur.execute("""
+        SELECT * FROM prof WHERE firstname ILIKE %s AND lastname ILIKE %s LIMIT 30;
+    """, ["%%" + profFirstName + "%%", "%%" + profLastName + "%%"])
+
+    return json.dumps(cur.fetchall())
+
+@app.route("/profCourses")
+def profCourses():
+    profFirstName = request.args.get("profFirstName", default = "", type = str).strip()
+    profLastName = request.args.get("profLastName", default = "", type = str).strip()
+
+    cur = connection.cursor()
+    cur.execute("""
+        SELECT coursecode,
+            array_agg(DISTINCT termcode) FILTER (WHERE termcode %% 10 = 1) AS winter_terms_taught,
+            array_agg(DISTINCT termcode) FILTER (WHERE termcode %% 10 = 5) AS spring_terms_taught,
+            array_agg(DISTINCT termcode) FILTER (WHERE termcode %% 10 = 9) AS fall_terms_taught
+        FROM courseOffering
+        WHERE component < 100 and proffirstname = %s and proflastname = %s
+        GROUP BY coursecode
+        ORDER BY coursecode;
+    """, [profFirstName, profLastName])
+
+    return json.dumps(cur.fetchall())
 
 @app.route("/getProfHist")
 def getProfHist():
