@@ -34,23 +34,24 @@ sqlstr = lambda string: "'" + str(string).replace("'", "''") + "'"
 
 # ### Results
 
-# In[4]:
+# In[8]:
 
 
 ## SQL create statements
-stmts_faculty = [] # done
+stmts_faculty = []
 stmts_degree = []
-stmts_subject = [] # done
-stmts_course = [] # done
+stmts_subject = []
+stmts_course = []
 stmts_courseGroup = []
 stmts_courseGroupMember = []
 stmts_prerequisite = []
 stmts_degreeRequirement = []
-stmts_term = [] # done
-stmts_courseOffering = [] # done
+stmts_term = []
+stmts_courseOffering = []
+stmts_ratemyprofs = []
 
 
-# In[5]:
+# In[22]:
 
 
 ## Entity Sets for Later Use
@@ -58,6 +59,7 @@ set_faculty = set()
 set_subject = set()
 set_course = set()
 set_courseOffering = set()
+set_ratemyprofs = set()
 
 
 # ### Term
@@ -506,6 +508,36 @@ for course, prereqs in prereq_mapping.items():
         stmts_prerequisite.append( addPrereqQuery.format(course))
 
 
+# ## RateMyProf Data
+
+# In[7]:
+
+
+with open('profs.json', 'r') as profs_f:
+  profs = json.load(profs_f)['response']['docs']
+
+
+# In[25]:
+
+stmts_ratemyprofs = []
+set_ratemyprofs = set()
+
+for p in profs:
+    if  'teacherfirstname_t' in p     and 'teacherlastname_t' in p     and 'averageratingscore_rf' in p     and 'total_number_of_ratings_i' in p     and 'pk_id' in p:
+        
+        first = sqlstr(p['teacherfirstname_t'])
+        last = sqlstr(p['teacherlastname_t'])
+        
+        if (first, last) not in set_ratemyprofs:
+            
+            set_ratemyprofs.add((first, last))   
+            stmts_ratemyprofs.append(
+                f"""INSERT INTO rateMyProfRecord (firstName, lastName, averageRating, numbersOfRatings, website) 
+                    VALUES ({first}, {last}, {p['averageratingscore_rf']}, {p['total_number_of_ratings_i']},
+                            'https://www.ratemyprofessors.com/ShowRatings.jsp?tid={p['pk_id']}');"""
+            )
+
+
 # ### Output to Files
 
 # In[37]:
@@ -553,6 +585,14 @@ with open('insert_5_courseOffering.sql', 'w+') as f:
 
 with open('insert_6_prerequisite.sql', 'w+') as f:
     for line in stmts_prerequisite:
+        f.write(line + "\n")
+
+
+# In[27]:
+
+
+with open('insert_8_rateMyProfRecords.sql', 'w+') as f:
+    for line in stmts_ratemyprofs:
         f.write(line + "\n")
 
 
