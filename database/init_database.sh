@@ -7,6 +7,7 @@ psql --echo-errors -q -p $INIT_DATABASE_PORT -U $INIT_DATABASE_USER -d $INIT_DAT
 
 echo "Creating new tables";
 psql --echo-errors -q -p $INIT_DATABASE_PORT -U $INIT_DATABASE_USER -d $INIT_DATABASE_DB -f create_tables.sql;
+psql --echo-errors -q -p $INIT_DATABASE_PORT -U $INIT_DATABASE_USER -d $INIT_DATABASE_DB -f create_views.sql;
 
 echo "Inserting faculty"
 psql --echo-errors -q -p $INIT_DATABASE_PORT -U $INIT_DATABASE_USER -d $INIT_DATABASE_DB -f insert_1_faculty.sql;
@@ -18,7 +19,10 @@ echo "Inserting term"
 psql --echo-errors -q -p $INIT_DATABASE_PORT -U $INIT_DATABASE_USER -d $INIT_DATABASE_DB -f insert_4_term.sql;
 echo "Inserting courseOffering"
 psql --echo-errors -q -p $INIT_DATABASE_PORT -U $INIT_DATABASE_USER -d $INIT_DATABASE_DB -f insert_5_courseOffering.sql;
+psql --echo-errors -q -p $INIT_DATABASE_PORT -U $INIT_DATABASE_USER -d $INIT_DATABASE_DB -f insert_5_courseOfferingPostInsert.sql;
 echo "Inserting prerequisite"
 psql --echo-errors -q -p $INIT_DATABASE_PORT -U $INIT_DATABASE_USER -d $INIT_DATABASE_DB -f insert_6_prerequisite.sql;
 echo "Inserting degreeReqs"
 psql --echo-errors -q -p $INIT_DATABASE_PORT -U $INIT_DATABASE_USER -d $INIT_DATABASE_DB -f insert_7_degreeReqs.sql;
+echo "Inserting ratemyprof records"
+psql --echo-errors -q -p $INIT_DATABASE_PORT -U $INIT_DATABASE_USER -d $INIT_DATABASE_DB -f insert_8_rateMyProfRecords.sql;

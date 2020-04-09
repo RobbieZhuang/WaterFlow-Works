@@ -44,7 +44,7 @@ CREATE TABLE courseGroupMember (
 	courseCode VARCHAR(16) NOT NULL,
 	courseGroupID INT NOT NULL,
 
-	PRIMARY KEY (courseGroupID, courseCode),
+	PRIMARY KEY (courseCode, courseGroupID),
 	FOREIGN KEY (courseCode) REFERENCES course(courseCode),
 	FOREIGN KEY (courseGroupID) REFERENCES courseGroup(groupID)
 );
@@ -53,7 +53,7 @@ CREATE TABLE prerequisite (
 	courseCode VARCHAR(16) NOT NULL,
 	prereqCourseGroupID INT NOT NULL,
 
-	PRIMARY KEY (prereqCourseGroupID, courseCode),
+	PRIMARY KEY (courseCode, prereqCourseGroupID),
 	FOREIGN KEY (courseCode) REFERENCES course(courseCode),
 	FOREIGN KEY (prereqCourseGroupID) REFERENCES courseGroup(groupID)
 );
@@ -94,6 +94,20 @@ CREATE TABLE courseOffering (
 	FOREIGN KEY (termCode) REFERENCES term(code)
 );
 
-CREATE INDEX coursecode on courseOffering(courseCode);
-CREATE INDEX profName on courseOffering(profFirstName, profLastName);
-CREATE INDEX courseCodePre on prerequisite(courseCode);
+CREATE TABLE rateMyProfRecord (
+	firstName VARCHAR(256) NOT NULL,
+	lastName VARCHAR(256) NOT NULL,
+	averageRating FLOAT,
+	numbersOfRatings INT,
+	website VARCHAR(1024),
+
+	PRIMARY KEY (firstName, lastName)
+);
+
+CREATE INDEX profName on courseOffering (profFirstName, profLastName);
+CREATE INDEX profFirstName ON courseOffering (profFirstName text_pattern_ops);
+CREATE INDEX profLastName ON courseOffering (profLastName text_pattern_ops);
+
+CREATE INDEX rmpProfName on rateMyProfRecord(firstName, lastName);
+CREATE INDEX rmpProfFirstName ON rateMyProfRecord (firstName text_pattern_ops);
+CREATE INDEX rmpProfLastName ON rateMyProfRecord (lastName text_pattern_ops);
