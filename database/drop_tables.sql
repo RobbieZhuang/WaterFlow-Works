@@ -1,3 +1,4 @@
+DROP VIEW prof CASCADE;
 DROP TABLE course CASCADE;
 DROP TABLE coursegroup CASCADE;
 DROP TABLE coursegroupmember CASCADE;
@@ -8,3 +9,4 @@ DROP TABLE faculty CASCADE;
 DROP TABLE prerequisite CASCADE;
 DROP TABLE subject CASCADE;
 DROP TABLE term CASCADE;
+DROP TABLE rateMyProfRecord CASCADE;
