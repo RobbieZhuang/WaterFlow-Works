@@ -66,7 +66,7 @@ set_courseOffering = set()
 
 
 ## strings for terms
-terms = [str(100 + y) + str(t) for y in range (10, 21) for t in [1, 5, 9]]
+terms = [str(100 + y) + str(t) for y in range (13, 21) for t in [1, 5, 9]]
 
 
 # In[7]:
@@ -132,7 +132,20 @@ for subject in subjects:
 
 # ### Courses
 
-# In[25]:
+# #### You can import the courses from `course.txt` if the file exists.
+
+# In[12]:
+
+
+# set_course = set()
+# with open('course.txt', 'r') as f:
+#     for line in f:
+#         set_course.add(line.strip())
+
+
+# #### Alternatively, you can scrape the course data from the OpenAPI as well.
+
+# In[9]:
 
 
 courses_r = g('https://api.uwaterloo.ca/v2/courses.json?key=e5c5ea41b7715202b2846b04b286f29d')
@@ -185,7 +198,7 @@ print('\ndone.')
 
 # ### Course Offerings
 
-# In[27]:
+# In[18]:
 
 
 set_courseOffering = set()
@@ -256,20 +269,12 @@ for i, subject_title in enumerate(set_subject):
                         classes = offering['classes']
                         if classes:
                             cls = classes[0]
-
-                            instructors = cls['instructors']
-                            if instructors:
-                                prof = instructors[0].split(',')
-
-                                if len(prof) > 1:
-                                    args.append('profFirstName')
-                                    vals.append(sqlstr(prof[1]))
-
-                                args.append('profLastName')
-                                vals.append(sqlstr(prof[0]))
-
+                            
                             clsDate = cls['date']
                             if clsDate:
+                                if clsDate['is_cancelled'] == True:
+                                    continue
+                                    
                                 if clsDate['start_time']:
                                     args.append('classStartTime')
                                     vals.append(sqlstr(clsDate['start_time']))
@@ -281,6 +286,17 @@ for i, subject_title in enumerate(set_subject):
                                 if clsDate['weekdays']:
                                     args.append('classWeekdays')
                                     vals.append(sqlstr(clsDate['weekdays']))
+
+                            instructors = cls['instructors']
+                            if instructors:
+                                prof = instructors[0].split(',')
+
+                                if len(prof) > 1:
+                                    args.append('profFirstName')
+                                    vals.append(sqlstr(prof[1]))
+
+                                args.append('profLastName')
+                                vals.append(sqlstr(prof[0]))
 
                             loc = cls['location']
                             if loc:
@@ -346,7 +362,7 @@ print('\ndone.')
 pickle.dump(courses, open("courses_with_prereqs.pckl", "wb"))
 
 
-# In[30]:
+# In[38]:
 
 
 def formatCourseName(s):
@@ -364,7 +380,7 @@ assert formatCourseName("CS135") == "CS 135"
 assert formatCourseName("MECH223") == "MECH 223"
 
 
-# In[31]:
+# In[39]:
 
 
 def flattenORPrereqs(lst):
@@ -387,7 +403,7 @@ expected = [1, 'AFM372', 'ACTSC391', 'ACTSC231', 'ACTSC371', 'ACTSC231BUS']
 assert flattenORPrereqs(bad_input) == expected
 
 
-# In[32]:
+# In[65]:
 
 
 from collections import defaultdict
@@ -420,8 +436,9 @@ for course in courses:
         else:
             # A single required course
             try:
-                if pre in set_course:
-                    prereq_mapping[course_name].append((1, [pre])) # 1 OR count -> That course is mandatory
+                c = formatCourseName(pre)
+                if c in set_course:
+                    prereq_mapping[course_name].append((1, [c])) # 1 OR count -> That course is mandatory
             except:
                 # Probably an error with the UW API
                 continue
@@ -431,19 +448,13 @@ for course in courses:
         #    print(prereq_mapping[course_id][-1])
 
 
-# In[33]:
-
-
-### At this point each course has its prereqs parsed. (multiple coureses in a course group -> OR)
-# prereq_mapping
-
-
-# In[34]:
+# In[68]:
 
 
 # This is just a sanity check to make sure all the courses and their prereqs are in `set_course`
 for k, v in prereq_mapping.items():
     if k not in set_course:
+        print(k, v)
         raise Exception("{} is not in `set_course`, make some deletions!")
         break
     for l in v:
@@ -452,7 +463,7 @@ for k, v in prereq_mapping.items():
                 raise Exception("{} is not in `set_course`, make some deletions!".format(p))
 
 
-# In[35]:
+# In[69]:
 
 
 # Create a course group
@@ -472,7 +483,7 @@ INSERT INTO prerequisite (courseCode, prereqCourseGroupID) VALUES ('{}', (SELECT
 """
 
 
-# In[36]:
+# In[70]:
 
 
 stmts_prerequisite = []
@@ -537,7 +548,7 @@ with open('insert_5_courseOffering.sql', 'w+') as f:
         f.write(line + '\n')
 
 
-# In[42]:
+# In[71]:
 
 
 with open('insert_6_prerequisite.sql', 'w+') as f:
