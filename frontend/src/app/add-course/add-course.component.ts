@@ -73,7 +73,6 @@ export class AddCourseComponent implements OnInit {
     }
 
     this.prereqsList.length = 0;
-    this.prereqsList.length = 0;
     for (const val of (this.inputForm.controls.prereqList as FormArray).controls) {
       var prereq = (val as FormGroup).controls.prereq.value;
 
