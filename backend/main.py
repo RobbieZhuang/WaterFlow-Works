@@ -378,7 +378,7 @@ def addNewCourse():
         connection.rollback()
 
     for i in range(1, sections + 1):
-            cur.execute(sql.SQL("INSERT INTO courseoffering (coursecode, termcode, component, coursetype, enrlcap, proffirstname, proflastname) VALUES (%s, %s, %s, %s, %s, %s, %s);"), [course_code, term_code, i, course_types.split()[0], section_size, prof_first_name, prof_last_name])
+        cur.execute(sql.SQL("INSERT INTO courseoffering (coursecode, termcode, component, coursetype, enrlcap, proffirstname, proflastname) VALUES (%s, %s, %s, %s, %s, %s, %s);"), [course_code, term_code, i, course_types.split()[0], section_size, prof_first_name, prof_last_name])
     # Insert into coursegroups table and associate prerequisites
     for prereq in prereqs:
         cur.execute(sql.SQL("INSERT INTO courseGroup (quantity) VALUES (1);"))
