@@ -4,6 +4,7 @@ from flask_cors import CORS
 import psycopg2
 from psycopg2 import sql
 import json
+from collections import defaultdict
 
 app = Flask(__name__)
 CORS(app)
@@ -29,6 +30,7 @@ connection = psycopg2.connect(
     host = connection_params["HOST"],
     port = connection_params["PORT"],
 )
+
 
 term_to_word = {1: "Winter", 5: "Spring", 9: "Fall"}
 
@@ -415,7 +417,6 @@ def addNewCourse():
     }
     return json.dumps(result)
 
-
 @app.route("/getRequiredDegreeReqs", methods = ['POST'])
 def getRequiredDegreeRequirements():
     data = request.json
@@ -474,6 +475,93 @@ def getRequiredDegreeRequirements():
             })
 
     return json.dumps(result)
+
+
+@app.route("/getPrereqGraph")
+def getPrereqGraph():
+    data = request.args
+
+    course_code = data.get('courseCode', default = '', type = str).strip().upper()
+    recursion_depth = data.get('recursionDepth', default = '', type = int)
+
+    cur = connection.cursor()
+    cur.execute(sql.SQL("SELECT COUNT(*) FROM course WHERE coursecode = %s LIMIT 5;"), [course_code])
+    if int(cur.fetchone()[0]) != 1:
+        return json.dumps({})
+       
+    """
+    GENERATE THE GRAPH IN THE FORM OF TABLE:
+        (code, parent, level, group_type (AND or OR), group_id)
+    """
+    cur.execute(sql.SQL("""
+        WITH RECURSIVE rec_prereqs AS(
+            SELECT %s::VARCHAR AS code,
+                   NULL::VARCHAR AS parent,
+                   1 AS level,
+                   NULL::VARCHAR AS group_type,
+                   NULL::INT AS group_id
+
+            UNION ALL
+            
+            SELECT cm.coursecode AS code,
+                   r.code AS parent,
+                   r.level + 1 AS level,
+                   (CASE
+                    -- THIS IS NECESSARY BECUASE coursegroup count is broken in the coursegroup table
+                    WHEN (SELECT COUNT(*) FROM coursegroupmember where coursegroupid = cm.coursegroupid) = 1 THEN 'AND'::VARCHAR
+                    ELSE 'OR'::VARCHAR
+                   END) as group_type,
+                   cm.coursegroupid AS group_id
+            FROM rec_prereqs r INNER JOIN prerequisite p
+                ON r.code = p.coursecode
+            INNER JOIN coursegroupmember cm
+                ON p.prereqcoursegroupid = cm.coursegroupid
+        )
+        SELECT * FROM rec_prereqs
+        WHERE level <= %s; -- Cap size of the graph
+         """), [course_code, recursion_depth])
+
+    graph_entries = cur.fetchall()
+
+    group_id_to_courses = {}
+    group_id_to_quantity = {}
+
+    course_to_prereq_group_map = defaultdict(lambda: defaultdict(list)) # Python Foo ;)
+
+    for entry in graph_entries:
+        code, parent, level, group_type, group_id = entry
+
+        if parent is None:
+            # Root of graph ==> Has no parent
+            pass
+
+        course_to_prereq_group_map[parent][group_id].append(code)
+
+
+    def entryToGraph(course):
+        """
+        CS 135 meets Python ;)
+        Convert our default dict thing above into an actual python dict that can be json parsed
+        A graph is a recursive structure... so we use recursion to build it.
+        """
+
+        m = course_to_prereq_group_map[course]
+
+        l = []
+        for k, v in m.items():
+            g = {}
+            for c in v:
+                g[c] = entryToGraph(c)
+            if len(v) > 1:
+                l.append({"OR": g})
+            else:
+                l.append(g)
+        return l
+
+    d = {course_code: entryToGraph(course_code)}
+    print("Prereq Graph for ", course_code, ':')
+    print(json.dumps(d, indent=4))
+    return json.dumps(d)
 
 if __name__ == "__main__":
     app.run()
