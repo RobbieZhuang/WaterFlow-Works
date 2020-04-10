@@ -18,6 +18,10 @@ import { FormatCourseCodeDirective } from './directives/format-course-code.direc
 import { NavbarComponent } from './navbar/navbar.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import { TerminfotableComponent } from './terminfotable/terminfotable.component';
+import { SearchprofComponent } from './searchprof/searchprof.component';
+import { ProfcoursespopupComponent } from './searchprof/profcoursespopup/profcoursespopup.component';
+import {MatDialogModule} from '@angular/material/dialog';
+
 
 @NgModule({
   declarations: [
@@ -29,7 +33,12 @@ import { TerminfotableComponent } from './terminfotable/terminfotable.component'
     FindCourseComponent,
     FormatCourseCodeDirective,
     NavbarComponent,
-    TerminfotableComponent
+    TerminfotableComponent,
+    SearchprofComponent,
+    ProfcoursespopupComponent
+  ],
+  entryComponents:[
+    ProfcoursespopupComponent
   ],
   imports: [
     BrowserModule,
@@ -41,6 +50,7 @@ import { TerminfotableComponent } from './terminfotable/terminfotable.component'
     MatRadioModule,
     ReactiveFormsModule,
     MatTabsModule,
+    MatDialogModule,
     HttpClientModule
   ],
   providers: [],

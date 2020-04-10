@@ -40,19 +40,24 @@
                                     <button mat-button>{{prof[0]}} {{prof[1]}}: {{prof[2]}} sections & {{prof[3]}} terms</button> 
                                 </div>
                             </div>
-                            <div class="profDataSide">
-                                <div *ngIf="profData?.profHist?.length > 0">
-                                    {{profData.profHist[0][2]}} {{profData.profHist[0][3]}} taught:<br>
-                                    Fall: {{profData.fall ? profData.fall: 0}} times<br>
-                                    Winter: {{profData.winter ? profData.winter: 0}} times<br>
-                                    Spring: {{profData.spring ? profData.spring: 0}} times<br>
-                                </div>
-                                <div *ngIf="profData?.profHist?.length > 0">
-                                    {{profData.profHist[0][2]}} {{profData.profHist[0][3]}} was teaching during the following terms:
-                                </div>
-                                <span *ngFor="let termProf of profData?.profHist; let last = last" >
-                                    {{termProf[0]}}<span *ngIf="!last">,</span> 
-                                </span>
+                            <div class="profDataSide rightside">
+                                <ng-template [ngIf]="profData?.profHist?.length > 0" [ngIfElse]="noprofSelected">
+                                    <div>
+                                        {{profData.profHist[0][2]}} {{profData.profHist[0][3]}} taught:<br>
+                                        Fall: {{profData.fall ? profData.fall: 0}} times<br>
+                                        Winter: {{profData.winter ? profData.winter: 0}} times<br>
+                                        Spring: {{profData.spring ? profData.spring: 0}} times<br>
+                                    </div>
+                                    <div>
+                                        {{profData.profHist[0][2]}} {{profData.profHist[0][3]}} was teaching during the following terms:
+                                    </div>
+                                    <span *ngFor="let termProf of profData?.profHist; let last = last" >
+                                        {{termProf[0]}}<span *ngIf="!last">,</span> 
+                                    </span>
+                                </ng-template>
+                                <ng-template #noprofSelected>
+                                    Click on a professor from the left to view details.
+                                </ng-template>
                             </div>
                         </div>
                     </div>

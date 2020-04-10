@@ -1,3 +1,4 @@
+import { SearchprofComponent } from './searchprof/searchprof.component';
 import { FindCourseComponent } from './find-course/find-course.component';
 import { CoursePathComponent } from './degreeReq/degreeReq.component';
 import { InputformComponent } from './inputform/inputform.component';
@@ -22,6 +23,10 @@ const routes: Routes = [
   {
     path:"courseinfo",
     component:FindCourseComponent
+  },
+  {
+    path:"searchProf",
+    component:SearchprofComponent
   },
   {
       path: '**',

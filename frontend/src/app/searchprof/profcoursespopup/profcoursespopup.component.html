@@ -1,0 +1,41 @@
+<div class="container">
+    <ng-container *ngIf="profData.profData[2] != null">
+        Professor {{profData.firstName}} {{profData.lastName}} has a 
+        <span [ngClass]="findcolour(profData.profData[2])">{{profData.profData[2]}}</span>/5 rating
+        on RateMyProfessor based on {{profData.profData[3]}} ratings. 
+        <a [href]="profData.profData[4]" target="_blank">Click to see RateMyProf profile</a>
+    </ng-container>
+    <ng-container *ngIf="profData.profData[2] == null">
+        No RateMyProfessor data avaliable for Professor {{profData.firstName}} {{profData.lastName}}
+    </ng-container>
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+            <th scope="col">Course</th>
+            <th scope="col">Winter</th>
+            <th scope="col">Spring</th>
+            <th scope="col">Fall</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let course of profCourses">
+                <td>{{course[0]}}</td>
+                <td>
+                    <span *ngFor="let course of course[1]">
+                        {{termCodeToYear(course)}}
+                    </span>
+                </td> 
+                <td>
+                    <span *ngFor="let course of course[2]">
+                        {{termCodeToYear(course)}}
+                    </span>
+                </td>
+                <td>
+                    <span *ngFor="let course of course[3]">
+                        {{termCodeToYear(course)}}
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
