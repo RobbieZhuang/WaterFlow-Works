@@ -36,7 +36,7 @@ export class CoursePathComponent implements OnInit {
     .subscribe(res => {
       console.log(res)
       if (Object.keys(res).length === 0 && res.constructor === Object){
-        this.errorCourseAdd = `Seems like the prerequisite ${course} does not exist`
+        this.errorCourseAdd = `Seems like the course ${course} does not exist`
         return;
       }
       this.errorCourseAdd = ''
