@@ -16,7 +16,7 @@ with open('./configs') as f:
     _port = f.readline().rstrip()
     connection_params = {
         "DB": _db,
-        "USER": "jamesdorfman",
+        "USER": _user,
         "PASSWORD": _pw,
         "HOST": _host,
         "PORT": _port
