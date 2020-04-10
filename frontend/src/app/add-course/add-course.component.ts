@@ -73,8 +73,35 @@ export class AddCourseComponent implements OnInit {
     }
 
     this.prereqsList.length = 0;
+    this.prereqsList.length = 0;
     for (const val of (this.inputForm.controls.prereqList as FormArray).controls) {
-      this.prereqsList.push((val as FormGroup).controls.prereq.value);
+      var prereq = (val as FormGroup).controls.prereq.value;
+
+      if(prereq.length == 0){
+        // If the user just added an extra prereq slot and never filled it out, ignore it
+        continue;
+      }
+
+      var verified = false;
+
+      // Verify that the prereq is valid
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if(this.readyState == 4 && this.responseText != "{}"){
+          console.log("Course verification response " + this.responseText);
+          verified = true;
+          return;
+        } 
+      };
+      var url = `${urlConfig.baseUrl}/getCourseInfo?course=${encodeURIComponent(prereq)}`
+      xhttp.open("GET", url, false); // false ==> don't make an async task (do it synchronously)
+      xhttp.send();
+      
+      if(!verified){
+        this.validationMsg = `Seems like the course ${prereq} does not exist`
+        return;
+      }
+      this.prereqsList.push(prereq);
     }
 
     this.api
