@@ -16,7 +16,7 @@ with open('./configs') as f:
     _port = f.readline().rstrip()
     connection_params = {
         "DB": _db,
-        "USER": _user,
+        "USER": "jamesdorfman",
         "PASSWORD": _pw,
         "HOST": _host,
         "PORT": _port
@@ -344,39 +344,41 @@ def addNewCourse():
     if term_code % 10 != 9 and term_code % 10 != 5 and term_code % 10 != 1:
         return json.dumps({})
 
+    prereqs = list(filter(lambda p: p.strip() != '', prereqs))
+    
     # Check if all prereqs are valid
     for prereq in prereqs:
         cur.execute(sql.SQL("SELECT count(*) FROM course WHERE courseCode = %s;"), [prereq])
-        list = cur.fetchall()
-        if list and list[0][0] < 1:
+        lst = cur.fetchall()
+        if lst and lst[0][0] < 1:
             return json.dumps({})
 
     # Check if course code already exists in course table
     cur.execute(sql.SQL("SELECT count(*) FROM course WHERE coursecode = %s;"), [course_code]);
-    list = cur.fetchall()
-    if list and list[0][0] > 0:
+    lst = cur.fetchall()
+    if lst and lst[0][0] > 0:
         return json.dumps({})
 
     # Check if course already exists in course offering table
     cur.execute(sql.SQL("SELECT count(*) FROM courseoffering WHERE coursecode = %s AND termcode = %s"), [course_code, term_code]);
-    list = cur.fetchall()
-    if list and list[0][0] > 0:
-        return json.dumps({})
-    
-    # Check if termcode already exists in term table
-    cur.execute(sql.SQL("SELECT count(*) FROM term WHERE code = %s"), [term_code]);
-    list = cur.fetchall()
-    if list and list[0][0] > 0:
+    lst = cur.fetchall()
+    if lst and lst[0][0] > 0:
         return json.dumps({})
 
     # Insert into course table
     cur.execute(sql.SQL("INSERT INTO course (coursecode, title, credit, coursetypes, description, subjecttitle) VALUES (%s, %s, %s, %s, %s, %s);"), [course_code, title, credit, course_types, description, course_code.split()[0]])
     
+    connection.commit()
+
     # Insert into term and courseoffering tables
-    cur.execute(sql.SQL("INSERT INTO term (code) VALUES (%s);"), [term_code]);
+    try:
+        cur.execute(sql.SQL("INSERT INTO term (code) VALUES (%s);"), [term_code]);
+    except:
+        # Term offering already exists
+        connection.rollback()
+
     for i in range(1, sections + 1):
-        cur.execute(sql.SQL("INSERT INTO courseoffering (coursecode, termcode, component, coursetype, enrlcap, proffirstname, proflastname) VALUES (%s, %s, %s, %s, %s, %s, %s);"), [course_code, term_code, i, course_types.split()[0], section_size, prof_first_name, prof_last_name])
-    
+            cur.execute(sql.SQL("INSERT INTO courseoffering (coursecode, termcode, component, coursetype, enrlcap, proffirstname, proflastname) VALUES (%s, %s, %s, %s, %s, %s, %s);"), [course_code, term_code, i, course_types.split()[0], section_size, prof_first_name, prof_last_name])
     # Insert into coursegroups table and associate prerequisites
     for prereq in prereqs:
         cur.execute(sql.SQL("INSERT INTO courseGroup (quantity) VALUES (1);"))
