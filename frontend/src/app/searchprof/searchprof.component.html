@@ -18,5 +18,6 @@
         <ng-container *ngFor="let prof of profsearchRes;let i = index">
             <div (click)="openprofdetailpopup(i)">{{prof[0]}} {{prof[1]}}</div>
         </ng-container>
+        <p *ngIf="searched && profsearchRes?.length==0">No Professors found</p>
     </div>
 </form>

@@ -13,6 +13,7 @@ export class SearchprofComponent implements OnInit {
   firstName: string = ""
   lastName : string = ""
   profsearchRes : any[] = []
+  searched: boolean = false
 
   constructor(private api: ApicallsService, public dialog: MatDialog) { }
 
@@ -37,6 +38,7 @@ export class SearchprofComponent implements OnInit {
     this.api.getData(`${urlConfig.baseUrl}/searchProf?profFirstName=${this.firstName}&profLastName=${this.lastName}`)
     .subscribe(res =>{
       this.profsearchRes = res
+      this.searched = true;
     })
   }
 
