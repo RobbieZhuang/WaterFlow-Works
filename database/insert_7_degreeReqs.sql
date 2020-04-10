@@ -5924,6 +5924,11 @@ INSERT INTO courseGroup (quantity) VALUES (7);
 WITH groupID as(
 	SELECT currval(pg_get_serial_sequence('courseGroup', 'groupid')) as v
 )
+INSERT INTO courseGroupMember (courseCode, courseGroupID) VALUES ('CS 240', (SELECT v from groupID));
+
+WITH groupID as(
+	SELECT currval(pg_get_serial_sequence('courseGroup', 'groupid')) as v
+)
 INSERT INTO courseGroupMember (courseCode, courseGroupID) VALUES ('CS 241', (SELECT v from groupID));
 
 WITH groupID as(
