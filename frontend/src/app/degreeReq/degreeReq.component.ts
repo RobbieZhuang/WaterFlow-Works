@@ -60,11 +60,4 @@ export class CoursePathComponent implements OnInit {
     })
   }
 
-  getPrereqGraph(){
-    this.api.getData(`${urlConfig.baseUrl}/getPrereqGraph?courseCode=CS%20240&recursionDepth=3`) // HARDCODE TO CS240 FOR NOW!
-    .subscribe(res => {
-      console.log(res);
-    })
-  }
-
 }
