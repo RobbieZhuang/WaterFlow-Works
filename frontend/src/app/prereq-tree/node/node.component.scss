@@ -104,12 +104,15 @@ div.simple-card-not-highlighted-or {
     min-width: 100px;
     border-color: black;
     color: #0E0B16;
-    padding: 30px;
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-top: 7px;
+    padding-bottom: 7px;
     font-weight: bold;
     border-radius: 7px;
     border-width: 2px;
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
     border-style: solid;
     background-color: #fff;
 }
@@ -201,33 +204,13 @@ div.simple-card-not-highlighted-or {
 
 .taken-button {
     @include tree-button;
-    background-color: #256947;
+    background-color: lightgreen;
+    cursor: default;
     position: absolute;
     right: -10px;
     bottom: -10px;
     border-style: none;
-    &:before {
-        content: '';
-        position: absolute;
-        height: 12px;
-        width: 4px;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        margin: auto;
-        background-color: #2ba423;
-    }
-    &:after {
-        content: '';
-        position: absolute;
-        width: 12px;
-        height: 4px;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        margin: auto;
-        background-color: #2ba423;
-    }
+    padding-left: 0px;
+    padding-top: 0px;
+    color: white;
 }

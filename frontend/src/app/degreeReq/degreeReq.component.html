@@ -23,7 +23,7 @@
                 <p>
                     {{req.quantity}} of the following:
                     <span *ngFor="let course of req.course;let index=index;let last = last">
-                        <span *ngIf="index < 9" (click)="getPrereqGraph(course)">{{course}}<span *ngIf="!last">, </span> <span *ngIf="!last && index == 8"> and others </span></span>
+                        <span *ngIf="index < 9" (click)="getPrereqGraph(course)"><span class="span-clickable"> {{course}}</span><span *ngIf="!last">, </span> <span *ngIf="!last && index == 8"> and others </span></span>
                     </span>
                 </p>
             </div>

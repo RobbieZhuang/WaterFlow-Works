@@ -5,17 +5,15 @@
 
 .trees {
     float: left;
-    // height: 100%;
+    height: 100%;
     width: 100%;
     margin: auto;
     display: flex;
-    overflow-y: hidden;
     flex: 1;
     // min-height: 100%;
-    display: flex;
     justify-content: center;
     flex-direction: column;
-    padding: 30px 0;
+    padding: 10px 0;
     position: relative;
     .hv-container {
         flex-grow: 1;
@@ -28,4 +26,10 @@
     float: left;
     // height: 100%;
     width: 100%;
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
 }
