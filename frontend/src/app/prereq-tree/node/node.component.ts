@@ -41,7 +41,7 @@ export class NodeComponent implements OnInit {
   }
 
   hideChildren(id) {
-    this.treelistsvc.hideNodeChilren(id);
+    this.treelistsvc.hideNodeChildren(id);
   }
 
   mouseDown(nodeID: string, selectedNode, event) {

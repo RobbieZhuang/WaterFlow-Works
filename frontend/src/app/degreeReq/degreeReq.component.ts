@@ -65,13 +65,13 @@ export class CoursePathComponent implements OnInit {
   }
 
   getPrereqGraph(){
-    this.api.getData(`${urlConfig.baseUrl}/getPrereqGraph?courseCode=CS%20240&recursionDepth=3`) // HARDCODE TO CS240 FOR NOW!
+    this.api.getData(`${urlConfig.baseUrl}/getPrereqGraph?courseCode=CS%20350&recursionDepth=3`) // HARDCODE TO CS240 FOR NOW!
       .subscribe(res => {
         const dialogRef = this.dialog.open(TreeComponent,{
           minWidth: '30%',
           minHeight: '30%',
-          maxWidth: '50%',
-          maxHeight: '50%',
+          maxWidth: '80%',
+          maxHeight: '80%',
           data: res
         });
         console.log(res);

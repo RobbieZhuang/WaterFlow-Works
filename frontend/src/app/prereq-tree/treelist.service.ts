@@ -43,7 +43,8 @@ export class TreelistService {
   clearHiddenChildren() {
     this.hideChildrenOfIds = [];
   }
-  hideNodeChilren(id) {
+  
+  hideNodeChildren(id) {
     if (this.hideChildrenOfIds.includes(id)) {
       const index = this.hideChildrenOfIds.indexOf(String(id));
       this.hideChildrenOfIds.splice(index, 1);
