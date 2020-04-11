@@ -1,33 +1,32 @@
-.background{
-
+.background {
     margin-top: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.coursesTaken{
+.coursesTaken {
     margin: 1rem;
 }
 
-.inputBox{
+.inputBox {
     margin-top: 1rem;
     width: 60%;
     height: 70%;
 }
 
-.takenCourseRect{
-    margin-right: 0.5rem;   
+.takenCourseRect {
+    margin-right: 0.5rem;
 }
 
-.profData{
-    display:flex;
+.profData {
+    display: flex;
     flex-direction: row;
     width: 100%;
-    .profDataSide{
+    .profDataSide {
         width: 50%;
     }
-    .rightside{
+    .rightside {
         min-height: 30%;
         border: 1px solid black;
         border-radius: 10%;
@@ -35,19 +34,19 @@
     }
 }
 
-.tabPadding{
+.tabPadding {
     padding: 0.5rem;
 }
 
-#wantedCouseInput{
+#wantedCouseInput {
     width: 80%;
 }
 
-#wantCourse{
+#wantCourse {
     font-size: 1.5rem;
 }
 
-h3{
+h3 {
     margin-top: 1rem;
 }
 
@@ -56,8 +55,8 @@ h3{
     flex-wrap: wrap;
     width: 610px;
 }
-  
-.flex-container > div {
+
+.flex-container>div {
     border-style: solid;
     padding-top: 10px;
     margin: 1px;
@@ -66,20 +65,21 @@ h3{
     font-size: 12px;
 }
 
-.red{
+.red {
     color: red;
 }
 
-.lightgreyBackground{
+.lightgreyBackground {
     display: flex;
     background-color: lightgray;
     justify-content: center;
     align-items: center;
 }
 
-.orange{
+.orange {
     color: orange;
 }
-.green{
+
+.green {
     color: green;
 }

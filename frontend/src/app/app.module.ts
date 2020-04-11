@@ -21,6 +21,9 @@ import { TerminfotableComponent } from './terminfotable/terminfotable.component'
 import { SearchprofComponent } from './searchprof/searchprof.component';
 import { ProfcoursespopupComponent } from './searchprof/profcoursespopup/profcoursespopup.component';
 import {MatDialogModule} from '@angular/material/dialog';
+import { TreeComponent } from './prereq-tree/tree.component';
+import { TreepaneComponent } from './prereq-tree/treepane/treepane.component';
+import { NodeComponent } from './prereq-tree/node/node.component';
 
 
 @NgModule({
@@ -35,10 +38,14 @@ import {MatDialogModule} from '@angular/material/dialog';
     NavbarComponent,
     TerminfotableComponent,
     SearchprofComponent,
-    ProfcoursespopupComponent
+    ProfcoursespopupComponent,
+    TreeComponent,
+    TreepaneComponent,
+    NodeComponent
   ],
   entryComponents:[
-    ProfcoursespopupComponent
+    ProfcoursespopupComponent,
+    TreeComponent
   ],
   imports: [
     BrowserModule,

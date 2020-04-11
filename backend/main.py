@@ -193,7 +193,6 @@ def getCourseInfo():
 
     res["profinfo"] = profinfo
 
-    print(res)
     return json.dumps(res)
 
 
@@ -488,6 +487,7 @@ def getPrereqGraph():
 
     course_code = data.get('courseCode', default = '', type = str).strip().upper()
     recursion_depth = data.get('recursionDepth', default = '', type = int)
+    courses_taken = data.get('coursesTaken')
 
     cur = connection.cursor()
     cur.execute(sql.SQL("SELECT COUNT(*) FROM course WHERE coursecode = %s LIMIT 5;"), [course_code])
@@ -559,6 +559,7 @@ def getPrereqGraph():
                 sub_l.append({
                     "name": c,
                     "id": get_id_count(),
+                    "taken": 1 if c in courses_taken else 0,
                     "children": getChildrenJSON(c)
                 })
             if len(v) > 1:
@@ -576,12 +577,11 @@ def getPrereqGraph():
         "children": [{
             "name": course_code,
             "id": get_id_count(),
+            "taken": 1 if course_code in courses_taken else 0,
             "children": getChildrenJSON(course_code)
         }]
     }
 
-    print("Prereq Graph for ", course_code, ':')
-    print(json.dumps(d, indent=4))
     return json.dumps(d)
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-.background{
+.background {
     display: flex;
     width: 100%;
     flex-direction: column;
@@ -6,32 +6,38 @@
     align-items: center;
 }
 
-.coursesTaken{
+.coursesTaken {
     margin: 1rem;
 }
 
-.inputBox{
+.inputBox {
     margin-top: 1rem;
     width: 60%;
     height: 70%;
 }
 
-.box{
+.box {
     padding-top: 1rem;
 }
 
-.takenCourseRect{
-    margin-right: 0.5rem;   
+.takenCourseRect {
+    margin-right: 0.5rem;
 }
 
-#wantedCouseInput{
+#wantedCouseInput {
     width: 80%;
 }
 
-#wantCourse{
+#wantCourse {
     font-size: 1.5rem;
 }
 
-h3{
+h3 {
     margin-top: 1rem;
+}
+
+.span-clickable {
+    text-decoration: underline;
+    text-decoration-color: blue;
+    color: blue;
 }
