@@ -1,13 +1,11 @@
-import { Component, ViewChild, OnInit, Inject} from '@angular/core';
+import { Component, Inject } from '@angular/core';
 
 import { TreelistService } from './treelist.service';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './tree.component.html',
-  styleUrls: ['./tree.component.scss']
+  templateUrl: './tree.component.html'
 })
 
 export class TreeComponent {
@@ -17,8 +15,7 @@ export class TreeComponent {
   public currentlySelectedTree;
   public currentlySelectedTreeId;
 
-
-  constructor (
+  constructor(
     public dialogRef: MatDialogRef<TreeComponent>,
     @Inject(MAT_DIALOG_DATA) private data: any,
     private treelistsvc: TreelistService) {
@@ -38,28 +35,9 @@ export class TreeComponent {
     this.treelistsvc.setCurrentlySelectedTree(this.treeLists[0]);
     this.currentlySelectedTree = treelistsvc.currentlySelectedTree;
     this.currentlySelectedTreeId = this.currentlySelectedTree[0][0].id;
-
   }
 
-  differentTreeSelected(t) {
-    if (this.currentlySelectedTree !== t) {
-      this.treelistsvc.setCurrentlySelectedTree(t);
-      // this.closeSideNav();
-      // this.sidenav.clearFocusNode(null, null);
-    }
-
-  }
-
-  close(){
+  close() {
     this.dialogRef.close();
   }
-
-  // openSideNav() {
-  //   this.myNav.open();
-  // }
-
-  // closeSideNav() {
-  //   this.myNav.close();
-  // }
-
 }

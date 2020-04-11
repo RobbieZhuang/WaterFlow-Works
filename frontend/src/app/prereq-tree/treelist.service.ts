@@ -17,6 +17,7 @@ export class TreelistService {
   public currentlySelectedTree;
   public currentlySelectedTreeId;
   public currentlyHoveringId;
+  
   constructor() { }
 
   setCurrentlyHoveringId(id) {
@@ -34,8 +35,6 @@ export class TreelistService {
     this.treeToggler.next(true);
   }
 
-
-
   setTreeList(tl) {
     this.treelist = tl;
   }
@@ -43,7 +42,7 @@ export class TreelistService {
   clearHiddenChildren() {
     this.hideChildrenOfIds = [];
   }
-  
+
   hideNodeChildren(id) {
     if (this.hideChildrenOfIds.includes(id)) {
       const index = this.hideChildrenOfIds.indexOf(String(id));
@@ -68,24 +67,20 @@ export class TreelistService {
       'datecreated': '2018-06-20',
       'showchildren': '1',
       'children': []
-      });
+    });
     this.newId = this.newId + 1;
   }
-
-
 
   getChildrenOfID(tree, id) {
     const stack = [tree];
     while (stack.length) {
-        const current = stack.pop();
-        if (current.id === id) {
-          return current.children;
-        }
-        stack.push(...current.children);
+      const current = stack.pop();
+      if (current.id === id) {
+        return current.children;
+      }
+      stack.push(...current.children);
     }
   }
 
-  hideChild(id) {
-
-  }
+  hideChild(id) { }
 }

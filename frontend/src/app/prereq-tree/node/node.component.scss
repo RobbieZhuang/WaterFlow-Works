@@ -36,7 +36,6 @@ $secondary-color: #ffffff;
 .hv-item {
     display: flex;
     flex-direction: column;
-    // margin: 0;
     margin-bottom: 50px;
     .hv-item-parent {
         margin-bottom: $bottom-margin;
@@ -91,23 +90,26 @@ $secondary-color: #ffffff;
             }
         }
     }
+    .hv-item-parent-no-tail {
+        position: relative;
+        display: flex;
+        justify-content: center;
+    }
 }
 
 div.simple-card-not-highlighted,
 div.simple-card-not-highlighted-or {
     position: relative;
-    margin-bottom: 0px;
     text-align: center;
-    min-width: 50px;
+    min-width: 100px;
     border-color: black;
     color: #0E0B16;
-    padding: 10px;
+    padding: 30px;
     font-weight: bold;
-    font-size: 12;
     border-radius: 7px;
     border-width: 2px;
-    margin-left: 5px;
-    margin-right: 5px;
+    margin-left: 20px;
+    margin-right: 20px;
     border-style: solid;
     background-color: #fff;
 }
@@ -117,7 +119,8 @@ div.simple-card-not-highlighted {
 }
 
 div.simple-card-not-highlighted-or {
-    border-color: $primary-color;
+    padding: 5px;
+    box-shadow: 0 3px 6px rgba(#0E0B16, 0.15);
     background-color: $primary-color;
     color: $secondary-color;
 }
@@ -192,43 +195,39 @@ div.simple-card-not-highlighted-or {
         right: 0;
         bottom: 0;
         margin: auto;
-        background-color: white;
+        background-color: $secondary-color;
     }
 }
 
-.add-button {
+.taken-button {
     @include tree-button;
     background-color: #256947;
     position: absolute;
     right: -10px;
     bottom: -10px;
     border-style: none;
-    margin-left: 0;
-    padding-left: 0;
-    color: $secondary-color;
-    text-align: center;
-    // &:before {
-    //     content: '';
-    //     position: absolute;
-    //     height: 12px;
-    //     width: 4px;
-    //     top: 0;
-    //     left: 0;
-    //     right: 0;
-    //     bottom: 0;
-    //     margin: auto;
-    //     background-color: #2ba423;
-    // }
-    // &:after {
-    //     content: '';
-    //     position: absolute;
-    //     width: 12px;
-    //     height: 4px;
-    //     top: 0;
-    //     left: 0;
-    //     right: 0;
-    //     bottom: 0;
-    //     margin: auto;
-    //     background-color: #2ba423;
-    // }
+    &:before {
+        content: '';
+        position: absolute;
+        height: 12px;
+        width: 4px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        background-color: #2ba423;
+    }
+    &:after {
+        content: '';
+        position: absolute;
+        width: 12px;
+        height: 4px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        background-color: #2ba423;
+    }
 }

@@ -8,9 +8,9 @@ describe('TreepaneComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TreepaneComponent ]
+      declarations: [TreepaneComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
