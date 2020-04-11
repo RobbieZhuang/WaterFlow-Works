@@ -17,7 +17,7 @@
             <button *ngFor="let course of coursesTaken" type="button" class="btn btn-info takenCourseRect">{{course}}</button>
         </div>
         <button type="button" class="btn btn-success" (click)="submit()">Go</button>
-        <div *ngIf="searched" class="box">
+        <div *ngIf="searched && degreeReq.length > 0" class="box">
             <h3>To complete the degree, you would need to take the followings: </h3>
             <div *ngFor="let req of degreeReq">
                 <p>
@@ -27,6 +27,9 @@
                     </span>
                 </p>
             </div>
+        </div>
+        <div *ngIf="searched && degreeReq.length == 0" class="box">
+            No degree found
         </div>
     </form>
 </div>

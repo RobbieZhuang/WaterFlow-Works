@@ -35,33 +35,37 @@ export class CoursePathComponent implements OnInit {
     }
     const course = this.form.controls.courseTaken.value;
     this.api.getData(`${urlConfig.baseUrl}/getCourseInfo?course=${course}`)
-    .subscribe(res => {
-      console.log(res);
-      if (Object.keys(res).length === 0 && res.constructor === Object) {
-        this.errorCourseAdd = `Seems like the prerequisite ${course} does not exist`;
-        return;
-      }
-      this.errorCourseAdd = '';
-      this.coursesTaken.push(course);
-      this.form.controls.courseTaken.setValue('');
-    });
+      .subscribe(res => {
+        console.log(res);
+        if (Object.keys(res).length === 0 && res.constructor === Object) {
+          this.errorCourseAdd = `Seems like the prerequisite ${course} does not exist`;
+          return;
+        }
+        this.errorCourseAdd = '';
+        this.coursesTaken.push(course);
+        this.form.controls.courseTaken.setValue('');
+      });
   }
 
   submit() {
 
 
     if (!this.form.controls.wantedCourse.valid) {
-      return
+      return;
     }
 
     this.api.postData({
       requestedDegree: this.form.controls.wantedCourse.value,
       coursesTaken: this.coursesTaken
     }, `${urlConfig.baseUrl}/getRequiredDegreeReqs`)
-    .subscribe(res => {
-      this.searched = true;
-      this.degreeReq = res;
-    });
+      .subscribe(res => {
+        this.searched = true;
+        if (Array.isArray(res)) {
+          this.degreeReq = res;
+        } else {
+          this.degreeReq = [];
+        }
+      })
   }
 
   getPrereqGraph(courseCode: string) {
@@ -74,6 +78,6 @@ export class CoursePathComponent implements OnInit {
           data: res
         });
         console.log(res);
-    });
+      });
   }
 }

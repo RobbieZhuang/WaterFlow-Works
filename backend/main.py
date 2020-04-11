@@ -423,7 +423,7 @@ def getRequiredDegreeRequirements():
     requested_degree_name = data.get('requestedDegree')
 
     cur = connection.cursor()
-    cur.execute(sql.SQL("SELECT COUNT(*) FROM degree WHERE title = %s;"), [requested_degree_name])
+    cur.execute(sql.SQL("SELECT COUNT(*) FROM degree WHERE UPPER(title) = UPPER(%s);"), [requested_degree_name])
     if int(cur.fetchone()[0]) != 1:
         return json.dumps({})
     
@@ -437,7 +437,7 @@ def getRequiredDegreeRequirements():
             WHERE coursegroupid = ANY (
                 SELECT coursegroupid 
                 FROM degreerequirement 
-                WHERE degreetitle = %s
+                WHERE UPPER(degreetitle) = UPPER(%s)
             )
         ) AS coursecodetogroupid 
         NATURAL JOIN coursegroup;
