@@ -476,6 +476,11 @@ def getRequiredDegreeRequirements():
 
     return json.dumps(result)
 
+id_count = 1
+def get_id_count():
+    global id_count
+    id_count = id_count + 1
+    return id_count - 1
 
 @app.route("/getPrereqGraph")
 def getPrereqGraph():
@@ -538,7 +543,7 @@ def getPrereqGraph():
         course_to_prereq_group_map[parent][group_id].append(code)
 
 
-    def entryToGraph(course):
+    def getChildrenJSON(course):
         """
         CS 135 meets Python ;)
         Convert our default dict thing above into an actual python dict that can be json parsed
@@ -549,16 +554,32 @@ def getPrereqGraph():
 
         l = []
         for k, v in m.items():
-            g = {}
+            sub_l = []
             for c in v:
-                g[c] = entryToGraph(c)
+                sub_l.append({
+                    "name": c,
+                    "id": get_id_count(),
+                    "children": getChildrenJSON(c)
+                })
             if len(v) > 1:
-                l.append({"OR": g})
+                l.append({
+                    "name": "OR",
+                    "id": get_id_count(),
+                    "children": sub_l
+                })
             else:
-                l.append(g)
+                l.append(sub_l[0])
         return l
 
-    d = {course_code: entryToGraph(course_code)}
+    d = {
+        "name": "root",
+        "children": [{
+            "name": course_code,
+            "id": get_id_count(),
+            "children": getChildrenJSON(course_code)
+        }]
+    }
+
     print("Prereq Graph for ", course_code, ':')
     print(json.dumps(d, indent=4))
     return json.dumps(d)
