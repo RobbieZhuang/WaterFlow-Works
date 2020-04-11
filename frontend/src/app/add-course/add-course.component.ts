@@ -73,7 +73,6 @@ export class AddCourseComponent implements OnInit {
     }
 
     this.prereqsList.length = 0;
-    this.prereqsList.length = 0;
     for (const val of (this.inputForm.controls.prereqList as FormArray).controls) {
       var prereq = (val as FormGroup).controls.prereq.value;
 
@@ -98,7 +97,7 @@ export class AddCourseComponent implements OnInit {
       xhttp.send();
       
       if(!verified){
-        this.validationMsg = `Seems like the course ${prereq} does not exist`
+        this.validationMsg = `Seems like the prerequisite ${prereq} does not exist`
         return;
       }
       this.prereqsList.push(prereq);
