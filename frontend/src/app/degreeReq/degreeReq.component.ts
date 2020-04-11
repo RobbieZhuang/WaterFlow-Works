@@ -1,7 +1,9 @@
 import { ApicallsService } from '../service/apicalls.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { urlConfig } from '../urlConfig'
+import { urlConfig } from '../urlConfig';
+import { TreeComponent } from '../prereq-tree/tree.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-course-path',
@@ -16,7 +18,7 @@ export class CoursePathComponent implements OnInit {
   degreeReq : any[] = []
   searched: boolean = false
 
-  constructor(private api: ApicallsService, private fb: FormBuilder) { 
+  constructor(private api: ApicallsService, private fb: FormBuilder, public dialog: MatDialog) { 
     this.form = fb.group({
       wantedCourse:["", Validators.required], // default value as an example
       courseTaken:["", Validators.required], // first element in array is default value
@@ -46,6 +48,8 @@ export class CoursePathComponent implements OnInit {
   }
 
   submit(){
+    
+
     if (!this.form.controls.wantedCourse.valid){
       return 
     }
@@ -62,8 +66,15 @@ export class CoursePathComponent implements OnInit {
 
   getPrereqGraph(){
     this.api.getData(`${urlConfig.baseUrl}/getPrereqGraph?courseCode=CS%20240&recursionDepth=3`) // HARDCODE TO CS240 FOR NOW!
-    .subscribe(res => {
-      console.log(res);
+      .subscribe(res => {
+        const dialogRef = this.dialog.open(TreeComponent,{
+          minWidth: '30%',
+          minHeight: '30%',
+          maxWidth: '50%',
+          maxHeight: '50%',
+          data: res
+        });
+        console.log(res);
     })
   }
 
