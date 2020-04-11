@@ -1,12 +1,11 @@
 <div class="background">
-    <button type="button" class="btn btn-success" (click)="getPrereqGraph()">GET PREREQS</button>
     <form class="inputBox" [formGroup]="form">
         <span id="wantCourse"><b>The Degree I Want </b></span>
         <input id="wantedCouseInput" class="form-control" placeholder="ex: Computer Science.." formControlName="wantedCourse">
         <h3>Courses I have taken...</h3>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-              <span class="input-group-text" id="inputGroup-sizing-default">Course+ID</span>
+                <span class="input-group-text" id="inputGroup-sizing-default">Course+ID</span>
             </div>
             <input appFormatCourseCode type="text" appFormartCourseCode formControlName="courseTaken" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
             <button type="button" class="btn btn-primary" (click)="addCourse()">Add</button>
@@ -24,7 +23,7 @@
                 <p>
                     {{req.quantity}} of the following:
                     <span *ngFor="let course of req.course;let index=index;let last = last">
-                        <span *ngIf="index < 10">{{course}}<span *ngIf="!last">, </span> <span *ngIf="!last && index == 9"> and etc </span></span>
+                        <span *ngIf="index < 9" (click)="getPrereqGraph(course)">{{course}}<span *ngIf="!last">, </span> <span *ngIf="!last && index == 8"> and others </span></span>
                     </span>
                 </p>
             </div>

@@ -64,10 +64,12 @@ export class CoursePathComponent implements OnInit {
     })
   }
 
-  getPrereqGraph(){
-    this.api.getData(`${urlConfig.baseUrl}/getPrereqGraph?courseCode=CS%20350&recursionDepth=3`) // HARDCODE TO CS240 FOR NOW!
+  getPrereqGraph(courseCode: string){
+    this.api.getData(`${urlConfig.baseUrl}/getPrereqGraph?courseCode=${courseCode.trim()}
+        &coursesTaken=${this.coursesTaken}
+        &recursionDepth=3`)
       .subscribe(res => {
-        const dialogRef = this.dialog.open(TreeComponent,{
+        const dialogRef = this.dialog.open(TreeComponent, {
           minWidth: '30%',
           minHeight: '30%',
           maxWidth: '80%',
@@ -75,7 +77,7 @@ export class CoursePathComponent implements OnInit {
           data: res
         });
         console.log(res);
-    })
+    });
   }
 
 }
