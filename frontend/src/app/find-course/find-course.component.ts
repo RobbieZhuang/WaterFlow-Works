@@ -1,7 +1,9 @@
+import { ProfcoursespopupComponent } from './../searchprof/profcoursespopup/profcoursespopup.component';
 import { urlConfig } from './../urlConfig';
 import { ApicallsService } from './../service/apicalls.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 
 const currentTerm = 1201;
 const nextTerm = 1205;
@@ -33,13 +35,28 @@ export class FindCourseComponent implements OnInit {
   nextTerm : number = 1205;
   seasons = ["W","S","F"]
 
-  constructor(private api: ApicallsService, private fb: FormBuilder) {
+  constructor(private api: ApicallsService, private fb: FormBuilder, public dialog: MatDialog) {
     this.form = fb.group({
       course:["", Validators.required], // default value as an example
     })
   }
 
   ngOnInit() {
+  }
+
+  openProfDetailDialog(firstName: string,lastName: string){
+
+    this.api.getData(`${urlConfig.baseUrl}/searchProf?profFirstName=${firstName}&profLastName=${lastName}`)
+    .subscribe(res =>{
+      if (res.length > 0){
+        this.dialog.open(ProfcoursespopupComponent,{
+          minWidth: '70%',
+          minHeight:'70%',
+          data: {firstName, lastName, profData:res[0]}
+        })
+      }
+    })
+
   }
   
   isObjectEmpty(obj){
