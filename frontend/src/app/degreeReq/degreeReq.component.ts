@@ -56,7 +56,11 @@ export class CoursePathComponent implements OnInit {
     }, `${urlConfig.baseUrl}/getRequiredDegreeReqs`)
     .subscribe(res => {
       this.searched = true
-      this.degreeReq = res
+      if (Array.isArray(res))
+        this.degreeReq = res
+      else 
+        this.degreeReq = []
+      
     })
   }
 
