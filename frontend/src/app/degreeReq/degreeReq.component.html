@@ -1,6 +1,6 @@
-<div class="background">
+<div class="container">
+    <span id="formPrompt"><b>The Degree I Want </b></span>
     <form class="inputBox" [formGroup]="form">
-        <span id="formPrompt"><b>The Degree I Want </b></span>
         <input id="wantedCouseInput" list="degrees" class="form-control" placeholder="ex: Computer Science.." formControlName="wantedCourse" autocomplete="off">
         <datalist id="degrees">
             <option *ngFor="let d of degrees" [value]="d">

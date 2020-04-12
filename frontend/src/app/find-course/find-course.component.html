@@ -1,7 +1,7 @@
-<div class="background">
+<div class="container">
+    <span id="formPrompt"><b>Course</b></span>
     <form class="inputBox" [formGroup]="form">
-        <span id="formPrompt"><b>Course</b></span>
-        <div class="row">
+        <div class="row" id="leftMargin">
             <input id="wantedCouseInput" appFormatCourseCode class="form-control" placeholder="math135, cs135..." formControlName="course" (keydown)="keydownSearchBar($event)">
             <button type="button" class="btn btn-success" (click)="submit()">Search</button>
         </div>
