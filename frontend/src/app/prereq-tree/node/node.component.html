@@ -2,24 +2,23 @@
 
     <!-- Case 1: No prerequisites -->
     <div class="hv-item-parent-no-tail" *ngIf="node.children.length == 0">
-        <div [ngClass]="'simple-card-not-highlighted'">
+        <div [ngClass]="node.taken == 1 ? 'simple-card-taken' : 'simple-card'">
             <div>{{node.name}}</div>
         </div>
     </div>
 
     <!-- Case 2: Yes prerequisites -->
     <div class="hv-item-parent" *ngIf="node.children.length > 0 && !shouldHideChildren(node.id)">
-        <div [ngClass]="node.name == 'OR' ? 'simple-card-not-highlighted-or' : 'simple-card-not-highlighted'">
+        <div [ngClass]="node.name == 'OR' ? 'simple-card-or' : (node.taken == 1 ? 'simple-card-taken' : 'simple-card')">
             <!-- <div class="popoverbox" (mouseleave)="mouseLeave(node.id, $event)" (mouseenter)="mouseEnter(node.id, $event)">
                 <div [ngClass]="shouldShowPopup(node.id) ? 'popupdescription':'invispopupdescription'">{{node.description}}</div>
             </div> -->
-            <button id="takenbutton" class="taken-button" *ngIf="node.taken == 1" disabled>✔️</button>
             <button id=" expandbutton " class="expand-button rotated-button " (click)='hideChildren(node.id)' *ngIf="node.name !='OR' "></button>
             <div>{{node.name}}</div>
         </div>
     </div>
     <div class="hv-item-children " *ngIf="node.children.length> 0 && shouldHideChildren(node.id)">
-        <div [ngClass]="'simple-card-not-highlighted'">
+        <div [ngClass]="node.taken == 1 ? 'simple-card-taken' : 'simple-card'">
             <!-- <div class="popoverbox" (mouseleave)="mouseLeave(node.id, $event)" (mouseenter)="mouseEnter(node.id, $event)">
                 <div [ngClass]="shouldShowPopup(node.id) ? 'popupdescription':'invispopupdescription'">{{node.description}}</div>
             </div> -->
@@ -31,11 +30,10 @@
         <div class="hv-item-child onlyfirst" *ngFor="let child of node.children">
             <app-node *ngIf="child.children.length > 0" [node]="child"></app-node>
             <div class="hv-item" *ngIf="child.children.length == 0">
-                <div [ngClass]="'simple-card-not-highlighted'">
+                <div [ngClass]="child.taken == 1 ? 'simple-card-taken' : 'simple-card'">
                     <!-- <div class="popoverbox" (mouseleave)="mouseLeave(child.id, $event)" (mouseenter)="mouseEnter(child.id, $event)">
                         <div [ngClass]="shouldShowPopup(child.id) ? 'popupdescription':'invispopupdescription'">{{child.description}}</div>
                     </div> -->
-                    <button id="takenbutton" class="taken-button" *ngIf="child.taken == 1" disabled>✔️</button>
                     <div>{{child.name}}</div>
                 </div>
             </div>

@@ -4,6 +4,7 @@ $line-color: rgba(#FFF, 0.7);
 $line-color: black;
 $primary-color: #ff9d5c;
 $secondary-color: #ffffff;
+$taken-color: #06c258;
 .popupdescription {
     border-style: solid;
     border-width: 2px;
@@ -97,8 +98,9 @@ $secondary-color: #ffffff;
     }
 }
 
-div.simple-card-not-highlighted,
-div.simple-card-not-highlighted-or {
+div.simple-card,
+div.simple-card-or,
+div.simple-card-taken {
     position: relative;
     text-align: center;
     min-width: 100px;
@@ -115,16 +117,17 @@ div.simple-card-not-highlighted-or {
     margin-right: 10px;
     border-style: solid;
     background-color: #fff;
-}
-
-div.simple-card-not-highlighted {
     box-shadow: 0 3px 6px rgba(#0E0B16, 0.15);
 }
 
-div.simple-card-not-highlighted-or {
+div.simple-card-or {
     padding: 5px;
-    box-shadow: 0 3px 6px rgba(#0E0B16, 0.15);
     background-color: $primary-color;
+    color: $secondary-color;
+}
+
+div.simple-card-taken {
+    background-color: $taken-color;
     color: $secondary-color;
 }
 
