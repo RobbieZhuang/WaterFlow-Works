@@ -5,6 +5,7 @@ $line-color: black;
 $primary-color: #ff9d5c;
 $secondary-color: #ffffff;
 $taken-color: #06c258;
+$can-take-color: #0da2ff;
 .popupdescription {
     border-style: solid;
     border-width: 2px;
@@ -100,7 +101,8 @@ $taken-color: #06c258;
 
 div.simple-card,
 div.simple-card-or,
-div.simple-card-taken {
+div.simple-card-taken,
+div.simple-card-can-take {
     position: relative;
     text-align: center;
     min-width: 100px;
@@ -128,6 +130,11 @@ div.simple-card-or {
 
 div.simple-card-taken {
     background-color: $taken-color;
+    color: $secondary-color;
+}
+
+div.simple-card-can-take {
+    background-color: $can-take-color;
     color: $secondary-color;
 }
 

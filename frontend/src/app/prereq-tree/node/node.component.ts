@@ -42,6 +42,10 @@ export class NodeComponent implements OnInit {
     this.treelistsvc.addChild(id);
   }
 
+  canBeTaken(node) {
+    return node.children.filter(entry => entry.taken == 1).length == node.children.length;
+  }
+  
   /* Methods below are used for popups to show extra info, corresponding HTML is commented out as */
   // shouldShowPopup(id) {
   //   return this.currentlyHoveringId === id;

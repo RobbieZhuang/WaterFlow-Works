@@ -31,7 +31,6 @@ connection = psycopg2.connect(
     port = connection_params["PORT"],
 )
 
-
 term_to_word = {1: "Winter", 5: "Spring", 9: "Fall"}
 
 @app.route("/")
@@ -566,6 +565,7 @@ def getPrereqGraph():
                 l.append({
                     "name": "OR",
                     "id": get_id_count(),
+                    "taken": 1 if len([e for e in sub_l if e["taken"] == 1]) > 0 else 0,
                     "children": sub_l
                 })
             else:
@@ -581,7 +581,6 @@ def getPrereqGraph():
             "children": getChildrenJSON(course_code)
         }]
     }
-
     return json.dumps(d)
 
 if __name__ == "__main__":

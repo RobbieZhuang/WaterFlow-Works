@@ -9,7 +9,7 @@
 
     <!-- Case 2: Yes prerequisites -->
     <div class="hv-item-parent" *ngIf="node.children.length > 0 && !shouldHideChildren(node.id)">
-        <div [ngClass]="node.name == 'OR' ? 'simple-card-or' : (node.taken == 1 ? 'simple-card-taken' : 'simple-card')">
+        <div [ngClass]="node.name == 'OR' ? 'simple-card-or' : (node.taken == 1 ? 'simple-card-taken' : canBeTaken(node) ? 'simple-card-can-take' : 'simple-card')">
             <!-- <div class="popoverbox" (mouseleave)="mouseLeave(node.id, $event)" (mouseenter)="mouseEnter(node.id, $event)">
                 <div [ngClass]="shouldShowPopup(node.id) ? 'popupdescription':'invispopupdescription'">{{node.description}}</div>
             </div> -->
@@ -18,7 +18,7 @@
         </div>
     </div>
     <div class="hv-item-children " *ngIf="node.children.length> 0 && shouldHideChildren(node.id)">
-        <div [ngClass]="node.taken == 1 ? 'simple-card-taken' : 'simple-card'">
+        <div [ngClass]="node.taken == 1 ? 'simple-card-taken' : canBeTaken(node) ? 'simple-card-can-take' : 'simple-card'">
             <!-- <div class="popoverbox" (mouseleave)="mouseLeave(node.id, $event)" (mouseenter)="mouseEnter(node.id, $event)">
                 <div [ngClass]="shouldShowPopup(node.id) ? 'popupdescription':'invispopupdescription'">{{node.description}}</div>
             </div> -->
