@@ -38,7 +38,7 @@ export class CoursePathComponent implements OnInit {
     if (!this.form.controls.courseTaken.valid) {
       return;
     }
-    const course = this.form.controls.courseTaken.value;
+    const course = this.form.controls.courseTaken.value.toUpperCase();
 
     // check if it already exists
     let duplicated = false
