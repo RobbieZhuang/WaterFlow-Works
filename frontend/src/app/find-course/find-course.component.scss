@@ -2,12 +2,6 @@
     margin-top: 20px;
     display: flex;
     flex-direction: column;
-    mat-form-field {
-        margin-right: 3rem;
-    }
-    mat-radio-button {
-        margin-top: 0.5rem;
-    }
 }
 
 .coursesTaken {
@@ -79,7 +73,6 @@ h3 {
     width: 200px;
     text-align: center;
     font-size: 12px;
-    padding: 5px;
 }
 
 .red {
