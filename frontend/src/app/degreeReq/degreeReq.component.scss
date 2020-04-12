@@ -1,33 +1,12 @@
-.container {
+.background {
     margin-top: 20px;
     display: flex;
+    width: 100%;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.flex-container {
-    display: flex;
-    flex-wrap: wrap;
-    width: 700px;
-    margin-top: 10px;
-}
-
-.flex-container>div {
-    border-style: solid;
-    padding-top: 10px;
-    margin: 1px;
-    width: 30%;
-    text-align: center;
-    font-size: 16px;
-    padding: 5px;
-}
-
-// .background {
-//     display: flex;
-//     width: 100%;
-//     flex-direction: column;
-//     justify-content: center;
-//     align-items: center;
-// }
 .coursesTaken {
     margin: 1rem;
 }
@@ -36,10 +15,6 @@
     margin-top: 1rem;
     width: 60%;
     height: 70%;
-}
-
-.form-control {
-    width: 10px;
 }
 
 .box {
@@ -52,11 +27,9 @@
 
 #wantedCouseInput {
     width: 80%;
-    margin-bottom: 30px;
 }
 
-#formPrompt {
-    align-items: left;
+#wantCourse {
     font-size: 1.5rem;
 }
 
@@ -68,4 +41,18 @@ h3 {
     text-decoration: underline;
     text-decoration-color: blue;
     color: blue;
+}
+
+#buttonMarginLeft {
+    margin-left: 10px;
+}
+
+#wantedCouseInput {
+    width: 80%;
+    margin-bottom: 30px;
+}
+
+#formPrompt {
+    align-items: left;
+    font-size: 1.5rem;
 }

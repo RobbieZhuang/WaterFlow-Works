@@ -1,7 +1,10 @@
-.container {
+.background {
     margin-top: 20px;
     display: flex;
+    width: 100%;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .coursesTaken {
@@ -47,12 +50,8 @@
     width: 80%;
 }
 
-#formPrompt {
+#wantCourse {
     font-size: 1.5rem;
-}
-
-#leftMargin {
-    margin-left: 0px;
 }
 
 h3 {
@@ -62,8 +61,7 @@ h3 {
 .flex-container {
     display: flex;
     flex-wrap: wrap;
-    width: 700px;
-    margin-top: 10px;
+    width: 610px;
 }
 
 .flex-container>div {
@@ -92,4 +90,16 @@ h3 {
 
 .green {
     color: green;
+}
+
+#formPrompt {
+    font-size: 1.5rem;
+}
+
+#buttonLeftMargin {
+    margin-left: 10px;
+}
+
+#zeroLeftMargin {
+    margin-left: 0px;
 }

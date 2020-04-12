@@ -1,6 +1,6 @@
-<div class="container">
-    <span id="formPrompt"><b>The Degree I Want </b></span>
+<div class="background">
     <form class="inputBox" [formGroup]="form">
+        <span id="formPrompt"><b>The Degree I Want </b></span>
         <input id="wantedCouseInput" list="degrees" class="form-control" placeholder="ex: Computer Science.." formControlName="wantedCourse" autocomplete="off">
         <datalist id="degrees">
             <option *ngFor="let d of degrees" [value]="d">
@@ -11,7 +11,7 @@
                 <span class="input-group-text" id="inputGroup-sizing-default">Course Code</span>
             </div>
             <input appFormatCourseCode type="text" appFormartCourseCode formControlName="courseTaken" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-            <button type="button" class="btn btn-primary" (click)="addCourse()">Add</button>
+            <button id="buttonMarginLeft" type="button" class="btn btn-primary" (click)="addCourse()">Add</button>
         </div>
         <div *ngIf="errorCourseAdd != ''" class="alert alert-danger" role="alert">
             {{errorCourseAdd}}
