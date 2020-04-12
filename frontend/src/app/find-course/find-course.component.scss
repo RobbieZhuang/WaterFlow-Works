@@ -19,6 +19,13 @@
     margin-right: 0.5rem;
 }
 
+
+.span-clickable {
+    text-decoration: underline;
+    text-decoration-color: blue;
+    color: blue;
+}
+
 .profData {
     display: flex;
     flex-direction: row;

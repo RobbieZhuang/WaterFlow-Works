@@ -19,11 +19,16 @@
                         <p>{{result.title}}</p>
                         <p>{{result.courseType}}</p>
                         <p>{{result.description}}</p>
-                        <p *ngIf="!isObjectEmpty(result.prereq)">Required Courses:</p>
-                        <div *ngFor="let item  of result.prereq | keyvalue">
+                        <p *ngIf="!isObjectEmpty(result.prereq)">Required Prerequisites:</p>
+                        <ng-container *ngFor="let item  of result.prereq | keyvalue;let last = last">
                             <div *ngIf="item.value.length > 1; else allOf">One of the Following Courses: {{item.value.join(", ")}}</div>
-                            <ng-template #allOf><div *ngFor="let course of item.value">{{course}}</div></ng-template>
-                        </div>
+                            <ng-template #allOf>
+                                <span *ngFor="let course of item.value">{{course}}</span>
+                            </ng-template>
+                            <span *ngIf="!last">, </span>
+                        </ng-container>
+                        <br>
+                        <button type="button" class="btn btn-info" (click)="getPrereqGraph(result.courseCode)">Prerequiste graph</button>
                     </div>
                 </mat-tab>
                 <mat-tab label="Historical Info">
@@ -124,7 +129,7 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let prof of result?.profinfo" (click)="openProfDetailDialog(prof[1], prof[0])">
-                                    <td>{{prof[1]}} {{prof[0]}}</td>
+                                    <td><span class="span-clickable">{{prof[1]}} {{prof[0]}}</span></td>
                                     <td>{{prof[2]}}/{{prof[3]}}</td> <!-- total -->
                                     <td>
                                         <span *ngIf="prof[5]">

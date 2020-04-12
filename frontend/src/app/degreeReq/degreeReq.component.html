@@ -1,7 +1,11 @@
 <div class="background">
     <form class="inputBox" [formGroup]="form">
         <span id="wantCourse"><b>The Degree I Want </b></span>
-        <input id="wantedCouseInput" class="form-control" placeholder="ex: Computer Science.." formControlName="wantedCourse">
+        <input id="wantedCouseInput" list="degrees" class="form-control" 
+            placeholder="ex: Computer Science.." formControlName="wantedCourse" autocomplete="off">
+        <datalist id="degrees">
+            <option *ngFor="let d of degrees" [value]="d">
+        </datalist>
         <h3>Courses I have taken...</h3>
         <div class="input-group mb-3">
             <div class="input-group-prepend">

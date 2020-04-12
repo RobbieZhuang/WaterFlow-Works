@@ -17,6 +17,7 @@ export class CoursePathComponent implements OnInit {
   errorCourseAdd = '';
   degreeReq: any[] = [];
   searched = false;
+  degrees: string[] = []
 
   constructor(private api: ApicallsService, private fb: FormBuilder, public dialog: MatDialog) {
     this.form = fb.group({
@@ -26,7 +27,11 @@ export class CoursePathComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.api.getData(`${urlConfig.baseUrl}/degrees`)
+    .subscribe(res => {
+      console.log(res)
+      this.degrees=res
+    })
   }
 
   addCourse() {
@@ -34,9 +39,17 @@ export class CoursePathComponent implements OnInit {
       return;
     }
     const course = this.form.controls.courseTaken.value;
+
+    // check if it already exists
+    let duplicated = false
+    this.coursesTaken.forEach(existingCourse => {
+      if (existingCourse.toUpperCase() === course.toUpperCase()){
+        duplicated = true
+      }
+    });
+    if (duplicated) return;
     this.api.getData(`${urlConfig.baseUrl}/getCourseInfo?course=${course}`)
       .subscribe(res => {
-        console.log(res);
         if (Object.keys(res).length === 0 && res.constructor === Object) {
           this.errorCourseAdd = `Seems like the prerequisite ${course} does not exist`;
           return;
@@ -48,8 +61,6 @@ export class CoursePathComponent implements OnInit {
   }
 
   submit() {
-
-
     if (!this.form.controls.wantedCourse.valid) {
       return;
     }

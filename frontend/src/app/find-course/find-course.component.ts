@@ -1,3 +1,4 @@
+import { TreeComponent } from './../prereq-tree/tree.component';
 import { ProfcoursespopupComponent } from './../searchprof/profcoursespopup/profcoursespopup.component';
 import { urlConfig } from './../urlConfig';
 import { ApicallsService } from './../service/apicalls.service';
@@ -57,6 +58,18 @@ export class FindCourseComponent implements OnInit {
       }
     })
 
+  }
+
+  getPrereqGraph(courseCode: string) {
+    this.api.getData(`${urlConfig.baseUrl}/getPrereqGraph?courseCode=${courseCode.trim()}
+        &coursesTaken=[]
+        &recursionDepth=3`)
+      .subscribe(res => {
+        const dialogRef = this.dialog.open(TreeComponent, {
+          panelClass: 'custom-dialog-container',
+          data: res
+        });
+      });
   }
   
   isObjectEmpty(obj){

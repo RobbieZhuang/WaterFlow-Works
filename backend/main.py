@@ -209,9 +209,9 @@ def degrees():
     cur.execute("""SELECT title FROM degree;""")
     rows = cur.fetchall()
 
-    degrees = "\n".join(map(lambda d: d[0], rows))
+    degrees = list(map(lambda d: d[0], rows))
 
-    return f"Current degrees are:\n{degrees}"
+    return json.dumps(degrees)
 
 @app.route("/searchProf")
 def searchProf():
