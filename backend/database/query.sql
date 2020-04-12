@@ -173,3 +173,31 @@ SELECT s.profFirstName, s.profLastName, s.sectionsTaught, t.termsTaught
 FROM sectionsProf s LEFT OUTER JOIN termsProf t
 ON s.profFirstName = t.profFirstName AND s.profLastName = t.profLastName
 ORDER BY s.sectionsTaught DESC;
+
+
+-- Recurisve query to generate course prerequiste graph
+WITH RECURSIVE rec_prereqs AS(
+    SELECT %s::VARCHAR AS code,
+            NULL::VARCHAR AS parent,
+            1 AS level,
+            NULL::VARCHAR AS group_type,
+            NULL::INT AS group_id
+
+    UNION ALL
+    
+    SELECT cm.coursecode AS code,
+            r.code AS parent,
+            r.level + 1 AS level,
+            (CASE
+            -- THIS IS NECESSARY BECUASE coursegroup count is broken in the coursegroup table
+            WHEN (SELECT COUNT(*) FROM coursegroupmember where coursegroupid = cm.coursegroupid) = 1 THEN 'AND'::VARCHAR
+            ELSE 'OR'::VARCHAR
+            END) as group_type,
+            cm.coursegroupid AS group_id
+    FROM rec_prereqs r INNER JOIN prerequisite p
+        ON r.code = p.coursecode
+    INNER JOIN coursegroupmember cm
+        ON p.prereqcoursegroupid = cm.coursegroupid
+)
+SELECT * FROM rec_prereqs
+WHERE level <= %s; -- Cap size of the graph

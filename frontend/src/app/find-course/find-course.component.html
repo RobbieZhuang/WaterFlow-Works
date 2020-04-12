@@ -15,11 +15,11 @@
             <mat-tab-group>
                 <mat-tab label="General Info">
                     <div class="tabPadding">
-                        <p>{{result.courseCode}}</p>
-                        <p>{{result.title}}</p>
-                        <p>{{result.courseType}}</p>
-                        <p>{{result.description}}</p>
-                        <p *ngIf="!isObjectEmpty(result.prereq)">Required Prerequisites:</p>
+                        <p><b>Course Code:</b> {{result.courseCode}}</p>
+                        <p><b>Course Title</b> {{result.title}}</p>
+                        <p><b>Course Type: </b> {{result.courseType}}</p>
+                        <p><b>Description: </b>{{result.description}}</p>
+                        <p *ngIf="!isObjectEmpty(result.prereq)"><b>Required Prerequisites:</b></p>
                         <ng-container *ngFor="let item  of result.prereq | keyvalue;let last = last">
                             <div *ngIf="item.value.length > 1; else allOf">One of the Following Courses: {{item.value.join(", ")}}</div>
                             <ng-template #allOf>
