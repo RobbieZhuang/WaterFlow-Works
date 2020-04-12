@@ -1,14 +1,14 @@
 <form class="container">
-    <h2>Professor Search</h2>
+    <span id="formPrompt"><b>Professor Search</b></span>
     <div>
-        First Name: 
+        First Name:
         <mat-form-field class="example-full-width">
             <input name="firstName" [(ngModel)]="firstName" type="text" matInput placeholder="Example first name...">
         </mat-form-field>
-         
+
         LastName:
         <mat-form-field class="example-full-width">
-            <input name="lastName" [(ngModel)]="lastName" type="text" matInput placeholder="Example last name..." >
+            <input name="lastName" [(ngModel)]="lastName" type="text" matInput placeholder="Example last name...">
         </mat-form-field>
 
         <button type="button" class="btn btn-success" (click)="submit()">Search</button>

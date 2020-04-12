@@ -1,4 +1,4 @@
-.container{
+.container {
     margin-top: 20px;
     display: flex;
     flex-direction: column;
@@ -16,8 +16,8 @@
     width: 700px;
     margin-top: 10px;
 }
-  
-.flex-container > div {
+
+.flex-container>div {
     border-style: solid;
     padding-top: 10px;
     margin: 1px;
@@ -25,4 +25,8 @@
     text-align: center;
     font-size: 16px;
     padding: 5px;
+}
+
+#formPrompt {
+    font-size: 1.5rem;
 }

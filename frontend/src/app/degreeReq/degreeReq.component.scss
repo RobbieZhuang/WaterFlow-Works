@@ -16,6 +16,10 @@
     height: 70%;
 }
 
+.form-control {
+    width: 10px;
+}
+
 .box {
     padding-top: 1rem;
 }
@@ -26,9 +30,10 @@
 
 #wantedCouseInput {
     width: 80%;
+    margin-bottom: 30px;
 }
 
-#wantCourse {
+#formPrompt {
     font-size: 1.5rem;
 }
 

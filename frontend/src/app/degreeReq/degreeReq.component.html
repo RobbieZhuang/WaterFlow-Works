@@ -1,15 +1,14 @@
 <div class="background">
     <form class="inputBox" [formGroup]="form">
-        <span id="wantCourse"><b>The Degree I Want </b></span>
-        <input id="wantedCouseInput" list="degrees" class="form-control" 
-            placeholder="ex: Computer Science.." formControlName="wantedCourse" autocomplete="off">
+        <span id="formPrompt"><b>The Degree I Want </b></span>
+        <input id="wantedCouseInput" list="degrees" class="form-control" placeholder="ex: Computer Science.." formControlName="wantedCourse" autocomplete="off">
         <datalist id="degrees">
             <option *ngFor="let d of degrees" [value]="d">
         </datalist>
-        <h3>Courses I have taken...</h3>
-        <div class="input-group mb-3">
+        <span id="formPrompt"><b>Courses I Have Taken</b></span>
+        <div class="input-group mb-3 extraMargin">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-default">Course+ID</span>
+                <span class="input-group-text" id="inputGroup-sizing-default">Course Code</span>
             </div>
             <input appFormatCourseCode type="text" appFormartCourseCode formControlName="courseTaken" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
             <button type="button" class="btn btn-primary" (click)="addCourse()">Add</button>
@@ -22,7 +21,7 @@
         </div>
         <button type="button" class="btn btn-success" (click)="submit()">Go</button>
         <div *ngIf="searched && degreeReq.length > 0" class="box">
-            <h3>To complete the degree, you would need to take the followings: </h3>
+            <span id="formPrompt"><b>To complete your degree, you'll need to take the following courses: </b></span>
             <div *ngFor="let req of degreeReq">
                 <p>
                     {{req.quantity}} of the following:
