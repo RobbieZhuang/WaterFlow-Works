@@ -207,3 +207,13 @@ SELECT coursetype, component, enrlcap, enrltot, proffirstname, proflastname, cla
 FROM courseOffering
 WHERE coursecode = 'CS 350' AND component < 100 AND termcode = '1201'
 ORDER BY component;
+
+SELECT termcode,
+    COUNT(*) AS sections_offered,
+    array_agg(DISTINCT array[proffirstname, proflastname]) AS profs,
+    SUM(enrlcap) AS enrl_term_cap,
+    SUM(enrltot) AS enrl_term_tot
+FROM courseOffering
+WHERE coursecode = 'CS 350' AND component < 100
+GROUP BY termcode
+ORDER BY termcode DESC;

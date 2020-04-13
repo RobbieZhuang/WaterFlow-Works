@@ -33,11 +33,12 @@
                 <mat-tab label="Historical Info">
                     <div class="tabPadding">
                         <div *ngFor="let term of result.histInfo | keyvalue">
-                            <p>{{term.key}} : Offered {{term.value.Count}} times in Total<br>
+                            <p><b>{{term.key}}</b> : Offered {{term.value.Count}} times in Total<br>
                                 <span *ngFor="let year of term.value.termsOffered; let last = last">{{year[1]}}<span *ngIf="!last">, </span></span>
                             </p>
                         </div>
-                        <h4>List of Professors</h4>
+                        <h5>List of Professors</h5>
+                        <hr>
                         <div class="profData">
                             <div class="profDataSide">
                                 <div *ngFor="let prof of result.profList" (click)="seeProfHist(prof)">
@@ -81,7 +82,7 @@
                         </mat-tab-group>
 
 
-                        <p style="color:red">Term Info</p>
+                        <p>Term Table</p>
                         <div class="flex-container">
                             <ng-container *ngFor="let term of result?.terminfo">
                                 <ng-container *ngFor="let season of seasons">
