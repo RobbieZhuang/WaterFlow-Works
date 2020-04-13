@@ -8,10 +8,10 @@
         <span id="formPrompt"><b>Courses I Have Taken</b></span>
         <div class="input-group mb-3 extraMargin">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-default">Course Code</span>
+                <span class="input-group-text" id="inputGroup-sizing-default" style="width: 100%;">Course Code</span>
             </div>
             <input appFormatCourseCode type="text" appFormartCourseCode formControlName="courseTaken" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-            <button id="buttonMarginLeft" type="button" class="btn btn-primary" (click)="addCourse()">Add</button>
+            <button id="buttonMarginLeft" type="button" class="btn btn-primary" (click)="addCourse()" style="border-color: #0f8af5; border-width: 1px; background: white; color: #0f8af5;">Add</button>
         </div>
         <div *ngIf="errorCourseAdd != ''" class="alert alert-danger" role="alert">
             {{errorCourseAdd}}
@@ -19,7 +19,9 @@
         <div class="coursesTaken">
             <button *ngFor="let course of coursesTaken" type="button" class="btn btn-info takenCourseRect">{{course}}</button>
         </div>
-        <button type="button" class="btn btn-success" (click)="submit()">Go</button>
+        <div style="margin: 0 auto; width: 40%;">
+            <button type="button" class="btn btn-success" (click)="submit()" style="margin: 0 auto; width: 100%; background: #0f8af5; color: white; border-width: 0px;">GO</button>
+        </div>
         <div *ngIf="searched && degreeReq.length > 0" class="box">
             <span id="formPrompt"><b>To complete your degree, you'll need to take the following courses: </b></span>
             <div *ngFor="let req of degreeReq">

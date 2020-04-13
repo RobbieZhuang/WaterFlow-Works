@@ -1,9 +1,9 @@
 <div class="background">
     <form class="inputBox" [formGroup]="form">
         <span id="formPrompt"><b>Course</b></span>
-        <div class="row" id="zeroLeftMargin">
+        <div class="row" id="zeroLeftMargin" style="width: 100% !important;">
             <input id="wantedCouseInput" appFormatCourseCode class="form-control" placeholder="math135, cs135..." formControlName="course" (keydown)="keydownSearchBar($event)">
-            <button id="buttonLeftMargin" type="button" class="btn btn-success" (click)="submit()">Search</button>
+            <button id="buttonLeftMargin" type="button" class="btn btn-success" (click)="submit()" style="border-color: #0f8af5; border-width: 1px; background: white; color: #0f8af5;">Search</button>
         </div>
 
         <div *ngIf="error != ''" class="alert alert-danger" role="alert">
