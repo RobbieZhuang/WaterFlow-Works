@@ -1,7 +1,9 @@
 .background {
     margin-top: 20px;
     display: flex;
+    width: 100%;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
 }
 
@@ -18,7 +20,6 @@
 .takenCourseRect {
     margin-right: 0.5rem;
 }
-
 
 .span-clickable {
     text-decoration: underline;
@@ -89,4 +90,16 @@ h3 {
 
 .green {
     color: green;
+}
+
+#formPrompt {
+    font-size: 1.5rem;
+}
+
+#buttonLeftMargin {
+    margin-left: 10px;
+}
+
+#zeroLeftMargin {
+    margin-left: 0px;
 }
