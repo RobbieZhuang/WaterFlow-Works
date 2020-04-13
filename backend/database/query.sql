@@ -201,3 +201,9 @@ WITH RECURSIVE rec_prereqs AS(
 )
 SELECT * FROM rec_prereqs
 WHERE level <= %s; -- Cap size of the graph
+
+
+SELECT coursetype, component, enrlcap, enrltot, proffirstname, proflastname, classstarttime, classendtime, classweekdays, classbuilding, classroom
+FROM courseOffering
+WHERE coursecode = 'CS 350' AND component < 100 AND termcode = '1201'
+ORDER BY component;

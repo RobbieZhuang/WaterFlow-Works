@@ -38,7 +38,7 @@
                                 <span *ngFor="let year of term.value.termsOffered; let last = last" >{{year[1]}}<span *ngIf="!last">, </span></span>
                             </p>
                         </div>
-                        <h3>List of Profs</h3>
+                        <h4>List of Professors</h4>
                         <div class="profData">
                             <div class="profDataSide">
                                 <div *ngFor="let prof of result.profList" (click)="seeProfHist(prof)">
