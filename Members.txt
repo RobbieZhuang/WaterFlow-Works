@@ -11,7 +11,7 @@ Guan Qiao: Discuss idea, Plan schema, Setup GCP & Postgres, Build Hello World ap
     production data set creation scripts for the courseofferings table. 
 
 James: Discuss idea, Plan schema, Write report, Web scrape dataset for Hello World app, Build production data set, 
-    Build production data set creation scripts for the prerequisites table.
+    Build production data set creation scripts for the prerequisites table. Wrote query & backend for feature 1.
 
 Bowen: Discuss idea, Plan schema, Write report, Build flask backend, build production dataset creation scripts
     for the degree requirements table. Wrote query & backend for feature 1.
