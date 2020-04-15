@@ -8,6 +8,6 @@ Jeffer: Discussed idea, planned database schema, worked on data insertion script
 
 Brad: Discussed idea, planned database schema, set up GCP & Postgres infrastructure, built Hello World App, extracted production data set from UW OpenAPI and RateMyProf, developed database creation scripts, tables, and views. Worked on partial backend of features 2, 3, 4, 5. Wrote documentation. 
 
-James: Discussed idea, planned database schema. Extracted production data set creation scripts for the prerequisites table, worked on ETL on UW OpenAPI data. Worked on frontend & backend on feature 1. Wrote documentation.
+James: Discussed idea, planned database schema. Built production data set creation scripts for prerequisites, worked on ETL of UW OpenAPI data. Worked on frontend & backend for feature 1. Worked on partial frontend of feature 6. Wrote documentation.
 
 Robbie: Discussed idea, planned database schema. Build flask backend, build production dataset creation scripts for the degree requirements table. Worked on frontend & backend for feature 1, 6. Wrote documentation.
