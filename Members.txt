@@ -5,7 +5,7 @@ Bowen Robert Zhuang 20710951
 
 
 Jing Fei: Discuss idea, Plan schema, Build angular frontend, Work on data insertion script,
-    Worked on frontend of feature 1, Worked frontend and backend of feature 3,4, and 5, wrote documentation.
+    Worked on frontend of feature 1 and 5, Worked on frontend and partial backend of feature 2, 3 and 4, wrote documentation.
 
 Guan Qiao: Discuss idea, Plan schema, Setup GCP & Postgres, Build Hello World app, Wrote documentation, built
     production data set creation scripts for the courseofferings table. 
