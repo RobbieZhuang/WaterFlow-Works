@@ -1,4 +1,4 @@
-# CS348 Project
+# Waterflow Works (Prev. CS348 Project)
 
 ## Running the app
 
