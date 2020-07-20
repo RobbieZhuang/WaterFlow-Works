@@ -6,9 +6,6 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
-const currentTerm = 1201;
-const nextTerm = 1205;
-
 @Component({
   selector: 'app-find-course',
   templateUrl: './find-course.component.html',
@@ -32,8 +29,8 @@ export class FindCourseComponent implements OnInit {
   currentTermData: string[];
   nextTermData: string[];
   
-  curTerm : number  = 1201;
-  nextTerm : number = 1205;
+  curTerm : number  = 1205;
+  nextTerm : number = 1209;
   seasons = ["W","S","F"]
 
   constructor(private api: ApicallsService, private fb: FormBuilder, public dialog: MatDialog) {
@@ -192,13 +189,13 @@ export class FindCourseComponent implements OnInit {
       });
 
     this.api
-      .getData(`${urlConfig.baseUrl}/getTermOfferings?course=${this.form.controls.course.value}&term=${currentTerm}`)
+      .getData(`${urlConfig.baseUrl}/getTermOfferings?course=${this.form.controls.course.value}&term=${this.curTerm}`)
       .subscribe(res => {
         this.currentTermData = res;
       })
 
     this.api
-      .getData(`${urlConfig.baseUrl}/getTermOfferings?course=${this.form.controls.course.value}&term=${nextTerm}`)
+      .getData(`${urlConfig.baseUrl}/getTermOfferings?course=${this.form.controls.course.value}&term=${this.nextTerm}`)
       .subscribe(res => {
         this.nextTermData = res;
       })
