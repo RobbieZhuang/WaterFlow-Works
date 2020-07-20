@@ -68,7 +68,7 @@ set_ratemyprofs = set()
 
 
 ## strings for terms
-terms = [str(100 + y) + str(t) for y in range (13, 21) for t in [1, 5, 9]]
+terms = [str(100 + y) + str(t) for y in range (13, 22) for t in [1, 5, 9]]
 
 
 # In[7]:
